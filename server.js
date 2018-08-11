@@ -10,9 +10,7 @@ app.get('/', (req, res) => {
 
 // Creates the endpoint for our webhook 
 app.post('/webhook', (req, res) => {
-	consosle.log("webhok");
   let body = req.body;
-
   // Checks this is an event from a page subscription
   if (body.object === 'page') {
 
