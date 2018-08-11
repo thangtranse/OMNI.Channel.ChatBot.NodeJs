@@ -2,19 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express().use(bodyParser.json()); 
 
-var server = app.listen(8081, function () {
-    var host = server.address().address
-    var port = server.address().port
-    console.log("Example app listening at http://%s:%s", host, port)
-})
+app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {  
 	req.end("oke");
 });
 
 // Creates the endpoint for our webhook 
-app.post('/webhook', (req, res) => {  
- 
+app.post('/webhook', (req, res) => {
+	consosle.log("webhok");
   let body = req.body;
 
   // Checks this is an event from a page subscription
@@ -51,14 +47,13 @@ app.get('/webhook', (req, res) => {
     
   // Checks if a token and mode is in the query string of the request
   if (mode && token) {
-  
+	console.log("call this");
+	
     // Checks the mode and token sent is correct
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      
       // Responds with the challenge token from the request
       console.log('WEBHOOK_VERIFIED');
       res.status(200).send(challenge);
-    
     } else {
       // Responds with '403 Forbidden' if verify tokens do not match
       res.sendStatus(403);      
