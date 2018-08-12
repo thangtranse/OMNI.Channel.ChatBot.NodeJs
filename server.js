@@ -84,7 +84,7 @@ function handleMessage(sender_psid, received_message) {
 
     // Sends the response message
     // callSendAPI(sender_psid, response);
-    sendMsgToRocket(received_message.text)
+    sendMsgToRocket(sender_psid, received_message.text)
 }
 
 // Handles messaging_postbacks events
@@ -117,11 +117,11 @@ function callSendAPI(sender_psid, response) {
     });
 }
 
-function sendMsgToRocket(_msg) {
+function sendMsgToRocket(_id, _msg) {
     let request_body = {
-        "text": _msg
+        "text": _msg,
+        "userId": _id
     }
-
     request({
         "uri": "https://ten-lua.herokuapp.com/hooks/G9HvcSvqrkBcAmgz9/HXp6YNwzcD273PuCBk7PhnXgn3b33gFBjoS77rWztTyp7kPb",
         "qs": {"access_token": 'G9HvcSvqrkBcAmgz9/HXp6YNwzcD273PuCBk7PhnXgn3b33gFBjoS77rWztTyp7kPb'},
@@ -139,6 +139,15 @@ function sendMsgToRocket(_msg) {
 // Creates the endpoint for our webhook
 app.post('/ten-lua', (req, res) => {
     let body = req.body;
+    // body.token: 'QFJB7u78GHwLD2P37vwdaeRC',
+    // body.bot: false,
+    // body.channel_id: 'K5T7c6MJaGLcYiYpf',
+    // body.channel_name: 'facebook_msg',
+    // body.message_id: 'xyPKWqnmxWG84sPoE',
+    // body.timestamp: '2018-08-12T10:09:54.092Z',
+    // body.user_id: 'AHBrCEjwq4H2TYdj9',
+    // body.user_name: 'thangtm',
+    // body.text: 'Test Outcome'
     console.log(body);
-    console.log(req);
+
 });
