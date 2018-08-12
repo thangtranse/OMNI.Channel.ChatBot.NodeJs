@@ -83,7 +83,8 @@ function handleMessage(sender_psid, received_message) {
     }
 
     // Sends the response message
-    callSendAPI(sender_psid, response);
+    // callSendAPI(sender_psid, response);
+    sendMsgToRocket(response)
 }
 
 // Handles messaging_postbacks events
@@ -104,7 +105,26 @@ function callSendAPI(sender_psid, response) {
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v2.6/me/messages",
-        "qs": { "access_token": 'EAAG9mksIwrUBANTYHX24Q6thLlpgwoj5tr16XngoWeYVgnSHRGhyGpyPxy4cGJT730ijU1thvgODZClbGwAaIngcNYux2N364lHAHn7IwUy1v9eKBZBR5vXngZBAZC8qRKiLBjb994vUmse4cNvXbq38iX8nCvW1gKdOnoOtnwZDZD' },
+        "qs": {"access_token": 'EAAG9mksIwrUBANTYHX24Q6thLlpgwoj5tr16XngoWeYVgnSHRGhyGpyPxy4cGJT730ijU1thvgODZClbGwAaIngcNYux2N364lHAHn7IwUy1v9eKBZBR5vXngZBAZC8qRKiLBjb994vUmse4cNvXbq38iX8nCvW1gKdOnoOtnwZDZD'},
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        if (!err) {
+            console.log('message sent!')
+        } else {
+            console.error("Unable to send message:" + err);
+        }
+    });
+}
+
+function sendMsgToRocket(_msg) {
+    let request_body = {
+        "text": _msg
+    }
+
+    request({
+        "uri": "https://ten-lua.herokuapp.com/hooks/G9HvcSvqrkBcAmgz9/HXp6YNwzcD273PuCBk7PhnXgn3b33gFBjoS77rWztTyp7kPb",
+        "qs": {"access_token": 'G9HvcSvqrkBcAmgz9/HXp6YNwzcD273PuCBk7PhnXgn3b33gFBjoS77rWztTyp7kPb'},
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
