@@ -135,3 +135,10 @@ function sendMsgToRocket(_msg) {
         }
     });
 }
+
+// Creates the endpoint for our webhook
+app.post('/ten-lua', (req, res) => {
+    let body = req.body;
+    console.log(body);
+    console.log(req);
+});
