@@ -120,13 +120,7 @@ function handleMessage(sender_psid, received_message) {
                     "buttons": [
                         {
                             "type": "account_link",
-                            "title": "Đăng nhập",
                             "url": "https://ten-lua-webhook.herokuapp.com/login"
-                        },
-                        {
-                            "type": "postback",
-                            "title": "No!",
-                            "payload": "no",
                         }
                     ],
                 }]
