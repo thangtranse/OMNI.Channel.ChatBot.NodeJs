@@ -49,9 +49,10 @@ app.post('/webhook', (req, res) => {
             // will only ever contain one message, so we get index 0
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
-                console.log({messagingEvent});
+                console.log("messagingEvent", {messagingEvent});
                 let sender_psid = messagingEvent.sender.id;
                 if (messagingEvent.message) {
+                    console.log("trueeeee");
                     handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
                     console.log("chưa biết chuyện gì xãy ra");
