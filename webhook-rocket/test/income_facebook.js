@@ -1,6 +1,15 @@
+
+
 class Script {
 
+
+    thang(){
+        console.log("call from function thang");
+    }
+
     process_incoming_request({request}) {
+        this.thang();
+        Store.set('lastCmd', request.content.text)
         // console is a global helper to improve debug
         console.log("income request: ", request.content);
         return {

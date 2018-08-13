@@ -142,5 +142,4 @@ app.post('/ten-lua', (req, res) => {
     // body.user_name: 'thangtm',
     // body.text: 'Test Outcome'
     console.log(body);
-
 });
