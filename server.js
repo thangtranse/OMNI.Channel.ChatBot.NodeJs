@@ -2,13 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express().use(bodyParser.json());
 const request = require('request');
-import callRocket from 'webhook-rocket/createWebhook';
+const callRocket = request('webhook-rocket/createWebhook');
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {
     req.end("oke");
-    callRocket = new callRocket(request);
+    var callRocket = new callRocket(request);
 });
 
 
