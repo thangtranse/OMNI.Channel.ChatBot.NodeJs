@@ -3,13 +3,19 @@ const bodyParser = require('body-parser');
 const app = express().use(bodyParser.json());
 const callRocket = require('./webhook-rocket/createWebhook');
 const request = require('request');
+const fs = require('fs');
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    fs.readFile('./index.html', (err, data) => {
+        if (err) throw err;
+        res.write(data);
+    });
     var a = new callRocket();
-    res.end("Welcome to Bucket");
+    res.end();
 });
 
 
