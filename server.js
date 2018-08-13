@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 // Creates the endpoint for our webhook 
 app.post('/webhook', (req, res) => {
     let body = req.body;
+    console.log("Nhập request từ Facebook");
     console.log("body", body.entry[0].changes);
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
@@ -24,9 +25,7 @@ app.post('/webhook', (req, res) => {
             // Gets the message. entry.messaging is an array, but
             // will only ever contain one message, so we get index 0
             let webhook_event = entry.messaging[0];
-
             console.log("xuất hiện: ", webhook_event);
-
             let sender_psid = webhook_event.sender.id;
             console.log('Sender PSID: ' + sender_psid);
 
