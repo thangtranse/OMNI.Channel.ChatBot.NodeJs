@@ -96,27 +96,6 @@ function handleMessage(sender_psid, received_message) {
             "text": `You sent the message: "${received_message.text}". Now send me an image!`
         }
     }
-    console.log("nó ra đây rồi");
-    // Sends the response message
-    callSendAPI(sender_psid, response);
-    // sendMsgToRocket(sender_psid, received_message.text)
-}
-
-// Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
-    console.log("post_back", sender_psid);
-    console.log("received_postback", received_postback);
-}
-
-// Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
-// Construct the message body
-    /*    let request_body = {
-            "recipient": {
-                "id": sender_psid
-            },
-            "message": response
-        }*/
     let request_body = {
         "attachment": {
             "type": "template",
@@ -140,6 +119,27 @@ function callSendAPI(sender_psid, response) {
                 }]
             }
         }
+    }
+    console.log("nó ra đây rồi")
+    // Sends the response message
+    callSendAPI(sender_psid, request_body);
+    // sendMsgToRocket(sender_psid, received_message.text)
+}
+
+// Handles messaging_postbacks events
+function handlePostback(sender_psid, received_postback) {
+    console.log("post_back", sender_psid);
+    console.log("received_postback", received_postback);
+}
+
+// Sends response messages via the Send API
+function callSendAPI(sender_psid, response) {
+// Construct the message body
+    let request_body = {
+        "recipient": {
+            "id": sender_psid
+        },
+        "message": response
     }
     // Send the HTTP request to the Messenger Platform
     request({
