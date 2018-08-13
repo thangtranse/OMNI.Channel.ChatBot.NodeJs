@@ -42,19 +42,30 @@ app.post('/webhook', (req, res) => {
     if (body.object === 'page') {
         // Iterates over each entry - there may be multiple if batched
         body.entry.forEach(function (entry) {
+            if (!entry.messaging) {
+                return;
+            }
             // Gets the message. entry.messaging is an array, but
             // will only ever contain one message, so we get index 0
-            let webhook_event = entry.messaging[0];
-            console.log("xuất hiện: ", webhook_event);
-            let sender_psid = webhook_event.sender.id;
-            console.log('Sender PSID: ' + sender_psid);
-
-            if (webhook_event.message) {
-                handleMessage(sender_psid, webhook_event.message);
-            } else if (webhook_event.postback) {
-                console.log("postback");
-                handlePostback(sender_psid, webhook_event.postback);
-            }
+            let pageEntry = entry.messaging;
+            pageEntry.messaging.forEach((messagingEvent) => {
+                console.log({messagingEvent});
+                let sender_psid = messagingEvent.sender.id;
+                if (messagingEvent.message) {
+                    handleMessage(sender_psid, messagingEvent.message);
+                } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
+                    console.log("chưa biết chuyện gì xãy ra");
+                }
+                if (messagingEvent.postback) {
+                    console.log("postback");
+                    handlePostback(sender_psid, messagingEvent.postback);
+                } else {
+                    console.error(
+                        'Webhook received unknown messagingEvent: ',
+                        messagingEvent
+                    );
+                }
+            });
         });
         // Returns a '200 OK' response to all requests
         res.status(200).send('EVENT_RECEIVED');
