@@ -96,6 +96,7 @@ function handleMessage(sender_psid, received_message) {
             "text": `You sent the message: "${received_message.text}". Now send me an image!`
         }
     }
+    console.log("nó ra đây rồi");
     // Sends the response message
     callSendAPI(sender_psid, response);
     // sendMsgToRocket(sender_psid, received_message.text)
