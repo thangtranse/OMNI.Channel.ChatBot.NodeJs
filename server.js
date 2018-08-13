@@ -111,13 +111,13 @@ function handleMessage(sender_psid, received_message) {
     }
     let request_body = {
         attachment: {
-            type: "template",
-            payload: {
-                template_type: "button",
-                text: 'Ready to do this? You’ll need to log in to your Jasper’s account so I can access your past orders.',
-                buttons: {
-                    type: 'account_link',
-                    url: `https://ten-lua-webhook.herokuapp.com/login`,
+            "type": "template",
+            "payload": {
+                "template_type": "button",
+                "text": 'Ready to do this? You’ll need to log in to your Jasper’s account so I can access your past orders.',
+                "buttons": {
+                    "type": "account_link",
+                    "url": "https://ten-lua-webhook.herokuapp.com/login",
                 },
             }
         }
