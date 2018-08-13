@@ -109,16 +109,28 @@ function handleMessage(sender_psid, received_message) {
             "text": `You sent the message: "${received_message.text}". Now send me an image!`
         }
     }
+
     let request_body = {
-        attachment: {
+        "attachment": {
             "type": "template",
             "payload": {
-                "template_type": "button",
-                "text": 'Ready to do this? You’ll need to log in to your Jasper’s account so I can access your past orders.',
-                "buttons": {
-                    "type": "account_link",
-                    "url": "https://ten-lua-webhook.herokuapp.com/login",
-                },
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Is this the right picture?",
+                    "subtitle": "Tap a button to answer.",
+                    "buttons": [
+                        {
+                            "type": "account_link",
+                            "title": "Đăng nhập",
+                            "url": "https://ten-lua-webhook.herokuapp.com/login"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "No!",
+                            "payload": "no",
+                        }
+                    ],
+                }]
             }
         }
     }
