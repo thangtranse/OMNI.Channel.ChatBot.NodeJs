@@ -109,7 +109,6 @@ function handleMessage(sender_psid, received_message) {
             "text": `You sent the message: "${received_message.text}". Now send me an image!`
         }
     }
-
     let request_body = {
         "attachment": {
             "type": "template",
@@ -120,9 +119,9 @@ function handleMessage(sender_psid, received_message) {
                     "subtitle": "Tap a button to answer.",
                     "buttons": [
                         {
-                            "type": "account_link",
-                            "title": "Đăng nhập",
-                            "url": "https://ten-lua-webhook.herokuapp.com/login"
+                            "type": "postback",
+                            "title": "Yes!",
+                            "payload": "yes",
                         },
                         {
                             "type": "postback",
@@ -169,19 +168,6 @@ function callSendAPI(sender_psid, response) {
         }
     });
 }
-
-// Sự kiện đăng nhập
-app.get('/login', function(req, res) {
-
-    const accountLinkingToken = req.query.account_linking_token;
-
-    const redirectURI = req.query.redirect_uri;
-
-    console.log('accountLinkingToken', accountLinkingToken);
-    console.log('redirectURI', redirectURI);
-    res.end();
-});
-
 
 function sendMsgToRocket(_id, _msg) {
     let request_body = {
