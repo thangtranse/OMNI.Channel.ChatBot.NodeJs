@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 });
 
 
-// Creates the endpoint for our webhook 
+// Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
     let body = req.body;
     console.log("Nhập request từ Facebook");
@@ -110,26 +110,15 @@ function handleMessage(sender_psid, received_message) {
         }
     }
     let request_body = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "Is this the right picture?",
-                    "subtitle": "Tap a button to answer.",
-                    "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "Yes!",
-                            "payload": "yes",
-                        },
-                        {
-                            "type": "postback",
-                            "title": "No!",
-                            "payload": "no",
-                        }
-                    ],
-                }]
+        attachment: {
+            type: "template",
+            payload: {
+                template_type: "button",
+                text: 'Ready to do this? You’ll need to log in to your Jasper’s account so I can access your past orders.',
+                buttons: {
+                    type: 'account_link',
+                    url: `https://ten-lua-webhook.herokuapp.com/login`,
+                },
             }
         }
     }
@@ -168,6 +157,19 @@ function callSendAPI(sender_psid, response) {
         }
     });
 }
+
+// Sự kiện đăng nhập
+app.get('/login', function(req, res) {
+
+    const accountLinkingToken = req.query.account_linking_token;
+
+    const redirectURI = req.query.redirect_uri;
+
+    console.log('accountLinkingToken', accountLinkingToken);
+    console.log('redirectURI', redirectURI);
+    res.end();
+});
+
 
 function sendMsgToRocket(_id, _msg) {
     let request_body = {
