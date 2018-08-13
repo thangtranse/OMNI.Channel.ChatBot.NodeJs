@@ -1,7 +1,9 @@
 var request;
 const URL_API_ROCKET = 'http://ten-lua.herokuapp.com/api/v1/';
 class createWebhook {
+
     constructor(_request) {
+        console.log("chạy qua đây nè");
         request = _request;
         login();
     }

@@ -5,10 +5,11 @@ const request = require('request');
 const callRocket = require('./webhook-rocket/createWebhook');
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+// app.listen(4001, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {
-    req.end("oke");
     var callRocket = new callRocket(request);
+    res.end("oke");
 });
 
 
