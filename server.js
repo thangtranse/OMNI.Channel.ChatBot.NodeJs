@@ -1,15 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express().use(bodyParser.json());
-const request = require('request');
 const callRocket = require('./webhook-rocket/createWebhook');
+const request = require('request');
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {
-    var callRocket = new callRocket(request);
-    res.end("oke");
+    var a = new callRocket();
+    res.end("Welcome to Bucket");
 });
 
 
@@ -24,6 +24,7 @@ app.post('/webhook', (req, res) => {
             // Gets the message. entry.messaging is an array, but
             // will only ever contain one message, so we get index 0
             let webhook_event = entry.messaging[0];
+
             console.log("xuất hiện: ", webhook_event);
 
             let sender_psid = webhook_event.sender.id;
