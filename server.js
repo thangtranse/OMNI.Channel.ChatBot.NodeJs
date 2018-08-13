@@ -1,16 +1,29 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express().use(bodyParser.json());
-const callRocket = require('./webhook-rocket/createWebhook');
+const session = require('express-session')
 const request = require('request');
 const fs = require('fs');
+
+const app = express().use(bodyParser.json());
+// Session
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+    secret: 'FMS',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 300000,
+        secure: false
+    }
+}));
+
+const callRocket = require('./webhook-rocket/createWebhook');
+const restApi = require('./webhook-rocket/apiRest');
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {
-
-    var a = new callRocket();
     res.writeHead(200, {'Content-Type': 'text/html'});
     fs.readFile('index.html', (err, data) => {
         if (err) throw err;
@@ -84,23 +97,48 @@ function handleMessage(sender_psid, received_message) {
         }
     }
     // Sends the response message
-    // callSendAPI(sender_psid, response);
-    sendMsgToRocket(sender_psid, received_message.text)
+    callSendAPI(sender_psid, response);
+    // sendMsgToRocket(sender_psid, received_message.text)
 }
 
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
-
+    console.log("post_back", sender_psid);
+    console.log("received_postback", received_postback);
 }
 
 // Sends response messages via the Send API
 function callSendAPI(sender_psid, response) {
 // Construct the message body
+    /*    let request_body = {
+            "recipient": {
+                "id": sender_psid
+            },
+            "message": response
+        }*/
     let request_body = {
-        "recipient": {
-            "id": sender_psid
-        },
-        "message": response
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Is this the right picture?",
+                    "subtitle": "Tap a button to answer.",
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Yes!",
+                            "payload": "yes",
+                        },
+                        {
+                            "type": "postback",
+                            "title": "No!",
+                            "payload": "no",
+                        }
+                    ],
+                }]
+            }
+        }
     }
     // Send the HTTP request to the Messenger Platform
     request({
@@ -149,4 +187,24 @@ app.post('/ten-lua', (req, res) => {
     // body.user_name: 'thangtm',
     // body.text: 'Test Outcome'
     console.log(body);
+});
+
+// Creates the endpoint for our webhook
+app.get('/listusers', (req, res) => {
+    var b = new restApi();
+    var login = b.login();
+
+    login.then(data => {
+        req.session.authToken = data.body.data.authToken;
+        req.session.userId = data.body.data.userId;
+        b.getListUser(req.session.authToken, req.session.userId, data => {
+            console.log(data);
+            let temp = data.toString();
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write("<pre>" + JSON.stringify(data) + "</pre>");
+            res.end();
+        });
+    })
+
+
 });

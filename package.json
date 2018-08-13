@@ -9,8 +9,11 @@
   "author": "Thangtm",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "ddp-client": "^0.1.2",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "request": "^2.88.0"
   }
 }

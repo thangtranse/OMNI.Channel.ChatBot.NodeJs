@@ -1,0 +1,19 @@
+{
+    "server": {
+        "host": "https://ten-lua.herokuapp.com",
+        "port": 7677,
+        "ssl": false,
+        "autoReconnect": true,
+        "autoReconnectTimer": 500,
+        "maintainCollections": true,
+        "ddpVersion": "1",
+        "useSockJs": true,
+        "url": "wss://ten-lua.herokuapp.com/websocket"
+    },
+    "firebase": {
+        "apiKey": "AIzaSyCDp93JTc75sIZhgx4KLYFjryiYdDzPTdk",
+        "authDomain": "ten-lua.firebaseapp.com",
+        "databaseURL": "https://ten-lua.firebaseio.com",
+        "storageBucket": "ten-lua.appspot.com"
+    }
+}

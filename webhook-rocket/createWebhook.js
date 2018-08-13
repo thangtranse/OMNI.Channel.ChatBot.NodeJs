@@ -27,25 +27,4 @@ class createWebhook {
 
 }
 
-var pro_login = () => {
-    var promise = new Promise((resolve, reject) => {
-        var request_body = {
-            username: 'thangtm',
-            password: 'zxc123'
-        };
-        request({
-            "url": URL_API_ROCKET + 'login',
-            "method": "POST",
-            "json": request_body
-        }, (err, res, body) => {
-            if (!err) {
-                resolve(res);
-            } else {
-                reject(err)
-            }
-        });
-    })
-    return promise;
-}
-
 module.exports = createWebhook;
