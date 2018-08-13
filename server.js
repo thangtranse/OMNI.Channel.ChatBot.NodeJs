@@ -9,13 +9,14 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    fs.readFile('./index.html', (err, data) => {
-        if (err) throw err;
-        res.write(data);
-    });
+
     var a = new callRocket();
-    res.end();
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    fs.readFile('index.html', (err, data) => {
+        if (err) throw err;
+        res.end(data);
+    });
+
 });
 
 
