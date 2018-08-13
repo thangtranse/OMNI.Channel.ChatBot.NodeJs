@@ -2,11 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express().use(bodyParser.json());
 const request = require('request');
+import callRocket from 'webhook-rocket/createWebhook';
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {
     req.end("oke");
+    callRocket = new callRocket(request);
 });
 
 
@@ -31,7 +33,6 @@ app.post('/webhook', (req, res) => {
             } else if (webhook_event.postback) {
                 handlePostback(sender_psid, webhook_event.postback);
             }
-
         });
         // Returns a '200 OK' response to all requests
         res.status(200).send('EVENT_RECEIVED');
@@ -39,24 +40,19 @@ app.post('/webhook', (req, res) => {
         // Returns a '404 Not Found' if event is not from a page subscription
         res.sendStatus(404);
     }
-
 });
 
 // Adds support for GET requests to our webhook
 app.get('/webhook', (req, res) => {
-
     // Your verify token. Should be a random string.
     let VERIFY_TOKEN = "thang_dep_trai"
-
     // Parse the query params
     let mode = req.query['hub.mode'];
     let token = req.query['hub.verify_token'];
     let challenge = req.query['hub.challenge'];
-
     // Checks if a token and mode is in the query string of the request
     if (mode && token) {
         console.log("call this");
-
         // Checks the mode and token sent is correct
         if (mode === 'subscribe' && token === VERIFY_TOKEN) {
             // Responds with the challenge token from the request
@@ -72,16 +68,13 @@ app.get('/webhook', (req, res) => {
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
     let response;
-
     // Check if the message contains text
     if (received_message.text) {
-
         // Create the payload for a basic text message
         response = {
             "text": `You sent the message: "${received_message.text}". Now send me an image!`
         }
     }
-
     // Sends the response message
     // callSendAPI(sender_psid, response);
     sendMsgToRocket(sender_psid, received_message.text)
@@ -101,7 +94,6 @@ function callSendAPI(sender_psid, response) {
         },
         "message": response
     }
-
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v2.6/me/messages",
