@@ -42,7 +42,7 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
             // Lấy được token khi User thực hiện đăng nhập
             // Thực hiện login vào Rocket.Chat
             api.loginWithFacebook(accessToken, (data) => {
-                if(data.status == "success"){
+                if (data.status == "success") {
                     done(null, accessToken);
                 }
 
@@ -161,9 +161,10 @@ function handleMessage(sender_psid, received_message) {
                     }
                 }
                 break;
-        }
-        response = {
-            "text": `You sent the message: "${received_message.text}". Now send me an image!`
+            default:
+                response = {
+                    "text": "Thử sử dụng cú pháp 'Bắt Đầu' để đăng nhập"
+                }
         }
     }
 
