@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session')
 const request = require('request');
+const db = require('./database/connectDb');
 const fs = require('fs');
 const configAuth = require('./config');
 const app = express().use(bodyParser.json());
@@ -42,15 +43,20 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
             // Thực hiện login vào Rocket.Chat
             api.loginWithFacebook(accessToken, (data) => {
                 if (data.status == "success") {
+
+                    db.writeUserData("", data.data.me.name, data.data.authToken, accessToken, data.data.userId);
+
                     done(null, accessToken);
                 }
             });
         });
     }
 ));
+
 passport.serializeUser((user, done) => {
     done(null, user);
 });
+
 passport.deserializeUser((user, done) => {
     done(null, user);
 })
@@ -64,11 +70,6 @@ app.get("/", function (req, resp) {
 
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
-
-    if (req.session.passport != 'undefined') {
-        console.log("session");
-        console.log(req.session.passport);
-    }
 
     let body = req.body;
     console.log("Nhập request từ Facebook");
@@ -86,24 +87,26 @@ app.post('/webhook', (req, res) => {
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
                 if (messagingEvent.message) {
-
+                    console.log("if 1");
                     handleMessage(sender_psid, messagingEvent.message);
 
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
-
+                    console.log("else 1");
                     console.log("chưa biết chuyện gì xãy ra");
 
                 }
                 if (messagingEvent.postback) {
-
+                    console.log("if 2");
                     console.log("postback");
                     handlePostback(sender_psid, messagingEvent.postback);
 
                 } else {
+                    console.log("else 2");
                     console.error(
                         'Webhook received unknown messagingEvent: ',
                         messagingEvent
                     );
+
                 }
             });
         });

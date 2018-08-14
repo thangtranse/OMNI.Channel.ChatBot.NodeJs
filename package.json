@@ -15,11 +15,14 @@
     "ddp-client": "^0.1.2",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
+    "firebase": "^5.3.1",
+    "firebase-admin": "^6.0.0",
+    "firebase-functions": "^2.0.4",
     "passport": "~0.3.2",
-    "passport-local" : "~1.0.0",
     "passport-facebook": "~2.1.1",
+    "passport-google-oauth": "~1.0.0",
+    "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.4",
-    "passport-google-oauth" : "~1.0.0",
     "request": "^2.88.0"
   }
 }
