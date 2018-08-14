@@ -1,7 +1,7 @@
 const request = require('request');
 var axios = require('axios');
 const URL_API_ROCKET = 'http://ten-lua.herokuapp.com/api/v1/';
-const SECRET_KEY = 'b5222fa7378e3add050404750c0fdc5d';
+const SECRET_KEY = 'EAAG9mksIwrUBAKgf4ZCVqQQ6KlqnClqZCRevHRDsZCh6jRMVE7CeUiW16ZCZAtwE7UqWS3OcW8Ht8rCbp1Ewo21naVKlHBtPpqFuAefYv2lw74Q2DCtDrJSymwyVCRxv5477lbEFcbVBa93iX8NCbjMslKT9KzqwyaJGQBJjTBQZDZD';
 
 
 var axiosInstance = axios.create({
