@@ -57,16 +57,9 @@ passport.deserializeUser((user, done) => {
 
 // Khi đăng nhập thành công sẽ trỏ về link này
 app.get("/", (req, resp) => {
-    console.log("///////////");
-    console.log(req);
-    console.log("///////////");
-    console.log(id);
-    console.log("///////////");
-    console.log(req.session);
-    console.log("///////////");
     api.loginWithFacebook(req.session.passport.user, (data) => {
         if (data.status == "success") {
-            db.writeUserData("user id fb", data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
+            db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
         }
     });
     resp.end();
