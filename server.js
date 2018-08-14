@@ -28,12 +28,18 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // FB
 const passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
-
-passport.serializeUser(function (user, done) {
-    done(null, user);
-});
-passport.deserializeUser(function (obj, done) {
-    done(null, obj);
+// xác định đăng nhập từ FB
+app.get('/auth/facebook', passport.authenticate('facebook'));
+// Xử lý dữ liệu callback về
+app.get('/auth/facebook/callback', passport.authenticate('facebook'),
+    function (req, res) {
+        console.log("redairac");
+        res.end();
+    }
+);
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
 });
 passport.use(new FacebookStrategy(configAuth.facebookAuth,
     function (accessToken, refreshToken, profile, done) {
@@ -44,18 +50,14 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
     }
 ));
 
-// xác định đăng nhập từ FB
-app.get('/auth/facebook', passport.authenticate('facebook'));
-// Xử lý dữ liệu callback về
-app.get('/auth/facebook/callback', passport.authenticate('facebook'),
-    function (req, res) {
-        console.log("redairac");
-        res.end();
-    });
-app.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/');
+passport.serializeUser((user, done) => {
+    done(null, user);
 });
+passport.deserializeUser(function (obj, done) {
+    done(null, obj);
+});
+
+
 // END FB
 
 app.get('/', (req, res) => {

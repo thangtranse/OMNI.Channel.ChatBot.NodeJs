@@ -19,6 +19,6 @@
   "facebookAuth": {
     "clientID": "489945358189237",
     "clientSecret": "b5222fa7378e3add050404750c0fdc5d",
-    "callbackURL": "https://ten-lua.herokuapp.com/_oauth/facebook"
+    "callbackURL": "https://ten-lua-webhook.herokuapp.com/auth/facebook/callback"
   }
 }
