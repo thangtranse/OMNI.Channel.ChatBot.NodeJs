@@ -27,10 +27,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 // xác định đăng nhập từ FB
-app.get('/auth/facebook', passport.authenticate('facebook'), (req, resp) => {
-    console.log("đăng nhập xong rồi nè");
-    console.log(req.user);
-});
+app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
 app.get('/auth/facebook/callback', passport.authenticate('facebook',
     {failureRedirect: '/auth/facebook', successRedirect: '/'})
@@ -66,9 +63,14 @@ passport.deserializeUser((user, done) => {
 // Passport FB END
 
 app.get("/", function (req, resp) {
-    fs.readFile('index.html', (err, data) => {
-        resp.end(data);
-    });
+
+    console.log("///////////");
+    console.log(req);
+    resp.end();
+
+    // fs.readFile('index.html', (err, data) => {
+    //     resp.end(data);
+    // });
 });
 
 // Creates the endpoint for our webhook
