@@ -28,6 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 // xác định đăng nhập từ FB
 app.get('/auth/facebook', passport.authenticate('facebook'), (req, resp) => {
+    console.log("đăng nhập xong rồi nè");
     console.log(req.user);
 });
 // Xử lý dữ liệu callback về
