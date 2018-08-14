@@ -35,7 +35,7 @@ class apiRest {
         return promise;
     }
 
-    loginWithFacebook(_token) {
+    loginWithFacebook(_token, callback) {
         let data = {
             "serviceName": "facebook",
             "accessToken": _token,
@@ -52,6 +52,7 @@ class apiRest {
                 if (body.error != 400) {
                     console.log("khác 400");
                 }
+                return callback(body);
             } else {
                 console.error("Unable to send message:" + err);
             }

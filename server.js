@@ -8,15 +8,7 @@ const app = express().use(bodyParser.json());
 
 // Session
 app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-    secret: 'FMS',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 300000,
-        secure: false
-    }
-}));
+app.use(session({secret: 'SCC-Thangtm13'}));
 // Session END
 
 const callRocket = require('./webhook-rocket/createWebhook');
@@ -29,7 +21,10 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 // Passport FB
 const passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(passport.initialize());
+app.use(passport.session());
 // xác định đăng nhập từ FB
 app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
@@ -46,8 +41,12 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
         process.nextTick(function () {
             // Lấy được token khi User thực hiện đăng nhập
             // Thực hiện login vào Rocket.Chat
-            api.loginWithFacebook(accessToken);
-            done(null, accessToken);
+            api.loginWithFacebook(accessToken, (data) => {
+                if(data.status == "success"){
+                    done(null, accessToken);
+                }
+
+            });
         });
     }
 ));
