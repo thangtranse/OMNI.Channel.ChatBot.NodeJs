@@ -41,11 +41,11 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
+
 passport.use(new FacebookStrategy(configAuth.facebookAuth,
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
             console.log("accessToken", accessToken);
-            return done(null, profile);
         });
     }
 ));
