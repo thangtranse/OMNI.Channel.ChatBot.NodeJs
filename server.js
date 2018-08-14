@@ -51,8 +51,8 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
 passport.serializeUser((user, done) => {
     done(null, user);
 });
-passport.deserializeUser((_name, done) => {
-    done(null, _name);
+passport.deserializeUser((user, done) => {
+    done(null, user);
 })
 // Passport FB END
 
@@ -65,7 +65,8 @@ app.get("/", function (req, resp) {
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
 
-    console.log("session", req.session.passport.user);
+    if (req.session.passport.user != 'undefined')
+        console.log("session", req.session.passport.user);
 
     let body = req.body;
     console.log("Nhập request từ Facebook");
