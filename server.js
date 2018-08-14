@@ -7,6 +7,7 @@ const fs = require('fs');
 const configAuth = require('./config');
 const app = express().use(bodyParser.json());
 
+var id = "";
 // Session
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({secret: 'SCC-Thangtm13'}));
@@ -55,9 +56,11 @@ passport.deserializeUser((user, done) => {
 // Passport FB END
 
 // Khi đăng nhập thành công sẽ trỏ về link này
-app.get("/", function (req, resp) {
+app.get("/", (req, resp) => {
     console.log("///////////");
     console.log(req);
+    console.log("///////////");
+    console.log(id);
     console.log("///////////");
     console.log(req.session);
     console.log("///////////");
@@ -78,7 +81,7 @@ app.post('/webhook', (req, res) => {
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
         // Iterates over each entry - there may be multiple if batched
-        body.entry.forEach(function (entry) {
+        body.entry.forEach((entry) => {
             if (!entry.messaging) {
                 return;
             }
@@ -87,6 +90,7 @@ app.post('/webhook', (req, res) => {
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
+
                 if (messagingEvent.message) {
                     console.log("if 1");
                     handleMessage(sender_psid, messagingEvent.message);
@@ -148,7 +152,8 @@ app.get('/webhook', (req, res) => {
  * @param sender_psid id-user gửi tin nhắn
  * @param received_message nội dung tin nhắn
  */
-function handleMessage(sender_psid, received_message) {
+var handleMessage = (sender_psid, received_message) => {
+    id = sender_psid;
     let response;
     // Check if the message contains text
     if (received_message.text) {
