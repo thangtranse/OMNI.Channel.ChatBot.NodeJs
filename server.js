@@ -116,8 +116,8 @@ function handleMessage(sender_psid, received_message) {
             "payload": {
                 "template_type": "generic",
                 "elements": [{
-                    "title": "Is this the right picture?",
-                    "subtitle": "Tap a button to answer.",
+                    "title": "Đăng nhập để trò chuyện cùng chúng tôi",
+                    "subtitle": "Tài khoản FB của bạn sẽ liên kết đến ứng dụng của chúng tôi...",
                     "buttons": [
                         {
                             "type": "account_link",
@@ -167,9 +167,8 @@ function callSendAPI(sender_psid, response) {
 app.get('/login', (req, res) => {
     const accountLinkingToken = req.query.account_linking_token;
     const redirectURI = req.query.redirect_uri;
+    console.log("token", accountLinkingToken);
     api.loginWithFacebook(accountLinkingToken);
-    console.log("accountLinkingToken", accountLinkingToken);
-    console.log("redirectURI", redirectURI);
     res.end();
 });
 

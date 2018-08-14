@@ -41,7 +41,7 @@ class apiRest {
             "serviceName": "facebook",
             "accessToken": _token,
             "secret": SECRET_KEY,
-            "expiresIn": 200
+            "expiresIn": 300
         };
         request({
             "url": URL_API_ROCKET + 'login',
