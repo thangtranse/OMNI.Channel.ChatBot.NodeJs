@@ -65,8 +65,10 @@ app.get("/", function (req, resp) {
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
 
-    if (req.session.passport != 'undefined')
-        console.log("session", req.session.passport);
+    if (req.session.passport != 'undefined') {
+        console.log("session");
+        console.log(req.session.passport);
+    }
 
     let body = req.body;
     console.log("Nhập request từ Facebook");
