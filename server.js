@@ -17,8 +17,8 @@ const callRocket = require('./webhook-rocket/createWebhook');
 const api = require('./webhook-rocket/apiRest');
 
 // Start Server
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-// app.listen(4001, () => console.log('webhook is listening'));
+// app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+app.listen(4001, () => console.log('webhook is listening'));
 // Start Server END
 
 // Passport FB
@@ -57,17 +57,21 @@ passport.deserializeUser((user, done) => {
 
 // Khi đăng nhập thành công sẽ trỏ về link này
 app.get("/", (req, resp) => {
-    api.loginWithFacebook(req.session.passport.user, (data) => {
-        if (data.status == "success") {
-            db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
-        }
-    });
-    resp.end();
+    if (id.length != 0 && typeof req.session.passport.user == 'undefined') {
+        console.log("id:", id);
+        api.loginWithFacebook(req.session.passport.user, (data) => {
+            if (data.status == "success") {
+                db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
+                callSendAPI(id, `Xin chào ${data.data.me.name}`);
+            }
+        });
+    } else {
+        resp.end();
+    }
 });
 
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
-
     let body = req.body;
     console.log("Nhập request từ Facebook");
     console.log("Với giá trị:", body.entry[0].changes);
@@ -147,30 +151,13 @@ app.get('/webhook', (req, res) => {
  */
 var handleMessage = (sender_psid, received_message) => {
     id = sender_psid;
-    let response;
+    let response = '';
     // Check if the message contains text
     if (received_message.text) {
         // Create the payload for a basic text message
         switch ((received_message.text).toLowerCase()) {
             case 'bắt đầu':
-                response = {
-                    "attachment": {
-                        "type": "template",
-                        "payload": {
-                            "template_type": "generic",
-                            "elements": [{
-                                "title": "Đăng nhập để trò chuyện cùng chúng tôi",
-                                "subtitle": "Tài khoản FB của bạn sẽ liên kết đến ứng dụng của chúng tôi...",
-                                "buttons": [
-                                    {
-                                        "type": "account_link",
-                                        "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
-                                    }
-                                ],
-                            }]
-                        }
-                    }
-                }
+                loginRocketWithFacebook(sender_psid);
                 break;
             default:
                 response = {
@@ -180,8 +167,34 @@ var handleMessage = (sender_psid, received_message) => {
     }
 
     // Sends the response message
-    callSendAPI(sender_psid, response);
+    if (response.length > 0)
+        callSendAPI(sender_psid, response);
     // sendMsgToRocket(sender_psid, received_message.text)
+}
+
+/**
+ * Thực hiện đăng nhập bằng tài khoản FB với ROCKET
+ */
+var loginRocketWithFacebook = (sender_psid) => {
+    var response = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Đăng nhập để trò chuyện cùng chúng tôi",
+                    "subtitle": "Tài khoản FB của bạn sẽ liên kết đến ứng dụng của chúng tôi...",
+                    "buttons": [
+                        {
+                            "type": "account_link",
+                            "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
+                        }
+                    ],
+                }]
+            }
+        }
+    }
+    callSendAPI(sender_psid, response);
 }
 
 // Handles messaging_postbacks events
@@ -279,3 +292,8 @@ app.get('/listusers', (req, res) => {
 app.get("/run", (req, res) => {
     res.end("chạy");
 });
+
+app.get("/db/create", (req, res) => {
+    db.writeUserData("12", "13", "13", "14", "15");
+    res.end();
+})
