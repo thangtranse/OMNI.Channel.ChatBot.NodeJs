@@ -21,38 +21,8 @@ app.use(session({
 const callRocket = require('./webhook-rocket/createWebhook');
 const api = require('./webhook-rocket/apiRest');
 
-// FB
-var LocalStrategy = require('passport-local').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy;
-passport.use(new FacebookStrategy({
-        // pull in our app id and secret from our auth.js file
-        clientID: configAuth.facebookAuth.clientID,
-        clientSecret: configAuth.facebookAuth.clientSecret,
-        callbackURL: configAuth.facebookAuth.callbackURL
-    },
-    // facebook will send back the token and profile
-    function (token, refreshToken, profile, done) {
-        // asynchronous
-        process.nextTick(function () {
-            // find the user in the database based on their facebook id
-            console.log("fb tokennnn: ", token);
-        });
-    }));
-
-
-app.get('/auth/facebook', passport.authenticate('facebook', function (req, res) {
-    passport.authenticate('facebookSignedRequest', function (err, user) {
-        if (err)
-            res.status(400).json(err.message);
-        else
-            res.status(200).json(user);
-    })(req, res)
-}));
-
-// END FB
-
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-// app.listen(4001, () => console.log('webhook is listening'));
+// app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+app.listen(4001, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -151,7 +121,7 @@ function handleMessage(sender_psid, received_message) {
                     "buttons": [
                         {
                             "type": "account_link",
-                            "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
+                            "url": `https://www.facebook.com/v3.1/dialog/oauth?client_id=${configAuth.facebookAuth.clientID}&redirect_uri={"http://ten-lua-webhook.herokuapp.com/connect"}&state={"{st=state123abc,ds=123456789}"}`
                         }
                     ],
                 }]
@@ -200,6 +170,20 @@ app.get('/login', (req, res) => {
     console.log("token", accountLinkingToken);
     api.loginWithFacebook(accountLinkingToken);
     res.end();
+});
+
+app.get('/connect', (req, res) => {
+    var ten = req.body;
+    console.log(req);
+    console.log(ten);
+    res.end("Thành Công");
+});
+
+app.get('/connect/login_success.html', (req, res) => {
+    var ten = req.body;
+    console.log(req);
+    console.log(ten);
+    res.end("Thành Công");
 });
 
 function sendMsgToRocket(_id, _msg) {
