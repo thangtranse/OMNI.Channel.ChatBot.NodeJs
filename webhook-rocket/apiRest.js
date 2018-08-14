@@ -10,7 +10,6 @@ var axiosInstance = axios.create({
 
 class apiRest {
 
-
     constructor() {
     }
 

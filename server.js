@@ -35,7 +35,6 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
-
 passport.use(new FacebookStrategy(configAuth.facebookAuth,
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
@@ -45,7 +44,6 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
                 if (data.status == "success") {
                     done(null, accessToken);
                 }
-
             });
         });
     }
@@ -57,7 +55,6 @@ passport.deserializeUser((_name, done) => {
     done(null, _name);
 })
 // Passport FB END
-
 
 app.get("/", function (req, resp) {
     fs.readFile('index.html', (err, data) => {
@@ -83,13 +80,21 @@ app.post('/webhook', (req, res) => {
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
                 if (messagingEvent.message) {
+                    if(req.isAuthenticated()){
+                        console.log("đã đăng nhập rồi");
+                    }
                     handleMessage(sender_psid, messagingEvent.message);
+
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
+
                     console.log("chưa biết chuyện gì xãy ra");
+
                 }
                 if (messagingEvent.postback) {
+
                     console.log("postback");
                     handlePostback(sender_psid, messagingEvent.postback);
+
                 } else {
                     console.error(
                         'Webhook received unknown messagingEvent: ',
