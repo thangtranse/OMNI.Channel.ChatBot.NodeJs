@@ -24,15 +24,14 @@ const api = require('./webhook-rocket/apiRest');
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
 
-
 // FB
 const passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 // xác định đăng nhập từ FB
 app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
-app.get('/auth/facebook/callback', passport.authenticate('facebook'),
-    {failureRedirect: '/', successRedirect: '/'}
+app.get('/auth/facebook/callback', passport.authenticate('facebook',
+    {failureRedirect: '/', successRedirect: '/'})
 );
 app.get('/logout', function (req, res) {
     req.logout();
@@ -47,18 +46,7 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
         });
     }
 ));
-
 // END FB
-
-app.get('/', (req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    fs.readFile('index.html', (err, data) => {
-        if (err) throw err;
-        res.end(data);
-    });
-
-});
-
 
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
