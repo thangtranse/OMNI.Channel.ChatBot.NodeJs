@@ -24,6 +24,40 @@ const api = require('./webhook-rocket/apiRest');
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
 
+
+// FB
+const passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+passport.deserializeUser(function (obj, done) {
+    done(null, obj);
+});
+passport.use(new FacebookStrategy(configAuth.facebookAuth,
+    function (accessToken, refreshToken, profile, done) {
+        process.nextTick(function () {
+            console.log("accessToken", accessToken);
+            return done(null, profile);
+        });
+    }
+));
+app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    }),
+    function (req, res) {
+        res.redirect('/');
+    });
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
+});
+// END FB
+
 app.get('/', (req, res) => {
     res.writeHead(200, {'Content-Type': 'text/html'});
     fs.readFile('index.html', (err, data) => {
@@ -121,7 +155,7 @@ function handleMessage(sender_psid, received_message) {
                     "buttons": [
                         {
                             "type": "account_link",
-                            "url": `https://www.facebook.com/v3.1/dialog/oauth?client_id=${configAuth.facebookAuth.clientID}&redirect_uri={https://ten-lua-webhook.herokuapp.com/connect}&state={"{st=state123abc,ds=123456789}"}`
+                            "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
                         }
                     ],
                 }]
@@ -170,20 +204,6 @@ app.get('/login', (req, res) => {
     console.log("token", accountLinkingToken);
     api.loginWithFacebook(accountLinkingToken);
     res.end();
-});
-
-app.get('/connect', (req, res) => {
-    var ten = req.body;
-    console.log(req);
-    console.log(ten);
-    res.end("Thành Công");
-});
-
-app.get('/connect/login_success.html', (req, res) => {
-    var ten = req.body;
-    console.log(req);
-    console.log(ten);
-    res.end("Thành Công");
 });
 
 function sendMsgToRocket(_id, _msg) {
