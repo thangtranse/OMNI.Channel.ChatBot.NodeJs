@@ -27,7 +27,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 // xác định đăng nhập từ FB
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook', passport.authenticate('facebook', (req, res) => {
+    console.log("---------");
+    console.log(req.body.id);
+    console.log(req);
+}));
 // Xử lý dữ liệu callback về
 app.get('/auth/facebook/callback', passport.authenticate('facebook',
     {failureRedirect: '/auth/facebook', successRedirect: '/'})
@@ -61,7 +65,7 @@ app.get("/", function (req, resp) {
     console.log("///////////");
     api.loginWithFacebook(req.session.passport.user, (data) => {
         if (data.status == "success") {
-            db.writeUserData(req.session.passport.user, data.data.me.name, data.data.authToken, accessToken, data.data.userId);
+            db.writeUserData("user id fb", data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
         }
     });
     resp.end();
@@ -164,7 +168,7 @@ function handleMessage(sender_psid, received_message) {
                                 "buttons": [
                                     {
                                         "type": "account_link",
-                                        "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
+                                        "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook?id=" + sender_psid
                                     }
                                 ],
                             }]
