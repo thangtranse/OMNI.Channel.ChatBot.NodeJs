@@ -65,7 +65,7 @@ app.get("/", function (req, resp) {
         }
     });
 
-    resp.end();
+    resp.end(req);
 
     // fs.readFile('index.html', (err, data) => {
     //     resp.end(data);
