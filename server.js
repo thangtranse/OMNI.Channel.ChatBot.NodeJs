@@ -4,8 +4,8 @@ const session = require('express-session')
 const request = require('request');
 const fs = require('fs');
 const configAuth = require('./config');
-
 const app = express().use(bodyParser.json());
+
 // Session
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
@@ -33,7 +33,7 @@ app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
 app.get('/auth/facebook/callback', passport.authenticate('facebook'),
     function (req, res) {
-        console.log("redairac");
+        console.log("re dai rac");
         res.end();
     }
 );
@@ -46,6 +46,7 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
             console.log("accessToken", accessToken);
+            api.loginWithFacebook(accessToken);
         });
     }
 ));
