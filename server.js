@@ -68,7 +68,6 @@ app.get("/", function (req, resp) {
 
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
-
     let body = req.body;
     console.log("Nhập request từ Facebook");
     console.log("Với giá trị:", body.entry[0].changes);
@@ -83,10 +82,8 @@ app.post('/webhook', (req, res) => {
             // will only ever contain one message, so we get index 0
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
-                console.log("messagingEvent", {messagingEvent});
                 let sender_psid = messagingEvent.sender.id;
-                if (messagingEvent.message) { //
-                    console.log("trueeeee");
+                if (messagingEvent.message) {
                     handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
                     console.log("chưa biết chuyện gì xãy ra");
@@ -134,36 +131,45 @@ app.get('/webhook', (req, res) => {
 });
 
 // Handles messages events
+/**
+ * Gửi tin nhắn
+ * @param sender_psid id-user gửi tin nhắn
+ * @param received_message nội dung tin nhắn
+ */
 function handleMessage(sender_psid, received_message) {
     let response;
     // Check if the message contains text
     if (received_message.text) {
         // Create the payload for a basic text message
+        switch ((received_message.text).toLowerCase()) {
+            case 'bắt đầu':
+                response = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [{
+                                "title": "Đăng nhập để trò chuyện cùng chúng tôi",
+                                "subtitle": "Tài khoản FB của bạn sẽ liên kết đến ứng dụng của chúng tôi...",
+                                "buttons": [
+                                    {
+                                        "type": "account_link",
+                                        "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
+                                    }
+                                ],
+                            }]
+                        }
+                    }
+                }
+                break;
+        }
         response = {
             "text": `You sent the message: "${received_message.text}". Now send me an image!`
         }
     }
-    let request_body = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "Đăng nhập để trò chuyện cùng chúng tôi",
-                    "subtitle": "Tài khoản FB của bạn sẽ liên kết đến ứng dụng của chúng tôi...",
-                    "buttons": [
-                        {
-                            "type": "account_link",
-                            "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
-                        }
-                    ],
-                }]
-            }
-        }
-    }
-    console.log("nó ra đây rồi")
+
     // Sends the response message
-    callSendAPI(sender_psid, request_body);
+    callSendAPI(sender_psid, response);
     // sendMsgToRocket(sender_psid, received_message.text)
 }
 
