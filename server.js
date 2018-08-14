@@ -3,12 +3,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session')
 const request = require('request');
 const fs = require('fs');
+
 const app = express().use(bodyParser.json());
-
-var passport = require('passport');
-var Strategy = require('passport-facebook').Strategy;
-var configs = require("./config");
-
 // Session
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
@@ -21,28 +17,9 @@ app.use(session({
     }
 }));
 
-passport.use(new Strategy(
-    configs.facebookAuth,
-    function (accessToken, refreshToken, profile, cb) {
-        User.findOrCreate({facebookId: profile.id}, function (err, user) {
-            return cb(err, user);
-        });
-    }
-));
-
 const callRocket = require('./webhook-rocket/createWebhook');
 const api = require('./webhook-rocket/apiRest');
 
-app.get('/login/facebook', passport.authenticate('facebook'));
-app.get('/login/facebook/return', passport.authenticate('facebook', {failureRedirect: '/login'}),
-    function (req, res) {
-        res.redirect('/');
-    });
-app.get('/profile',
-    require('connect-ensure-login').ensureLoggedIn(),
-    function (req, res) {
-        res.render('profile', {user: req.user});
-    });
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
@@ -144,7 +121,7 @@ function handleMessage(sender_psid, received_message) {
                     "buttons": [
                         {
                             "type": "account_link",
-                            "url": "https://ten-lua-webhook.herokuapp.com/login/facebook"
+                            "url": "https://ten-lua-webhook.herokuapp.com/login"
                         }
                     ],
                 }]

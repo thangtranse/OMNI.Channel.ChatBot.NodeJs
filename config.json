@@ -18,7 +18,7 @@
   },
   "facebookAuth": {
     "clientID": "489945358189237",
-    "clientSecret": "b5222fa7378e3add050404750c0fdc5d",
+    "clientSecret": "EAAG9mksIwrUBAKgf4ZCVqQQ6KlqnClqZCRevHRDsZCh6jRMVE7CeUiW16ZCZAtwE7UqWS3OcW8Ht8rCbp1Ewo21naVKlHBtPpqFuAefYv2lw74Q2DCtDrJSymwyVCRxv5477lbEFcbVBa93iX8NCbjMslKT9KzqwyaJGQBJjTBQZDZD",
     "callbackURL": "http://localhost:8080/auth/facebook/callback"
   }
 }
