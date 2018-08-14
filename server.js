@@ -18,7 +18,8 @@ app.use(session({
 }));
 
 const callRocket = require('./webhook-rocket/createWebhook');
-const restApi = require('./webhook-rocket/apiRest');
+const api = require('./webhook-rocket/apiRest');
+
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
@@ -168,8 +169,12 @@ app.get('/login', (req, res) => {
 
     const redirectURI = req.query.redirect_uri;
 
+    api.loginWithFacebook(accountLinkingToken);
+
     console.log("accountLinkingToken", accountLinkingToken);
     console.log("redirectURI", redirectURI);
+
+
     res.end();
 });
 
@@ -209,7 +214,7 @@ app.post('/ten-lua', (req, res) => {
 
 // Creates the endpoint for our webhook
 app.get('/listusers', (req, res) => {
-    var b = new restApi();
+
     var login = b.login();
 
     login.then(data => {

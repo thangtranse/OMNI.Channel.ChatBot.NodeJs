@@ -1,6 +1,7 @@
 const request = require('request');
 var axios = require('axios');
 const URL_API_ROCKET = 'http://ten-lua.herokuapp.com/api/v1/';
+const SECRET_KEY = 'b5222fa7378e3add050404750c0fdc5d';
 
 
 var axiosInstance = axios.create({
@@ -35,11 +36,11 @@ class apiRest {
         return promise;
     }
 
-    loginWithFacebook() {
+    loginWithFacebook(_token) {
         let data = {
             "serviceName": "facebook",
-            "accessToken": "hash",
-            "secret": "hash",
+            "accessToken": _token,
+            "secret": SECRET_KEY,
             "expiresIn": 200
         };
         request({
@@ -48,7 +49,7 @@ class apiRest {
             "json": data
         }, (err, res, body) => {
             if (!err) {
-                console.log('message sent!')
+                console.log('Đăng nhập thành công!');
             } else {
                 console.error("Unable to send message:" + err);
             }
@@ -74,4 +75,4 @@ class apiRest {
 
 }
 
-module.exports = apiRest;
+module.exports = new apiRest();
