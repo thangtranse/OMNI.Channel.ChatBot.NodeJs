@@ -57,7 +57,9 @@ passport.deserializeUser((user, done) => {
 app.get("/", function (req, resp) {
 
     console.log("///////////");
-    console.log(req.session.Session);
+    console.log(req.session);
+    console.log("///////////");
+    console.log(req.session.passport.user);
     // api.loginWithFacebook(req.passport.user, (data) => {
     //     if (data.status == "success") {
     //         db.writeUserData(req.session.Session.passport.user, data.data.me.name, data.data.authToken, accessToken, data.data.userId);
