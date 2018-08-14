@@ -20,7 +20,8 @@ app.use(session({
         secure: false
     }
 }));
-passport.use(new FacebookStrategy(
+
+passport.use(new Strategy(
     configs.facebookAuth,
     function (accessToken, refreshToken, profile, cb) {
         User.findOrCreate({facebookId: profile.id}, function (err, user) {
