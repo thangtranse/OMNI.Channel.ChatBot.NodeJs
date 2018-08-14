@@ -17,14 +17,17 @@ app.use(session({
         secure: false
     }
 }));
+// Session END
 
 const callRocket = require('./webhook-rocket/createWebhook');
 const api = require('./webhook-rocket/apiRest');
 
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-// app.listen(4001, () => console.log('webhook is listening'));
+// Start Server
+// app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+app.listen(4001, () => console.log('webhook is listening'));
+// Start Server END
 
-// FB
+// Passport FB
 const passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 // xác định đăng nhập từ FB
@@ -44,18 +47,31 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
             // Lấy được token khi User thực hiện đăng nhập
             // Thực hiện login vào Rocket.Chat
             api.loginWithFacebook(accessToken);
-            done(null);
+            done(null, accessToken);
         });
     }
 ));
-// END FB
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+passport.deserializeUser((_name, done) => {
+    done(null, _name);
+})
+// Passport FB END
+
+
+app.get("/", function (req, resp) {
+    fs.readFile('index.html', (err, data) => {
+        resp.end(data);
+    });
+});
 
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
-    let body = req.body;
 
+    let body = req.body;
     console.log("Nhập request từ Facebook");
-    console.log("body", body.entry[0].changes);
+    console.log("Với giá trị:", body.entry[0].changes);
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
         // Iterates over each entry - there may be multiple if batched
