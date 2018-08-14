@@ -90,6 +90,7 @@ app.post('/webhook', (req, res) => {
 
                 if (messagingEvent.message) {
                     console.log("if 1");
+                    console.log(messagingEvent);
                     handleMessage(sender_psid, messagingEvent.message);
 
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
