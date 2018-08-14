@@ -46,7 +46,7 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
             api.loginWithFacebook(accessToken, (data) => {
                 if (data.status == "success") {
 
-                    db.writeUserData("", data.data.me.name, data.data.authToken, accessToken, data.data.userId);
+                    // db.writeUserData("", data.data.me.name, data.data.authToken, accessToken, data.data.userId);
 
                     done(null, accessToken);
                 }
