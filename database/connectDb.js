@@ -24,7 +24,7 @@ class connectDb {
     getDataUser(_idUser, callbback) {
         var db = admin.firestore();
         var sfRef = db.collection('users').doc(_idUser);
-        sfRef.getCollections().then(collections => callbback(collection));
+        sfRef.getCollections().then(collections => callbback(collections));
     }
 
     queryTokenRocket(_value, callback) {
