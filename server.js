@@ -31,7 +31,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
 app.get('/auth/facebook/callback', passport.authenticate('facebook',
-    {failureRedirect: '/', successRedirect: '/'})
+    {failureRedirect: '/auth/facebook', successRedirect: '/'})
 );
 app.get('/logout', function (req, res) {
     req.logout();
@@ -44,7 +44,6 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
             // Lấy được token khi User thực hiện đăng nhập
             // Thực hiện login vào Rocket.Chat
             api.loginWithFacebook(accessToken);
-            window.close();
         });
     }
 ));
