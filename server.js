@@ -40,15 +40,7 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
             // Lấy được token khi User thực hiện đăng nhập
-            // Thực hiện login vào Rocket.Chat
-            api.loginWithFacebook(accessToken, (data) => {
-                if (data.status == "success") {
-
-                    // db.writeUserData("", data.data.me.name, data.data.authToken, accessToken, data.data.userId);
-
-                    done(null, accessToken);
-                }
-            });
+            done(null, accessToken);
         });
     }
 ));
@@ -65,7 +57,14 @@ passport.deserializeUser((user, done) => {
 app.get("/", function (req, resp) {
 
     console.log("///////////");
-    console.log(req);
+    console.log(req.passport);
+
+    api.loginWithFacebook(req.passport.user, (data) => {
+        if (data.status == "success") {
+            db.writeUserData(req.passport.user, data.data.me.name, data.data.authToken, accessToken, data.data.userId);
+        }
+    });
+    
     resp.end();
 
     // fs.readFile('index.html', (err, data) => {
