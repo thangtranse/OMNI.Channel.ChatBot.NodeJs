@@ -32,10 +32,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
 app.get('/auth/facebook/callback', passport.authenticate('facebook'),
-    function (req, res) {
-        console.log("re dai rac");
-        res.end();
-    }
+    {failureRedirect: '/', successRedirect: '/'}
 );
 app.get('/logout', function (req, res) {
     req.logout();
@@ -47,28 +44,19 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
         process.nextTick(function () {
             console.log("accessToken", accessToken);
             api.loginWithFacebook(accessToken);
+            window.close();
         });
     }
 ));
-
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-passport.deserializeUser(function (obj, done) {
-    done(null, obj);
-});
-
-
 // END FB
 
-app.get('/', (req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    fs.readFile('index.html', (err, data) => {
-        if (err) throw err;
-        res.end(data);
-    });
-
-});
+// app.get('/', (req, res) => {
+//     res.writeHead(200, {'Content-Type': 'text/html'});
+//     fs.readFile('index.html', (err, data) => {
+//         if (err) throw err;
+//         res.end(data);
+//     });
+// });
 
 
 // Creates the endpoint for our webhook
