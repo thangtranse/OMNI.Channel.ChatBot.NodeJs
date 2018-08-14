@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session')
 const request = require('request');
 const fs = require('fs');
+const configAuth = require('./config');
 
 const app = express().use(bodyParser.json());
 // Session
@@ -20,6 +21,35 @@ app.use(session({
 const callRocket = require('./webhook-rocket/createWebhook');
 const api = require('./webhook-rocket/apiRest');
 
+// FB
+var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+passport.use(new FacebookStrategy({
+        // pull in our app id and secret from our auth.js file
+        clientID: configAuth.facebookAuth.clientID,
+        clientSecret: configAuth.facebookAuth.clientSecret,
+        callbackURL: configAuth.facebookAuth.callbackURL
+    },
+    // facebook will send back the token and profile
+    function (token, refreshToken, profile, done) {
+        // asynchronous
+        process.nextTick(function () {
+            // find the user in the database based on their facebook id
+            console.log("fb tokennnn: ", token);
+        });
+    }));
+
+
+app.get('/auth/facebook', passport.authenticate('facebook', function (req, res) {
+    passport.authenticate('facebookSignedRequest', function (err, user) {
+        if (err)
+            res.status(400).json(err.message);
+        else
+            res.status(200).json(user);
+    })(req, res)
+}));
+
+// END FB
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
@@ -121,7 +151,7 @@ function handleMessage(sender_psid, received_message) {
                     "buttons": [
                         {
                             "type": "account_link",
-                            "url": "https://ten-lua-webhook.herokuapp.com/login"
+                            "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
                         }
                     ],
                 }]
