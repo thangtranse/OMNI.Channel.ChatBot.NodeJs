@@ -1,8 +1,7 @@
 const request = require('request');
-var axios = require('axios');
 const URL_API_ROCKET = 'http://ten-lua.herokuapp.com/api/v1/';
-const SECRET_KEY = 'EAAG9mksIwrUBAKgf4ZCVqQQ6KlqnClqZCRevHRDsZCh6jRMVE7CeUiW16ZCZAtwE7UqWS3OcW8Ht8rCbp1Ewo21naVKlHBtPpqFuAefYv2lw74Q2DCtDrJSymwyVCRxv5477lbEFcbVBa93iX8NCbjMslKT9KzqwyaJGQBJjTBQZDZD';
-
+var axios = require('axios');
+var configs = require("../config.json");
 
 var axiosInstance = axios.create({
     baseURL: URL_API_ROCKET,
@@ -40,7 +39,7 @@ class apiRest {
         let data = {
             "serviceName": "facebook",
             "accessToken": _token,
-            "secret": SECRET_KEY,
+            "secret": configs.facebookAuth.clientSecret,
             "expiresIn": 300
         };
         request({
