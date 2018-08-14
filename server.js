@@ -260,7 +260,7 @@ app.get('/listusers', (req, res) => {
 
 });
 
-app.get('/_oauth/facebook', (req, resp) => {
+app.get('/_oauth', (req, resp) => {
     var data = req.body;
     console.log(data);
     console.log("oke thành công rồi nè");
