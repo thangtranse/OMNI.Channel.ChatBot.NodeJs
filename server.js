@@ -64,6 +64,9 @@ app.get("/", function (req, resp) {
 
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
+
+    console.log("session", req.session.passport.user);
+
     let body = req.body;
     console.log("Nhập request từ Facebook");
     console.log("Với giá trị:", body.entry[0].changes);
@@ -80,9 +83,7 @@ app.post('/webhook', (req, res) => {
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
                 if (messagingEvent.message) {
-                    if(req.isAuthenticated()){
-                        console.log("đã đăng nhập rồi");
-                    }
+
                     handleMessage(sender_psid, messagingEvent.message);
 
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
@@ -268,13 +269,6 @@ app.get('/listusers', (req, res) => {
     })
 
 
-});
-
-app.get('/_oauth', (req, resp) => {
-    var data = req.body;
-    console.log(data);
-    console.log("oke thành công rồi nè");
-    resp.end();
 });
 
 app.get("/run", (req, res) => {
