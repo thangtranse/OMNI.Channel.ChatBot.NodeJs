@@ -57,14 +57,14 @@ passport.deserializeUser((user, done) => {
 app.get("/", function (req, resp) {
 
     console.log("///////////");
-    console.log(req.session.Session.passport.user);
-    api.loginWithFacebook(req.passport.user, (data) => {
-        if (data.status == "success") {
-            db.writeUserData(req.session.Session.passport.user, data.data.me.name, data.data.authToken, accessToken, data.data.userId);
-        }
-    });
+    console.log(req.session.Session.passport);
+    // api.loginWithFacebook(req.passport.user, (data) => {
+    //     if (data.status == "success") {
+    //         db.writeUserData(req.session.Session.passport.user, data.data.me.name, data.data.authToken, accessToken, data.data.userId);
+    //     }
+    // });
 
-    resp.end();
+    resp.end(req.session);
 
     // fs.readFile('index.html', (err, data) => {
     //     resp.end(data);
