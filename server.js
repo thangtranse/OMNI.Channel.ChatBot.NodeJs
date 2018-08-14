@@ -57,15 +57,15 @@ passport.deserializeUser((user, done) => {
 app.get("/", function (req, resp) {
 
     console.log("///////////");
-    console.log(req);
-
+    console.log(req.session);
+    var ahi = JSON.stringify(req.session);
     api.loginWithFacebook(req.passport.user, (data) => {
         if (data.status == "success") {
             db.writeUserData(req.passport.user, data.data.me.name, data.data.authToken, accessToken, data.data.userId);
         }
     });
 
-    resp.end(req);
+    resp.end(ahi);
 
     // fs.readFile('index.html', (err, data) => {
     //     resp.end(data);
