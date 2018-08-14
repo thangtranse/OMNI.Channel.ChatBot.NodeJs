@@ -166,15 +166,10 @@ function callSendAPI(sender_psid, response) {
 
 app.get('/login', (req, res) => {
     const accountLinkingToken = req.query.account_linking_token;
-
     const redirectURI = req.query.redirect_uri;
-
     api.loginWithFacebook(accountLinkingToken);
-
     console.log("accountLinkingToken", accountLinkingToken);
     console.log("redirectURI", redirectURI);
-
-
     res.end();
 });
 
