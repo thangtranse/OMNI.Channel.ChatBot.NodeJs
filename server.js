@@ -59,18 +59,12 @@ app.get("/", function (req, resp) {
     console.log("///////////");
     console.log(req.session);
     console.log("///////////");
-    console.log(req.session.passport.user);
-    // api.loginWithFacebook(req.passport.user, (data) => {
-    //     if (data.status == "success") {
-    //         db.writeUserData(req.session.Session.passport.user, data.data.me.name, data.data.authToken, accessToken, data.data.userId);
-    //     }
-    // });
-
+    api.loginWithFacebook(req.session.passport.user, (data) => {
+        if (data.status == "success") {
+            db.writeUserData(req.session.passport.user, data.data.me.name, data.data.authToken, accessToken, data.data.userId);
+        }
+    });
     resp.end();
-
-    // fs.readFile('index.html', (err, data) => {
-    //     resp.end(data);
-    // });
 });
 
 // Creates the endpoint for our webhook
