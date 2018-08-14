@@ -121,7 +121,7 @@ function handleMessage(sender_psid, received_message) {
                     "buttons": [
                         {
                             "type": "account_link",
-                            "url": `https://www.facebook.com/v3.1/dialog/oauth?client_id=${configAuth.facebookAuth.clientID}&redirect_uri={"https://ten-lua-webhook.herokuapp.com/connect"}&state={"{st=state123abc,ds=123456789}"}`
+                            "url": `https://www.facebook.com/v3.1/dialog/oauth?client_id=${configAuth.facebookAuth.clientID}&redirect_uri={https://ten-lua-webhook.herokuapp.com/connect}&state={"{st=state123abc,ds=123456789}"}`
                         }
                     ],
                 }]
