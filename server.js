@@ -43,14 +43,14 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
         });
     }
 ));
+
+// xác định đăng nhập từ FB
 app.get('/auth/facebook', passport.authenticate('facebook'));
-app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', {
-        successRedirect: '/',
-        failureRedirect: '/login'
-    }),
+// Xử lý dữ liệu callback về
+app.get('/auth/facebook/callback', passport.authenticate('facebook'),
     function (req, res) {
-        res.redirect('/');
+        console.log("redairac");
+        res.end();
     });
 app.get('/logout', function (req, res) {
     req.logout();
