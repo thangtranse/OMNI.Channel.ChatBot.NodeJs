@@ -41,8 +41,10 @@ app.get('/logout', function (req, res) {
 passport.use(new FacebookStrategy(configAuth.facebookAuth,
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
-            console.log("accessToken", accessToken);
+            // Lấy được token khi User thực hiện đăng nhập
+            // Thực hiện login vào Rocket.Chat
             api.loginWithFacebook(accessToken);
+            window.close();
         });
     }
 ));
@@ -51,6 +53,7 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
     let body = req.body;
+
     console.log("Nhập request từ Facebook");
     console.log("body", body.entry[0].changes);
     // Checks this is an event from a page subscription
@@ -66,7 +69,7 @@ app.post('/webhook', (req, res) => {
             pageEntry.forEach((messagingEvent) => {
                 console.log("messagingEvent", {messagingEvent});
                 let sender_psid = messagingEvent.sender.id;
-                if (messagingEvent.message) {
+                if (messagingEvent.message) { //
                     console.log("trueeeee");
                     handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
