@@ -51,7 +51,7 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
     }
 ));
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user);
 });
 passport.deserializeUser((_name, done) => {
     done(null, _name);
