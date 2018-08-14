@@ -27,11 +27,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 // xác định đăng nhập từ FB
-app.get('/auth/facebook', passport.authenticate('facebook', (req, res) => {
-    console.log("---------");
-    console.log(req.body.id);
-    console.log(req);
-}));
+app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
 app.get('/auth/facebook/callback', passport.authenticate('facebook',
     {failureRedirect: '/auth/facebook', successRedirect: '/'})
@@ -58,8 +54,10 @@ passport.deserializeUser((user, done) => {
 })
 // Passport FB END
 
+// Khi đăng nhập thành công sẽ trỏ về link này
 app.get("/", function (req, resp) {
-
+    console.log("///////////");
+    console.log(req);
     console.log("///////////");
     console.log(req.session);
     console.log("///////////");
