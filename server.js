@@ -52,7 +52,7 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
     }
 ));
 passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.id);
 });
 passport.deserializeUser((_name, done) => {
     done(null, _name);
