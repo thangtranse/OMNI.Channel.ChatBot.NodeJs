@@ -49,7 +49,10 @@ class apiRest {
             "json": data
         }, (err, res, body) => {
             if (!err) {
-                console.log('Đăng nhập thành công!');
+                console.log('Đăng nhập thành công!', body);
+                if (body.error != 400) {
+                    console.log("khác 400");
+                }
             } else {
                 console.error("Unable to send message:" + err);
             }

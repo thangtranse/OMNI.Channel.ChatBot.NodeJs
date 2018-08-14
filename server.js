@@ -21,8 +21,8 @@ const callRocket = require('./webhook-rocket/createWebhook');
 const api = require('./webhook-rocket/apiRest');
 
 
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-// app.listen(4001, () => console.log('webhook is listening'));
+// app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+app.listen(4001, () => console.log('webhook is listening'));
 
 app.get('/', (req, res) => {
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -117,13 +117,7 @@ function handleMessage(sender_psid, received_message) {
                 "template_type": "generic",
                 "elements": [{
                     "title": "Is this the right picture?",
-                    "subtitle": "Tap a button to answer.",
-                    "buttons": [
-                        {
-                            "type": "account_link",
-                            "url": "https://ten-lua-webhook.herokuapp.com/login"
-                        }
-                    ],
+                    "subtitle": "Tap a button to answer."
                 }]
             }
         }
