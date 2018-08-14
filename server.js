@@ -44,7 +44,7 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
             // Lấy được token khi User thực hiện đăng nhập
             // Thực hiện login vào Rocket.Chat
             api.loginWithFacebook(accessToken);
-            done(null, accessToken);
+            done();
         });
     }
 ));
