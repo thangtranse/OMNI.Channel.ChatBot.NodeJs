@@ -57,14 +57,15 @@ passport.deserializeUser((user, done) => {
 
 // Khi đăng nhập thành công sẽ trỏ về link này
 app.get("/", (req, resp) => {
-    console.log("id", id);
-    console.log("id", req.session.passport);
-    if (id.length != 0) {
+    if (id.length != 0 && typeof req.session.passport.user != "undefined") {
         console.log("id:", id);
         api.loginWithFacebook(req.session.passport.user, (data) => {
             if (data.status == "success") {
                 db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
                 callSendAPI(id, `Xin chào ${data.data.me.name}`);
+                fs.readFile('index.html', (err, data) => {
+                    resp.end(data);
+                })
             }
         });
     } else {
@@ -94,7 +95,6 @@ app.post('/webhook', (req, res) => {
                     console.log("if 1");
                     console.log(messagingEvent);
                     handleMessage(sender_psid, messagingEvent.message);
-
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
                     console.log("else 1");
                     console.log("chưa biết chuyện gì xãy ra");
@@ -151,25 +151,30 @@ app.get('/webhook', (req, res) => {
  */
 var handleMessage = (sender_psid, received_message) => {
     id = sender_psid;
-    let response = '';
+    let response = null;
     // Check if the message contains text
     if (received_message.text) {
         // Create the payload for a basic text message
         switch ((received_message.text).toLowerCase()) {
             case 'bắt đầu':
+                // Thuc hien kiem tra xem no da dang nhap chua
                 loginRocketWithFacebook(sender_psid);
                 break;
             default:
                 response = {
-                    "text": "Thử sử dụng cú pháp 'Bắt Đầu' để đăng nhập"
+                    "text": received_message
                 }
         }
     }
-
-    // Sends the response message
-    if (response.length > 0)
-        callSendAPI(sender_psid, response);
-    // sendMsgToRocket(sender_psid, received_message.text)
+    db.getDataUser(sender_psid, (data) => {
+        api.sendMess('7z54Pw8cppA8xMt2j', received_message.text, data.token_rocket, data.id_rocket);
+    })
+    // // Sends the response message
+    // if (response != null) {
+    //     // callSendAPI(sender_psid, response);
+    //     // sendMsgToRocket(sender_psid, received_message.text)
+    //     api.sendMess('7z54Pw8cppA8xMt2j', received_message.text);
+    // }
 }
 
 /**

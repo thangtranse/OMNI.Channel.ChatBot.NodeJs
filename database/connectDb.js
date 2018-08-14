@@ -21,9 +21,15 @@ class connectDb {
         });
     }
 
+    getDataUser(_idUser, callbback) {
+        var db = admin.firestore();
+        var sfRef = db.collection('users').doc(_idUser);
+        sfRef.getCollections().then(collections => callbback(collection));
+    }
+
     queryTokenRocket(_value, callback) {
         var citiesRef = db.collection('users');
-        var query = citiesRef.where('token_rocket', '==', _value).get()
+        var query = citiesRef.where('id_fb', '==', _value).get()
             .then(snapshot => callback(snapshot))
             .catch(err => {
                 console.log('Error getting documents', err);

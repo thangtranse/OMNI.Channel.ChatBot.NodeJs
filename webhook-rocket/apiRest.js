@@ -74,6 +74,27 @@ class apiRest {
         })
     }
 
+    // 5.  Messages
+    sendMess(roomID, msg, _token, _uid, callback) {
+        axiosInstance({
+            method: 'POST',
+            url: '/chat.sendMessage',
+            headers: {
+                'X-Auth-Token': _token,
+                'X-User-Id': _uid
+            },
+            data: {
+                message: {
+                    rid: roomID,
+                    msg: msg
+                }
+            }
+        }).then(response => {
+            return callback(response)
+        }).catch(function (message) {
+            console.log(message);
+        })
+    }
 
 }
 
