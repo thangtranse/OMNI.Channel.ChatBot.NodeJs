@@ -168,7 +168,7 @@ function handleMessage(sender_psid, received_message) {
                                 "buttons": [
                                     {
                                         "type": "account_link",
-                                        "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook?id=" + sender_psid
+                                        "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
                                     }
                                 ],
                             }]
