@@ -268,3 +268,7 @@ app.get('/_oauth', (req, resp) => {
     console.log("oke thành công rồi nè");
     resp.end();
 });
+
+app.get("/run", (req, res) => {
+    res.end("chạy");
+});
