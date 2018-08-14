@@ -17,8 +17,8 @@ const callRocket = require('./webhook-rocket/createWebhook');
 const api = require('./webhook-rocket/apiRest');
 
 // Start Server
-// app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-app.listen(4001, () => console.log('webhook is listening'));
+app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+// app.listen(4001, () => console.log('webhook is listening'));
 // Start Server END
 
 // Passport FB
@@ -105,10 +105,7 @@ app.post('/webhook', (req, res) => {
 
                 } else {
                     console.log("else 2");
-                    console.error(
-                        'Webhook received unknown messagingEvent: ',
-                        messagingEvent
-                    );
+                    console.error('Webhook received unknown messagingEvent: ', messagingEvent);
 
                 }
             });
