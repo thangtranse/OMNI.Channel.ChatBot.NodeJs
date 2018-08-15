@@ -91,12 +91,11 @@ class apiRest {
             }
         }).then(response => {
             return callback(response)
-        }).catch(function (message) {
+        }).catch(function (err) {
             console.log("--------------------------------------------------------------------------------------------");
-            console.log("Lỗi gửi tin nhắn đến Rocket: ", message.data);
+            console.log("Lỗi gửi tin nhắn đến Rocket: ", err);
         })
     }
-
 }
 
 module.exports = new apiRest();
