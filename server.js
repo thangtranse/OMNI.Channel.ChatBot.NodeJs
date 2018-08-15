@@ -38,6 +38,7 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
+
 passport.use(new FacebookStrategy(configAuth.facebookAuth,
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
@@ -59,30 +60,24 @@ passport.deserializeUser((user, done) => {
 // Khi đăng nhập thành công sẽ trỏ về link này
 app.get("/", (req, resp) => {
     if (id.length != 0 && typeof req.session.passport.user != "undefined") {
-        console.log("id 222:", id);
-        api.loginWithFacebook(req.session.passport.user, (data) => {
-            if (data.status == "success") {
+        if (id.length != 0 && typeof req.session.passport.user != "undefined") {
+            api.loginWithFacebook(req.session.passport.user, (data) => {
+                if (data.status == "success") {
 
-                console.log("12312321", data.data);
-                console.log("id", id);
-                console.log("data.data.me.name", data.data.me.name);
-                console.log("data.data.me.authToken", data.data.authToken);
-                console.log("data.data.me.user", req.session.passport.user);
-                console.log("data.data.me.userId", data.data.userId);
+                    db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
+                    console.log("id nhận tin nhắn đây nè: ", id);
+                    callSendAPI(id, `Xin chào ${data.data.me.name}`);
+                    fs.readFile('index.html', (err, data) => {
+                        resp.end(data);
+                    })
 
-                db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
-
-                callSendAPI(id, `Xin chào ${data.data.me.name}`);
-                fs.readFile('index.html', (err, data) => {
-                    resp.end(data);
-                })
-
-            }
-            // đăng ký lắng nghe
-            // apireal.login(req.session.passport.user);
-        });
-    } else {
-        resp.end();
+                }
+                // đăng ký lắng nghe
+                // apireal.login(req.session.passport.user);
+            });
+        } else {
+            resp.end();
+        }
     }
 });
 
@@ -94,7 +89,6 @@ app.post('/webhook', (req, res) => {
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
         // Iterates over each entry - there may be multiple if batched
-        console.log("aaaaaaaaaaaa: ", body.entry);
         body.entry.forEach((entry) => {
             if (!entry.messaging) {
                 return;
@@ -103,7 +97,6 @@ app.post('/webhook', (req, res) => {
             // will only ever contain one message, so we get index 0
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
-
                 let sender_psid = messagingEvent.sender.id;
                 id = sender_psid;
                 if (messagingEvent.message) {
@@ -132,7 +125,9 @@ app.post('/webhook', (req, res) => {
     }
 });
 
-// Adds support for GET requests to our webhook
+/**
+ * Dùng để xác thực với Facebook
+ */
 app.get('/webhook', (req, res) => {
     // Your verify token. Should be a random string.
     let VERIFY_TOKEN = "thang_dep_trai"
