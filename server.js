@@ -68,7 +68,7 @@ app.get("/", (req, resp) => {
                     db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
                     console.log("id nhận tin nhắn đây nè: ", id);
                     callSendAPI(id, {"text": `Xin chào "${data.data.me.name}"`});
-                    callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#talk.with.mr.win" Hãy bắt đầu trò chuyện!`});
+                    callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#GENERAL" Hãy bắt đầu trò chuyện!`});
 
                     fs.readFile('index.html', (err, data) => {
                         resp.end(data);
@@ -169,9 +169,9 @@ var handleMessage = (sender_psid, received_message) => {
                         "text": received_message
                     }
             }
-            api.sendMess('zWE5XTd4td6pxMifr', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
+            api.sendMess('GENERAL', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
                 data => {
-                    console.log("tin nhắn được gửi đến rocket: ", data);
+                    console.log("tin nhắn được gửi đến rocket: ", data.status);
                 });
         } else { // khách hàng chưa login
             console.log("KH chưa tồn tại");
@@ -270,7 +270,9 @@ app.post('/ten-lua', (req, res) => {
     // body.user_id: 'AHBrCEjwq4H2TYdj9',
     // body.user_name: 'thangtm',
     // body.text: 'Test Outcome'
+    console.log("session", req.session.passport.user);
     console.log(body);
+    res.end();
 });
 
 // Creates the endpoint for our webhook
