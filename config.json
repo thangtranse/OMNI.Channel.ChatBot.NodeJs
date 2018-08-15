@@ -2,7 +2,7 @@
   "server": {
     "host": "https://ten-lua.herokuapp.com",
     "port": 7677,
-    "ssl": false,
+    "ssl": true,
     "autoReconnect": true,
     "autoReconnectTimer": 500,
     "maintainCollections": true,

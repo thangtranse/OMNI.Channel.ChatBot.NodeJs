@@ -26,7 +26,7 @@ class apiRealTime {
      * @param {*} _authToken : Token khi Login
      */
     login(_authToken, callback) {
-        ddpclient.call('login', [{ "resume": _authToken }], (err, result) => callback(err, result));
+        ddpclient.call('login', [{"resume": _authToken}], (err, result) => callback(err, result));
     }
 
     /**
@@ -61,21 +61,27 @@ class apiRealTime {
      * @param {*} _userID
      */
     subscribeNotifyUser(_userID) {
-        return ddpclient.subscribe("stream-notify-user", [`${_userID}/rooms-changed`, true], (id) => { console.log("lắng nghe", id) });
+        return ddpclient.subscribe("stream-notify-user", [`${_userID}/rooms-changed`, true], (id) => {
+            console.log("lắng nghe", id)
+        });
     }
 
     /**
      * Lắng nghe người dùng nói chuyện
      */
-    subscribeNotifyRoom(_idRoom, _username){
-        ddpclient.call("stream-notify-room", [`${_idRoom}/typing`, _username, true], (id) => { console.log("lắng nghe", id) });
+    subscribeNotifyRoom(_idRoom, _username) {
+        ddpclient.call("stream-notify-room", [`${_idRoom}/typing`, _username, true], (id) => {
+            console.log("lắng nghe", id)
+        });
     }
 
     /**
      * Lắng nghe người dùng nói chuyện
      */
-    subscribeActionRoom(_idRoom, _username){
-        ddpclient.call("stream-notify-room", [`${_idRoom}/typing`, _username, true], (id) => { console.log("lắng nghe", id) });
+    subscribeActionRoom(_idRoom, _username) {
+        ddpclient.call("stream-notify-room", [`${_idRoom}/typing`, _username, true], (id) => {
+            console.log("lắng nghe", id)
+        });
     }
 
     /**
@@ -85,7 +91,7 @@ class apiRealTime {
      * * @param {*} _id id kênh lắng nghe
      */
     unSubscriptions(_id) {
-        ddpclient.subscribe("stream-room-messages", { "msg": "unsub", "id": _id });
+        ddpclient.subscribe("stream-room-messages", {"msg": "unsub", "id": _id});
     }
 
     /**
@@ -119,7 +125,7 @@ class apiRealTime {
                     "size": _filesize,
                     "type": _filetype
                 },
-                { "rid": _roomID }
+                {"rid": _roomID}
             ],
             (err, result) => {
                 if (err) {
@@ -133,7 +139,7 @@ class apiRealTime {
                                 "size": _filesize,
                                 "type": _filetype
                             },
-                            { "rid": _roomID }
+                            {"rid": _roomID}
                         ], function (err, result) {
                             console.log(err);
                         });

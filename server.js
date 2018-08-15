@@ -19,7 +19,7 @@ const apiRealTime = require('./webhook-rocket/apiRealTime');
 var ddp
 // var apireal = new apiRealTime();
 // Start Server
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+app.listen(process.env.PORT || 1337, () => console.log('webhook is listening', process.env.PORT));
 // app.listen(4001, () => console.log('webhook is listening'));
 // Start Server END
 // Passport FB
@@ -70,12 +70,6 @@ app.get("/", (req, resp) => {
                     callSendAPI(id, {"text": `Xin chào "${data.data.me.name}"`});
                     callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#talk.with.mr.win" Hãy bắt đầu trò chuyện!`});
 
-                    ddp = new apiRealTime();
-
-                    ddp.login(data.data.authToken, (err, data) => {
-                        console.log("dataa login dddp", data);
-                    });
-
                     fs.readFile('index.html', (err, data) => {
                         resp.end(data);
                     })
@@ -93,22 +87,17 @@ app.get("/", (req, resp) => {
 app.post('/webhook', (req, res) => {
     let body = req.body;
     console.log("Nhập request từ Facebook");
-    // Checks this is an event from a page subscription
     if (body.object === 'page') {
-        // Iterates over each entry - there may be multiple if batched
         body.entry.forEach((entry) => {
             if (!entry.messaging) {
                 return;
             }
-            // Gets the message. entry.messaging is an array, but
-            // will only ever contain one message, so we get index 0
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
                 id = sender_psid;
                 if (messagingEvent.message) {
-                    console.log("if 1");
-                    console.log(messagingEvent);
+                    console.log("if 1", messagingEvent);
                     handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
                     console.log("else 1");
@@ -122,10 +111,8 @@ app.post('/webhook', (req, res) => {
                 }
             });
         });
-        // Returns a '200 OK' response to all requests
         res.status(200).send('EVENT_RECEIVED');
     } else {
-        // Returns a '404 Not Found' if event is not from a page subscription
         res.sendStatus(404);
     }
 });
@@ -155,35 +142,48 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-// Handles messages events
 /**
- * Gửi tin nhắn
+ * Handles messages events
+ * Phản hồi tin nhắn khách hàng
  * @param sender_psid id-user gửi tin nhắn
  * @param received_message nội dung tin nhắn
  */
 var handleMessage = (sender_psid, received_message) => {
     let response = null;
-    // Check if the message contains text
+    // tin nhắn không chưa nội dung
     if (received_message.text) {
-        // Create the payload for a basic text message
-        switch ((received_message.text).toLowerCase()) {
-            case 'bắt đầu':
-                // Thuc hien kiem tra xem no da dang nhap chua
-                loginRocketWithFacebook(sender_psid);
-                break;
-            default:
-                response = {
-                    "text": received_message
-                }
-        }
+        return;
     }
-    console.log("chạy ngay đây");
+    // kiểm tra id đối tượng gửi tin đã đăng nhập hay chưa
     db.getDataUser(sender_psid, (data) => {
-        api.sendMess('7z54Pw8cppA8xMt2j', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
-            data => {
-                console.log("oke: ", data);
-            });
-    })
+        if (typeof data != "undefined") { // khách hàng đã login
+            switch ((received_message.text).toLowerCase()) {
+                case 'bắt đầu':
+                    callSendAPI(sender_psid, {"text": "Bạn đã đăng nhập rồi!"});
+                    break;
+                default:
+                    response = {
+                        "text": received_message
+                    }
+            }
+            api.sendMess('7z54Pw8cppA8xMt2j', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
+                data => {
+                    console.log("tin nhắn được gửi đến rocket: ", data);
+                });
+        } else { // khách hàng chưa login
+            if (received_message.text) {
+                switch ((received_message.text).toLowerCase()) {
+                    case 'bắt đầu':
+                        loginRocketWithFacebook(sender_psid);
+                        break;
+                    default:
+                        response = {
+                            "text": received_message
+                        }
+                }
+            }
+        }
+    });
 
     // // Sends the response message
     // if (response != null) {
@@ -256,25 +256,6 @@ app.get('/login', (req, res) => {
     res.end();
 });
 
-function sendMsgToRocket(_id, _msg) {
-    let request_body = {
-        "text": _msg,
-        "userId": _id
-    }
-    request({
-        "uri": "https://ten-lua.herokuapp.com/hooks/G9HvcSvqrkBcAmgz9/HXp6YNwzcD273PuCBk7PhnXgn3b33gFBjoS77rWztTyp7kPb",
-        "qs": {"access_token": 'G9HvcSvqrkBcAmgz9/HXp6YNwzcD273PuCBk7PhnXgn3b33gFBjoS77rWztTyp7kPb'},
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
-        }
-    });
-}
-
 // Creates the endpoint for our webhook
 app.post('/ten-lua', (req, res) => {
     let body = req.body;
@@ -310,18 +291,14 @@ app.get('/listusers', (req, res) => {
 
 });
 
-app.get("/run", (req, res) => {
-    res.end("chạy");
-});
-
-app.get("/db/create", (req, res) => {
-    db.writeUserData("12", "13", "13", "14", "15");
-    res.end();
-})
-
-app.get("/db.get", (req, res) => {
-    db.getDataUser("725589064452103", (data) => {
-        console.log("ahihiha", data);
+app.get("/getdatauser", (req, res) => {
+    console.log("oke")
+    db.getDataUser("725589064452121", (data) => {
+        if (typeof data != "undefined") {
+            console.log("áodapskdpoaskdpsa");
+        } else {
+            console.log("12312321321");
+        }
     });
     res.end();
-})
+});
