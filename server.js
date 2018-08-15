@@ -63,14 +63,12 @@ app.get("/", (req, resp) => {
         if (id.length != 0 && typeof req.session.passport.user != "undefined") {
             api.loginWithFacebook(req.session.passport.user, (data) => {
                 if (data.status == "success") {
-
                     db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
                     console.log("id nhận tin nhắn đây nè: ", id);
-                    callSendAPI(id, `Xin chào ${data.data.me.name}`);
+                    callSendAPI(id, {"text": "Xin chào " + data.data.me.name});
                     fs.readFile('index.html', (err, data) => {
                         resp.end(data);
                     })
-
                 }
                 // đăng ký lắng nghe
                 // apireal.login(req.session.passport.user);
@@ -171,7 +169,6 @@ var handleMessage = (sender_psid, received_message) => {
     }
     console.log("chạy ngay đây");
     db.getDataUser(sender_psid, (data) => {
-        console.log(data);
         api.sendMess('7z54Pw8cppA8xMt2j', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
             data => {
                 console.log("oke: ", data);
