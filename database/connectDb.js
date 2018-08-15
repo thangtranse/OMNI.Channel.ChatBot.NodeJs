@@ -22,6 +22,7 @@ class connectDb {
     }
 
     getDataUser(_idUser, callbback) {
+        console.log("conDB: ", _idUser);
         var db = admin.firestore();
         var sfRef = db.collection('users').doc(_idUser);
         sfRef.get().then(collections => callbback(collections._fieldsProto));

@@ -179,7 +179,7 @@ var handleMessage = (sender_psid, received_message) => {
     }
     console.log("chạy ngay đây");
     db.getDataUser(sender_psid, (data) => {
-        console.log(data.token_rocket);
+        console.log(data);
         api.sendMess('7z54Pw8cppA8xMt2j', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
             data => {
                 console.log("oke: ", data);
