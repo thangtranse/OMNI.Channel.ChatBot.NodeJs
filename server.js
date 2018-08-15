@@ -62,8 +62,14 @@ app.get("/", (req, resp) => {
         console.log("id 222:", id);
         api.loginWithFacebook(req.session.passport.user, (data) => {
             if (data.status == "success") {
-                console.log("12312321", data);
+                console.log("12312321", data.data);
+                console.log("data.data.me.name", data.data.me.name);
+                console.log("data.data.me.authToken", data.data.authToken);
+                console.log("data.data.me.user", req.session.passport.user);
+                console.log("data.data.me.userId", data.data.userId);
+
                 db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
+
                 callSendAPI(id, `Xin chào ${data.data.me.name}`);
                 fs.readFile('index.html', (err, data) => {
                     resp.end(data);
