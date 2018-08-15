@@ -63,6 +63,8 @@ app.get("/", (req, resp) => {
         api.loginWithFacebook(req.session.passport.user, (data) => {
             if (data.status == "success") {
                 console.log("12312321", data.data);
+
+                console.log("id", id);
                 console.log("data.data.me.name", data.data.me.name);
                 console.log("data.data.me.authToken", data.data.authToken);
                 console.log("data.data.me.user", req.session.passport.user);
