@@ -68,6 +68,7 @@ app.get("/", (req, resp) => {
                 fs.readFile('index.html', (err, data) => {
                     resp.end(data);
                 })
+                
             }
             // đăng ký lắng nghe
             // apireal.login(req.session.passport.user);
