@@ -59,16 +59,15 @@ passport.deserializeUser((user, done) => {
 // Khi đăng nhập thành công sẽ trỏ về link này
 app.get("/", (req, resp) => {
     if (id.length != 0 && typeof req.session.passport.user != "undefined") {
-        console.log("id:", id);
+        console.log("id 222:", id);
         api.loginWithFacebook(req.session.passport.user, (data) => {
             if (data.status == "success") {
-                console.log("12312321", data.data.data);
-                db.writeUserData(id, data.data.data.me.name, data.data.data.authToken, req.session.passport.user, data.data.data.userId);
-                callSendAPI(id, `Xin chào ${data.data.data.me.name}`);
+                console.log("12312321", data.data);
+                db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
+                callSendAPI(id, `Xin chào ${data.data.me.name}`);
                 fs.readFile('index.html', (err, data) => {
                     resp.end(data);
                 })
-
             }
             // đăng ký lắng nghe
             // apireal.login(req.session.passport.user);
