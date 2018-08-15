@@ -62,7 +62,7 @@ app.get("/", (req, resp) => {
         console.log("id:", id);
         api.loginWithFacebook(req.session.passport.user, (data) => {
             if (data.status == "success") {
-                console.log("12312321", data);
+                console.log("12312321", data.data);
                 db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
                 callSendAPI(id, `Xin chào ${data.data.me.name}`);
                 fs.readFile('index.html', (err, data) => {
@@ -111,8 +111,7 @@ app.post('/webhook', (req, res) => {
 
                 } else {
                     console.log("else 2");
-                    console.error('Webhook received unknown messagingEvent: ', messagingEvent);
-
+                    // console.error('Webhook received unknown messagingEvent: ', messagingEvent);
                 }
             });
         });
@@ -172,6 +171,7 @@ var handleMessage = (sender_psid, received_message) => {
     }
     console.log("chạy ngay đây");
     db.getDataUser(sender_psid, (data) => {
+        console.log(data.token_rocket);
         api.sendMess('7z54Pw8cppA8xMt2j', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
             data => {
                 console.log("oke: ", data);
