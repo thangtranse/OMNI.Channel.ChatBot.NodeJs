@@ -152,7 +152,7 @@ var handleMessage = (sender_psid, received_message) => {
     let response = null;
     // tin nhắn không chưa nội dung
     console.log("handleMessage", received_message.text);
-    if (received_message.text) {
+    if (!received_message.text) {
         return;
     }
     // kiểm tra id đối tượng gửi tin đã đăng nhập hay chưa
