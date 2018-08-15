@@ -84,7 +84,6 @@ app.get("/", (req, resp) => {
 // Creates the endpoint for our webhook
 app.post('/webhook', (req, res) => {
     let body = req.body;
-    console.log("bodayyyyyy: ", body);
     console.log("Nhập request từ Facebook");
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
@@ -105,14 +104,12 @@ app.post('/webhook', (req, res) => {
                     handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
                     console.log("else 1");
-                    console.log("chưa biết chuyện gì xãy ra");
                 }
-                if (messagingEvent.postback) {
-                    console.log("if 2");
-                    console.log("postback");
+                if () {
+                    console.log("if 2 postback", messagingEvent.postback);
                     handlePostback(sender_psid, messagingEvent.postback);
                 } else {
-                    console.log("else 2");
+                    console.log("else 2", messagingEvent.postback);
                     // console.error('Webhook received unknown messagingEvent: ', messagingEvent);
                 }
             });
