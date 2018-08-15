@@ -270,7 +270,8 @@ app.post('/ten-lua', (req, res) => {
     // body.user_id: 'AHBrCEjwq4H2TYdj9',
     // body.user_name: 'thangtm',
     // body.text: 'Test Outcome'
-    console.log("session", req.session.passport.user);
+    console.log("passport", req.session.passport);
+    console.log("session", req.session);
     console.log(body);
     res.end();
 });
