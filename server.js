@@ -62,8 +62,8 @@ app.get("/", (req, resp) => {
         console.log("id 222:", id);
         api.loginWithFacebook(req.session.passport.user, (data) => {
             if (data.status == "success") {
-                console.log("12312321", data.data);
 
+                console.log("12312321", data.data);
                 console.log("id", id);
                 console.log("data.data.me.name", data.data.me.name);
                 console.log("data.data.me.authToken", data.data.authToken);
@@ -89,7 +89,6 @@ app.get("/", (req, resp) => {
 app.post('/webhook', (req, res) => {
     let body = req.body;
     console.log("Nhập request từ Facebook");
-    console.log("Với giá trị:", body.entry[0].changes);
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
         // Iterates over each entry - there may be multiple if batched
@@ -102,7 +101,6 @@ app.post('/webhook', (req, res) => {
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
-
                 if (messagingEvent.message) {
                     console.log("if 1");
                     console.log(messagingEvent);
@@ -110,13 +108,11 @@ app.post('/webhook', (req, res) => {
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
                     console.log("else 1");
                     console.log("chưa biết chuyện gì xãy ra");
-
                 }
                 if (messagingEvent.postback) {
                     console.log("if 2");
                     console.log("postback");
                     handlePostback(sender_psid, messagingEvent.postback);
-
                 } else {
                     console.log("else 2");
                     // console.error('Webhook received unknown messagingEvent: ', messagingEvent);
