@@ -69,7 +69,7 @@ app.get("/", (req, resp) => {
                 })
             }
             // đăng ký lắng nghe
-            apireal.login(req.session.passport.user);
+            // apireal.login(req.session.passport.user);
         });
     } else {
         resp.end();
