@@ -78,7 +78,7 @@ class apiRest {
     sendMess(roomID, msg, _token, _uid, callback) {
         axiosInstance({
             method: 'POST',
-            url: '/chat.sendMessage',
+            url: 'chat.sendMessage',
             headers: {
                 'X-Auth-Token': _token,
                 'X-User-Id': _uid
@@ -92,7 +92,8 @@ class apiRest {
         }).then(response => {
             return callback(response)
         }).catch(function (message) {
-            console.log(message);
+            console.log("--------------------------------------------------------------------------------------------");
+            console.log("Lỗi gửi tin nhắn đến Rocket: ",message);
         })
     }
 
