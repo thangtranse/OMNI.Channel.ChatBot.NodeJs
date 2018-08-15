@@ -15,7 +15,8 @@ app.use(session({secret: 'SCC-Thangtm13'}));
 
 const callRocket = require('./webhook-rocket/createWebhook');
 const api = require('./webhook-rocket/apiRest');
-
+const apiRealTime = require('./webhook-rocket/apiRealTime');
+// var apireal = new apiRealTime();
 // Start Server
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
@@ -67,6 +68,8 @@ app.get("/", (req, resp) => {
                     resp.end(data);
                 })
             }
+            // đăng ký lắng nghe
+            apireal.login(req.session.passport.user);
         });
     } else {
         resp.end();
@@ -168,8 +171,7 @@ var handleMessage = (sender_psid, received_message) => {
     }
     console.log("chạy ngay đây");
     db.getDataUser(sender_psid, (data) => {
-        console.log("data get", data);
-        api.sendMess('7z54Pw8cppA8xMt2j', received_message.text, data.token_rocket, data.id_rocket, data => {
+        api.sendMess('7z54Pw8cppA8xMt2j', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue, data => {
             console.log("oke: ", data);
         });
     })
@@ -304,5 +306,12 @@ app.get("/run", (req, res) => {
 
 app.get("/db/create", (req, res) => {
     db.writeUserData("12", "13", "13", "14", "15");
+    res.end();
+})
+
+app.get("/db.get", (req, res) => {
+    db.getDataUser("725589064452103", (data) => {
+        console.log("ahihiha", data);
+    });
     res.end();
 })
