@@ -156,6 +156,7 @@ var handleMessage = (sender_psid, received_message) => {
     }
     // kiểm tra id đối tượng gửi tin đã đăng nhập hay chưa
     db.getDataUser(sender_psid, (data) => {
+        console.log("kiểm tra");
         if (typeof data != "undefined") { // khách hàng đã login
             switch ((received_message.text).toLowerCase()) {
                 case 'bắt đầu':
