@@ -16,15 +16,16 @@ app.use(session({secret: 'SCC-Thangtm13'}));
 const callRocket = require('./webhook-rocket/createWebhook');
 const api = require('./webhook-rocket/apiRest');
 const apiRealTime = require('./webhook-rocket/apiRealTime');
+var ddp
 // var apireal = new apiRealTime();
 // Start Server
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // app.listen(4001, () => console.log('webhook is listening'));
 // Start Server END
-
 // Passport FB
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -63,9 +64,18 @@ app.get("/", (req, resp) => {
         if (id.length != 0 && typeof req.session.passport.user != "undefined") {
             api.loginWithFacebook(req.session.passport.user, (data) => {
                 if (data.status == "success") {
+
                     db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
                     console.log("id nhận tin nhắn đây nè: ", id);
-                    callSendAPI(id, {"text": "Xin chào " + data.data.me.name});
+                    callSendAPI(id, {"text": `Xin chào "${data.data.me.name}"`});
+                    callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#talk.with.mr.win" Hãy bắt đầu trò chuyện!`});
+
+                    ddp = new apiRealTime();
+
+                    ddp.login(data.data.authToken, (err, data) => {
+                        console.log("dataa login dddp", data);
+                    });
+
                     fs.readFile('index.html', (err, data) => {
                         resp.end(data);
                     })
