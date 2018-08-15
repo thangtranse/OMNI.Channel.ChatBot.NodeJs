@@ -71,11 +71,12 @@ app.get("/", (req, resp) => {
                 console.log("data.data.me.userId", data.data.userId);
 
                 db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
-                db.writeUserData("123", "13", "13", "14", "15");
+
                 callSendAPI(id, `Xin chào ${data.data.me.name}`);
                 fs.readFile('index.html', (err, data) => {
                     resp.end(data);
                 })
+
             }
             // đăng ký lắng nghe
             // apireal.login(req.session.passport.user);
@@ -101,6 +102,7 @@ app.post('/webhook', (req, res) => {
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
+                id = sender_psid;
                 if (messagingEvent.message) {
                     console.log("if 1");
                     console.log(messagingEvent);
@@ -157,7 +159,6 @@ app.get('/webhook', (req, res) => {
  * @param received_message nội dung tin nhắn
  */
 var handleMessage = (sender_psid, received_message) => {
-    id = sender_psid;
     let response = null;
     // Check if the message contains text
     if (received_message.text) {
