@@ -69,7 +69,7 @@ app.get("/", (req, resp) => {
                 console.log("data.data.me.userId", data.data.userId);
 
                 db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
-
+                db.writeUserData("123", "13", "13", "14", "15");
                 callSendAPI(id, `Xin chào ${data.data.me.name}`);
                 fs.readFile('index.html', (err, data) => {
                     resp.end(data);
