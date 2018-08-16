@@ -114,7 +114,6 @@ const codeExecute = (user, data) => {
                 console.log("------------------------111-----------------", data);
                 MessengerSend.callSendAPI(user.id_fb.stringValue, {"text": "thành công"});
                 MessengerSend.sendMessengerTemplateList(user.id_fb.stringValue, "");
-
             });
             break;
     }

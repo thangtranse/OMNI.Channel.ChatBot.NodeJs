@@ -58,7 +58,7 @@ const parameterSentGraph = (sender_psid, response) => {
         "qs": {"access_token": PAGE_ACCESS_TOKEN},
         "method": "POST",
         "json": request_body
-    }, (err, res, body) => {
+    }, (error, response, body) => {
         if (!error && response.statusCode === 200) {
             // Message has been successfully received by Facebook.
             console.log(
