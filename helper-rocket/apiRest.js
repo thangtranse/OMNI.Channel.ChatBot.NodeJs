@@ -79,7 +79,7 @@ class apiRest {
             }
         })
             .then(response => callback(response.data))
-            .catch(err => console.log("Lỗi hã", err.response.data))
+            .catch(err => error(err));
     }
 
     getListUser(_token, _uid, _callback) {
@@ -90,12 +90,9 @@ class apiRest {
                 'X-Auth-Token': _token,
                 'X-User-Id': _uid
             }
-        }).then(response => {
-            return _callback(response.data);
-        }).catch(function (message) {
-            console.log("Lỗi hã");
-            console.log(message);
         })
+            .then(response => _callback(response.data))
+            .catch(err => error(err));
     }
 
     // 5.  Messages
@@ -113,12 +110,9 @@ class apiRest {
                     msg: msg
                 }
             }
-        }).then(response => {
-            return callback(response)
-        }).catch(function (err) {
-            console.log("--------------------------------------------------------------------------------------------");
-            console.log("Lỗi gửi tin nhắn đến Rocket: ", err.response.data);
         })
+            .then(response => callback(response))
+            .catch(err => error(err));
     }
 
     /**
@@ -136,15 +130,26 @@ class apiRest {
                 'X-Auth-Token': _token,
                 'X-User-Id': _uid
             }
-        }).then(response => {
-            return _callback(response.data);
-        }).catch(function (message) {
-            console.log("Lỗi hã");
-            console.log(message);
         })
+            .then(response => _callback(response.data))
+            .catch(err => error(err));
     }
 }
 
-var randomUsername = _email => (`${_email.replace(/(\s)/g, ".")}.${Math.floor((Math.random() * 100))}`).toLowerCase();
-
+/**
+ * Thực hiện conver username người dùng
+ * - đổi các khoản trắng thành '.'
+ * - chuyển về chữ thường
+ * - random number
+ * @param _email
+ * @returns {string}
+ */
+const randomUsername = _email => (`${_email.replace(/(\s)/g, ".")}.${Math.floor((Math.random() * 100))}`).toLowerCase();
+/**
+ * Hiển thị lỗi
+ * @param err
+ */
+const error = err => {
+    console.log("API ERR: ", err.response.data);
+}
 module.exports = new apiRest();

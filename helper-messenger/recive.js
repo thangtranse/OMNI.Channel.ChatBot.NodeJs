@@ -108,6 +108,7 @@ const loginRocketWithFacebook = (sender_psid) => {
 const codeExecute = (user, data) => {
     let key = data.text.substr(0, data.text.indexOf(" ")).trim();
     let keyword = data.text.slice(-data.text.indexOf(" "), data.text.length).trim();
+    console.log("----token----", user);
     switch (key) {
         case '--searchuser':
             api.searchUser(keyword, user.token_rocket, user.id_rocket, data => {
