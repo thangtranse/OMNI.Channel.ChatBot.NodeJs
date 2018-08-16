@@ -26,6 +26,7 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
