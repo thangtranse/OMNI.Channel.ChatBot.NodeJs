@@ -259,7 +259,7 @@ app.get('/login', (req, res) => {
 });
 
 // Creates the endpoint for our webhook
-app.post('/ten-lua', (req, res) => {
+app.post('/ten-lua', async (req, res) => {
     let body = req.body;
     // body.token: 'QFJB7u78GHwLD2P37vwdaeRC',
     // body.bot: false,
@@ -273,6 +273,8 @@ app.post('/ten-lua', (req, res) => {
     console.log("passport", req.session.passport);
     console.log("session", req.session);
     console.log(body);
+    let temp = await db.getDataUserConnect().then(data => data);
+    temp.map(x => callSendAPI(x, body.text));
     res.end();
 });
 
@@ -296,14 +298,11 @@ app.get('/listusers', (req, res) => {
 
 });
 
-app.get("/getdatauser", (req, res) => {
-    console.log("oke")
-    db.getDataUser("725589064452121", (data) => {
-        if (typeof data != "undefined") {
-            console.log("áodapskdpoaskdpsa");
-        } else {
-            console.log("12312321321");
-        }
-    });
+app.get("/getlist", (req, res) => {
+    console.log("oke");
+    let temp = db.getDataUserConnect().then(data => data);
+    console.log(temp);
     res.end();
 });
+
+

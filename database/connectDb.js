@@ -21,11 +21,38 @@ class connectDb {
         });
     }
 
+    /**
+     * Lấy thông tin user
+     * @param _idUser
+     * @param callbback
+     */
     getDataUser(_idUser, callbback) {
         console.log("conDB: ", _idUser);
         var db = admin.firestore();
         var sfRef = db.collection('users').doc(_idUser);
         sfRef.get().then(collections => callbback(collections._fieldsProto));
+    }
+
+    /**
+     * Lấy danh sách thông tin user đang tương tác với hệ thống
+     * @param _value
+     * @param callback
+     */
+    async getDataUserConnect() {
+        var db = admin.firestore();
+        let data = [];
+        var citiesRef = db.collection('users');
+        await citiesRef.get().then(snapshot => {
+            snapshot.forEach(doc => {
+                if (typeof doc._fieldsProto.id_fb != "undefined") {
+                    data.push(doc._fieldsProto.id_fb.stringValue);
+                }
+            });
+        }, err => {
+            console.log(`Encountered error: ${err}`);
+            return false;
+        });
+        return data;
     }
 
     queryTokenRocket(_value, callback) {
@@ -35,7 +62,6 @@ class connectDb {
             .catch(err => {
                 console.log('Error getting documents', err);
             });
-
     }
 }
 
