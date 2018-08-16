@@ -66,7 +66,9 @@ app.get("/", (req, resp) => {
                 MessengerSend.callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#GENERAL" Hãy bắt đầu trò chuyện!`});
                 MessengerSend.callSendAPI(id, {"text": `BOT: Để biết các câu lệnh đơn giản bạn hãy gõ --help`});
                 if (typeof data.data.me.username == "undefined") {
-                    api.updateProfile(data.data.authToken, data.data.userId, {"username": data.data.me.name});
+                    api.updateProfile(data.data.authToken, data.data.userId, {"username": data.data.me.name}, (data) => {
+                        consosle.log("thanh công: ", data)
+                    });
                 }
                 fs.readFile('./public/index.html', (err, data) => {
                     resp.end(data);

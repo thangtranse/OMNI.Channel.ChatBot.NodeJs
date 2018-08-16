@@ -59,11 +59,7 @@ class apiRest {
     }
 
     updateProfile(_token, _uid, _data, callback) {
-
-        if (typeof _data.username != 'undefined') {
-            _data.username = randomUsername(_data.username);
-        }
-
+        if (typeof _data.username == 'undefined') _data.username = randomUsername(_data.username);
         axiosInstance({
             method: 'POST',
             url: 'users.update',
