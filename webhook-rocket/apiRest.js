@@ -93,7 +93,7 @@ class apiRest {
             return callback(response)
         }).catch(function (err) {
             console.log("--------------------------------------------------------------------------------------------");
-            console.log("Lỗi gửi tin nhắn đến Rocket: ", err);
+            console.log("Lỗi gửi tin nhắn đến Rocket: ", err.response.data);
         })
     }
 }
