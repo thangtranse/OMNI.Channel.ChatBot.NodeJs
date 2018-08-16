@@ -116,6 +116,12 @@ const codeExecute = (user, data) => {
                 MessengerSend.sendMessengerTemplateList(user.id_fb.stringValue, "");
             });
             break;
+        case '--help':
+            let temp = {
+                "text": "--searchuser <keyword> -> Tìm user với keyword"
+            }
+            MessengerSend.callSendAPI(user.id_fb.stringValue, temp);
+            break;
     }
 }
 
