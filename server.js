@@ -18,8 +18,8 @@ const MessengerRecive = require('./helper-messenger/recive');
 const MessengerSend = require('./helper-messenger/send');
 
 // Start Server
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-// app.listen(4001, () => console.log('webhook is listening'));
+app.set('port', process.env.PORT || 1337);
+app.listen(app.get('port'), () => console.log('webhook is listening in port: ', app.get("port")));
 // Start Server END
 
 // Passport FB
