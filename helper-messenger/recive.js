@@ -1,3 +1,6 @@
+const db = require('./database/connectDb');
+const api = require('./helper-rocket/apiRest');
+
 /**
  * Handles messages events
  * Phản hồi tin nhắn khách hàng
