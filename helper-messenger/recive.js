@@ -1,5 +1,5 @@
-const db = require('./database/connectDb');
-const api = require('./helper-rocket/apiRest');
+const db = require('../database/connectDb');
+const api = require('../helper-rocket/apiRest');
 
 /**
  * Handles messages events
