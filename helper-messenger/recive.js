@@ -10,7 +10,7 @@ const MessengerSend = require('./send');
  */
 const handleMessage = (sender_psid, received_message) => {
     let response = null;
-    let pattern = /(--[A-Z])\w+/g;
+    let pattern = /^(-){2}([a-zA-Z])\w+/g;
     // tin nhắn không chưa nội dung
     console.log("handleMessage", received_message.text);
     if (!received_message.text) return;
