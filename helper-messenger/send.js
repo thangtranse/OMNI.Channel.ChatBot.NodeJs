@@ -67,11 +67,10 @@ const parameterSentGraph = (sender_psid, response) => {
             );
         } else {
             console.error(
-                `Failed calling Messenger API endpoint ${endPoint}`,
+                `Failed calling Messenger API endpoint`,
                 response.statusCode,
                 response.statusMessage,
-                body.error,
-                queryParams
+                body.error
             );
         }
     });
