@@ -110,6 +110,7 @@ const codeExecute = (user, data) => {
     let keyword = data.text.slice(-data.text.indexOf(" "), data.text.length).trim();
     switch (key) {
         case '--searchuser':
+            console.log("key word là : ", keyword);
             api.searchUser(keyword, user.token_rocket.stringValue, user.id_rocket.stringValue, data => {
                 console.log("------------------------111-----------------", data);
                 MessengerSend.callSendAPI(user.id_fb.stringValue, {"text": "thành công"});
