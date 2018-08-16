@@ -5,8 +5,8 @@ const MessengerSend = require('./send');
 /**
  * Handles messages events
  * Phản hồi tin nhắn khách hàng
- * @param sender_psid id-user gửi tin nhắn
- * @param received_message nội dung tin nhắn
+ * @param sender_psid: id-user gửi tin nhắn
+ * @param received_message: nội dung tin nhắn
  */
 const handleMessage = (sender_psid, received_message) => {
     let response = null;
@@ -21,20 +21,22 @@ const handleMessage = (sender_psid, received_message) => {
             console.log("Tồn tại: ", data);
             switch ((received_message.text).toLowerCase()) {
                 case 'bắt đầu':
-                    callSendAPI(sender_psid, {"text": "Bạn đã đăng nhập rồi!"});
+                    MessengerSend.callSendAPI(sender_psid, {"text": "Bạn đã đăng nhập rồi!"});
                     break;
                 default:
                     response = {
                         "text": received_message
                     }
             }
+
+            // Kiểm tra xem người dùng có sử dụng câu lệnh không
             if (!pattern.test(received_message.text.trim())) {
                 api.sendMess('GENERAL', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
                     data => {
                         console.log("tin nhắn được gửi đến rocket: ", data.status);
                     });
             } else {
-                codeExecute(received_message);
+                codeExecute(data, received_message);
             }
         } else { // khách hàng chưa login
             console.log("KH chưa tồn tại");
@@ -83,8 +85,37 @@ const loginRocketWithFacebook = (sender_psid) => {
     MessengerSend.callSendAPI(sender_psid, response);
 }
 
-const codeExecute = (data) => {
-    console.log("thực thi câu lệnh", data);
+/**
+ * Thực thi các câu lệnh
+ * --join tham :gia vào kênh
+ * --listgroup :lấy danh sách group
+ * --listuser :lấy danh sách user
+ * --searchuser keyword :tìm kiếm user
+ * @param
+ * + user{
+ *  id_fb : id messenger của tin nhắn
+ *  id_rocket: id User trên Rocket
+ *  name: tên người dùng
+ *  token_facebook:
+ *  token_rocket:
+ * }
+ * + data {
+ *  mid : '',
+ *  seq: '',
+ *  text: 'nội dung câu lệnh'
+ * }
+ */
+const codeExecute = (user, data) => {
+    let key = data.text.substr(0, data.text.indexOf(" ")).trim();
+    let keyword = data.text.slice(-data.text.indexOf(" "), data.text.length).trim();
+    switch (key) {
+        case '--searchuser':
+            api.searchUser(keyword, user.token_rocket, user.id_rocket, data => {
+                console.log("------------------------111-----------------", data);
+                MessengerSend.callSendAPI({"text": "thành công"});
+            });
+            break;
+    }
 }
 
 module.exports = {

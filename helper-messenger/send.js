@@ -1,5 +1,13 @@
 const request = require('request');
-// Sends response messages via the Send API
+
+/**
+ * Sends response messages via the Send API
+ * @param sender_psid: id người nhắn tin
+ * @param response nội dung gửi
+ * response: {
+ *     text: "Nội dung trả gửi"
+ * }
+ */
 const callSendAPI = (sender_psid, response) => {
 // Construct the message body
     let request_body = {

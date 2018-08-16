@@ -120,6 +120,29 @@ class apiRest {
             console.log("Lỗi gửi tin nhắn đến Rocket: ", err.response.data);
         })
     }
+
+    /**
+     * Tim kiếm User
+     * @param _dataSearch
+     * @param _token
+     * @param _uid
+     * @param _callback
+     */
+    searchUser(_dataSearch, _token, _uid, _callback) {
+        axiosInstance({
+            method: 'GET',
+            url: `users.list?query={ "name": { "$regex": "${_dataSearch}" } }`,
+            headers: {
+                'X-Auth-Token': _token,
+                'X-User-Id': _uid
+            }
+        }).then(response => {
+            return _callback(response.data);
+        }).catch(function (message) {
+            console.log("Lỗi hã");
+            console.log(message);
+        })
+    }
 }
 
 var randomUsername = _email => (`${_email.replace(/(\s)/g, ".")}.${Math.floor((Math.random() * 100))}`).toLowerCase();

@@ -79,7 +79,11 @@ app.get("/", (req, resp) => {
     }
 });
 
-// Creates the endpoint for our webhook
+/**
+ * Creates the endpoint for our webhook
+ * Nhận Request từ FB gửi về
+ *
+ */
 app.post('/webhook', (req, res) => {
     let body = req.body;
     console.log("Nhập request từ Facebook");
@@ -171,8 +175,13 @@ app.post('/ten-lua', async (req, res) => {
 });
 
 app.get("/test", (req, res) => {
-    let pattern = /^(-){2}([a-zA-Z])\w+/g;
-    console.log("-----------------------------------------:", pattern.test("--save trrrianms"));
+    let data = "--save thắng";
+    let key = data.substr(0, data.indexOf(" "));
+    let keyword = data.slice(-data.indexOf(" "), data.length).trim();
+
+    console.log(key);
+    console.log(keyword);
+
     res.end();
 });
 
