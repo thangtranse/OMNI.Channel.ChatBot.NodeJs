@@ -107,7 +107,7 @@ const loginRocketWithFacebook = (sender_psid) => {
  */
 const codeExecute = (user, data) => {
     let key = data.text.substr(0, data.text.indexOf(" ")).trim();
-    let keyword = data.text.slice(-data.text.indexOf(" "), data.text.length).trim();
+    let keyword = data.text.slice(((-1) * data.text.indexOf(" ")), data.text.length).trim();
     switch (key) {
         case '--searchuser':
             console.log("key word là : ", keyword);
