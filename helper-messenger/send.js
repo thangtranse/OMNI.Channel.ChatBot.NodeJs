@@ -11,11 +11,12 @@ const PAGE_ACCESS_TOKEN = require('../config').PAGE_ACCESS_TOKEN;
  */
 const callSendAPI = (sender_psid, response) => {
 // Construct the message body
-    parameterSentGraph(sender_psid, response);
+    parameterSentGraph("messages", sender_psid, response);
 }
 
 
 const sendMessengerTemplateList = (sender_psid, list) => {
+    console.log("--222111----------------------------");
     let test = {
         "attachment": {
             "type": "template",
@@ -42,10 +43,11 @@ const sendMessengerTemplateList = (sender_psid, list) => {
             }
         }
     }
-    parameterSentGraph(sender_psid, test);
+    parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
+    console.log("--222111----------------------------");
 }
 
-const parameterSentGraph = (sender_psid, response) => {
+const parameterSentGraph = (endpoint, sender_psid, response) => {
     let request_body = {
         "recipient": {
             "id": sender_psid
@@ -54,7 +56,7 @@ const parameterSentGraph = (sender_psid, response) => {
     }
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "uri": "https://graph.facebook.com/v2.6/me/" + endpoint,
         "qs": {"access_token": PAGE_ACCESS_TOKEN},
         "method": "POST",
         "json": request_body
