@@ -170,11 +170,10 @@ app.post('/ten-lua', async (req, res) => {
     res.end();
 });
 
-// app.get("/getlist", (req, res) => {
-//     console.log("oke");
-//     let temp = db.getDataUserConnect().then(data => data);
-//     console.log(temp);
-//     res.end();
-// });
+app.get("/test", (req, res) => {
+    let pattern = /^(-){2}([a-zA-Z])\w+/g;
+    console.log("-----------------------------------------:", pattern.test("--save trrrianms"));
+    res.end();
+});
 
 
