@@ -122,6 +122,6 @@ class apiRest {
     }
 }
 
-var randomUsername = _email => `${_email.replace(" ", ".")}.${Math.random()}`;
+var randomUsername = _email => (`${_email.replace(" ", ".")}.${(Math.random() * 100)}`).toLowerCase();
 
 module.exports = new apiRest();
