@@ -93,11 +93,11 @@ const loginRocketWithFacebook = (sender_psid) => {
  * --searchuser keyword :tìm kiếm user
  * @param
  * + user{
- *  id_fb : id messenger của tin nhắn
- *  id_rocket: id User trên Rocket
- *  name: tên người dùng
- *  token_facebook:
- *  token_rocket:
+ *  id_fb : {stringValue: "giá trị", valueType: "loại dữ liệu"} -> id messenger của tin nhắn
+ *  id_rocket: {stringValue: "giá trị", valueType: "loại dữ liệu"} -> id User trên Rocket
+ *  name: {stringValue: "giá trị", valueType: "loại dữ liệu"} ->  tên người dùng
+ *  token_facebook: {stringValue: "giá trị", valueType: "loại dữ liệu"} ->
+ *  token_rocket: {stringValue: "giá trị", valueType: "loại dữ liệu"} ->
  * }
  * + data {
  *  mid : '',
@@ -108,10 +108,9 @@ const loginRocketWithFacebook = (sender_psid) => {
 const codeExecute = (user, data) => {
     let key = data.text.substr(0, data.text.indexOf(" ")).trim();
     let keyword = data.text.slice(-data.text.indexOf(" "), data.text.length).trim();
-    console.log("----token----", user);
     switch (key) {
         case '--searchuser':
-            api.searchUser(keyword, user.token_rocket, user.id_rocket, data => {
+            api.searchUser(keyword, user.token_rocket.stringValue, user.id_rocket.stringValue, data => {
                 console.log("------------------------111-----------------", data);
                 MessengerSend.callSendAPI({"text": "thành công"});
             });
