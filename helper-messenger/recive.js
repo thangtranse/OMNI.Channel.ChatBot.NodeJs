@@ -28,6 +28,7 @@ const handleMessage = (sender_psid, received_message) => {
                         "text": received_message
                     }
             }
+            console.log(pattern.test(received_message));
             if (!pattern.test(received_message)) {
                 api.sendMess('GENERAL', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
                     data => {
