@@ -112,7 +112,9 @@ const codeExecute = (user, data) => {
         case '--searchuser':
             api.searchUser(keyword, user.token_rocket.stringValue, user.id_rocket.stringValue, data => {
                 console.log("------------------------111-----------------", data);
-                MessengerSend.callSendAPI({"text": "thành công"});
+                MessengerSend.callSendAPI(user.id_fb.stringValue, {"text": "thành công"});
+                MessengerSend.sendMessengerTemplateList(user.id_fb.stringValue, "");
+
             });
             break;
     }

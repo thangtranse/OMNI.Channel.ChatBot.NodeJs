@@ -20,5 +20,6 @@
     "clientID": "489945358189237",
     "clientSecret": "b5222fa7378e3add050404750c0fdc5d",
     "callbackURL": "https://ten-lua-webhook.herokuapp.com/auth/facebook/callback"
-  }
+  },
+  "PAGE_ACCESS_TOKEN": "EAAG9mksIwrUBAGI7pm0p4X7rAS25WJNZBDCGS3XdnPX6Bsf0whRmnT2OdHZCFTZCgK7lAcJi8ZBn8hZC1WKxhTTS5VZBsSEZCamCMKje7ZCiPokxuhDEgbiFEXPlukU9rRm3uE0JzEO2oyxCcWpDIvZCYR4ATW6YZAkdZABQi7wUTtQVgZDZD"
 }

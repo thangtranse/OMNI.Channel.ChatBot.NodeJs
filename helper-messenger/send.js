@@ -1,4 +1,5 @@
 const request = require('request');
+const PAGE_ACCESS_TOKEN = require('../config').PAGE_ACCESS_TOKEN;
 
 /**
  * Sends response messages via the Send API
@@ -10,6 +11,41 @@ const request = require('request');
  */
 const callSendAPI = (sender_psid, response) => {
 // Construct the message body
+    parameterSentGraph(sender_psid, response);
+}
+
+
+const sendMessengerTemplateList = (sender_psid, list) => {
+    let test = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "list",
+                "top_element_style": "compact",
+                "elements": [
+                    {
+                        "title": "Classic T-Shirt Collection",
+                        "subtitle": "See all our colors",
+                        "image_url": "https://peterssendreceiveapp.ngrok.io/img/collection.png",
+                        "buttons": [
+                            {
+                                "title": "View",
+                                "type": "web_url",
+                                "url": "https://peterssendreceiveapp.ngrok.io/collection",
+                                "messenger_extensions": true,
+                                "webview_height_ratio": "tall",
+                                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+    parameterSentGraph(sender_psid, test);
+}
+
+const parameterSentGraph = (sender_psid, response) => {
     let request_body = {
         "recipient": {
             "id": sender_psid
@@ -19,16 +55,26 @@ const callSendAPI = (sender_psid, response) => {
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v2.6/me/messages",
-        "qs": {"access_token": 'EAAG9mksIwrUBAGI7pm0p4X7rAS25WJNZBDCGS3XdnPX6Bsf0whRmnT2OdHZCFTZCgK7lAcJi8ZBn8hZC1WKxhTTS5VZBsSEZCamCMKje7ZCiPokxuhDEgbiFEXPlukU9rRm3uE0JzEO2oyxCcWpDIvZCYR4ATW6YZAkdZABQi7wUTtQVgZDZD'},
+        "qs": {"access_token": PAGE_ACCESS_TOKEN},
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
+        if (!error && response.statusCode === 200) {
+            // Message has been successfully received by Facebook.
+            console.log(
+                `Successfully sent message to ${endPoint} endpoint: `,
+                JSON.stringify(body)
+            );
         } else {
-            console.error("Unable to send message:" + err);
+            console.error(
+                `Failed calling Messenger API endpoint ${endPoint}`,
+                response.statusCode,
+                response.statusMessage,
+                body.error,
+                queryParams
+            );
         }
     });
 }
 
-module.exports = {callSendAPI}
+module.exports = {callSendAPI, sendMessengerTemplateList}
