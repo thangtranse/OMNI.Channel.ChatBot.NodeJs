@@ -6,41 +6,39 @@ const db = require('./database/connectDb');
 const fs = require('fs');
 const configAuth = require('./config');
 const app = express().use(bodyParser.json());
-
 var id = "";
+
 // Session
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({secret: 'SCC-Thangtm13'}));
 // Session END
 
-const callRocket = require('./webhook-rocket/createWebhook');
-const api = require('./webhook-rocket/apiRest');
-const apiRealTime = require('./webhook-rocket/apiRealTime');
-var ddp
-// var apireal = new apiRealTime();
+const api = require('./helper-rocket/apiRest');
+const MessengerRecive = require('./helper-messenger/recive');
+const MessengerSend = require('./helper-messenger/send');
+
 // Start Server
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-// app.listen(4001, () => console.log('webhook is listening'));
+// app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+app.listen(4001, () => console.log('webhook is listening'));
 // Start Server END
+
 // Passport FB
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
-
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 // xác định đăng nhập từ FB
 app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
-app.get('/auth/facebook/callback', passport.authenticate('facebook',
-    {failureRedirect: '/auth/facebook', successRedirect: '/'})
-);
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    failureRedirect: '/auth/facebook',
+    successRedirect: '/'
+}));
 app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
-
 passport.use(new FacebookStrategy(configAuth.facebookAuth,
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
@@ -49,11 +47,9 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
         });
     }
 ));
-
 passport.serializeUser((user, done) => {
     done(null, user);
 });
-
 passport.deserializeUser((user, done) => {
     done(null, user);
 })
@@ -67,14 +63,13 @@ app.get("/", (req, resp) => {
                 console.log("info: ", data.data);
                 db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
                 console.log("id nhận tin nhắn đây nè: ", id);
-                callSendAPI(id, {"text": `Xin chào "${data.data.me.name}"`});
-                callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#GENERAL" Hãy bắt đầu trò chuyện!`});
-
+                MessengerSend.callSendAPI(id, {"text": `Xin chào "${data.data.me.name}"`});
+                MessengerSend.callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#GENERAL" Hãy bắt đầu trò chuyện!`});
+                MessengerSend.callSendAPI(id, {"text": `BOT: Để biết các câu lệnh đơn giản bạn hãy gõ --help`});
                 if (typeof data.data.me.username == "undefined") {
                     api.updateProfile(data.data.authToken, data.data.userId, {"username": data.data.me.email});
                 }
-
-                fs.readFile('index.html', (err, data) => {
+                fs.readFile('./public/index.html', (err, data) => {
                     resp.end(data);
                 })
             }
@@ -101,13 +96,13 @@ app.post('/webhook', (req, res) => {
                 id = sender_psid;
                 if (messagingEvent.message) {
                     console.log("if 1", messagingEvent);
-                    handleMessage(sender_psid, messagingEvent.message);
+                    MessengerRecive.handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
                     console.log("else 1");
                 }
                 if (messagingEvent.postback) {
                     console.log("if 2 postback", messagingEvent.postback);
-                    handlePostback(sender_psid, messagingEvent.postback);
+                    MessengerRecive.handlePostback(sender_psid, messagingEvent.postback);
                 } else {
                     console.log("else 2", messagingEvent.postback);
                     // console.error('Webhook received unknown messagingEvent: ', messagingEvent);
@@ -146,59 +141,6 @@ app.get('/webhook', (req, res) => {
 });
 
 /**
- * Handles messages events
- * Phản hồi tin nhắn khách hàng
- * @param sender_psid id-user gửi tin nhắn
- * @param received_message nội dung tin nhắn
- */
-var handleMessage = (sender_psid, received_message) => {
-    let response = null;
-    // tin nhắn không chưa nội dung
-    console.log("handleMessage", received_message.text);
-    if (!received_message.text) {
-        return;
-    }
-    // kiểm tra id đối tượng gửi tin đã đăng nhập hay chưa
-    db.getDataUser(sender_psid, (data) => {
-        console.log("kiểm tra sender_psid: ", sender_psid);
-        if (typeof data != "undefined") { // khách hàng đã login
-            console.log("Tồn tại: ", data);
-            switch ((received_message.text).toLowerCase()) {
-                case 'bắt đầu':
-                    callSendAPI(sender_psid, {"text": "Bạn đã đăng nhập rồi!"});
-                    break;
-                default:
-                    response = {
-                        "text": received_message
-                    }
-            }
-            api.sendMess('GENERAL', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
-                data => {
-                    console.log("tin nhắn được gửi đến rocket: ", data.status);
-                });
-        } else { // khách hàng chưa login
-            console.log("KH chưa tồn tại");
-            switch ((received_message.text).toLowerCase()) {
-                case 'bắt đầu':
-                    loginRocketWithFacebook(sender_psid);
-                    break;
-                default:
-                    response = {
-                        "text": received_message
-                    }
-            }
-        }
-    });
-
-    // // Sends the response message
-    // if (response != null) {
-    //     // callSendAPI(sender_psid, response);
-    //     // sendMsgToRocket(sender_psid, received_message.text)
-    //     api.sendMess('7z54Pw8cppA8xMt2j', received_message.text);
-    // }
-}
-
-/**
  * Thực hiện đăng nhập bằng tài khoản FB với ROCKET
  */
 var loginRocketWithFacebook = (sender_psid) => {
@@ -220,37 +162,7 @@ var loginRocketWithFacebook = (sender_psid) => {
             }
         }
     }
-    callSendAPI(sender_psid, response);
-}
-
-// Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
-    console.log("post_back", sender_psid);
-    console.log("received_postback", received_postback);
-}
-
-// Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
-// Construct the message body
-    let request_body = {
-        "recipient": {
-            "id": sender_psid
-        },
-        "message": response
-    }
-    // Send the HTTP request to the Messenger Platform
-    request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages",
-        "qs": {"access_token": 'EAAG9mksIwrUBAGI7pm0p4X7rAS25WJNZBDCGS3XdnPX6Bsf0whRmnT2OdHZCFTZCgK7lAcJi8ZBn8hZC1WKxhTTS5VZBsSEZCamCMKje7ZCiPokxuhDEgbiFEXPlukU9rRm3uE0JzEO2oyxCcWpDIvZCYR4ATW6YZAkdZABQi7wUTtQVgZDZD'},
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
-        }
-    });
+    MessengerSend.callSendAPI(sender_psid, response);
 }
 
 app.get('/login', (req, res) => {
@@ -273,7 +185,6 @@ app.post('/ten-lua', async (req, res) => {
     // body.user_id: 'AHBrCEjwq4H2TYdj9',
     // body.user_name: 'thangtm',
     // body.text: 'Test Outcome'
-
     console.log("passport", req.session.passport);
     console.log("session", req.session);
     console.log(body);
@@ -281,9 +192,8 @@ app.post('/ten-lua', async (req, res) => {
     let temp = await db.getDataUserConnect().then(data => data);
     temp.map(x => {
         if (x.idRocket != body.user_id)
-            callSendAPI(x.idMess, {"text": body.text});
+            MessengerSend.callSendAPI(x.idMess, {"text": body.text});
     });
-
     res.end();
 });
 
