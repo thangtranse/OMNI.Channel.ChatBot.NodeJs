@@ -59,6 +59,11 @@ class apiRest {
     }
 
     updateProfile(_token, _uid, _data, callback) {
+
+        if (typeof _data.username != 'undefined') {
+            _data.username = randomUsername(_data.username);
+        }
+
         axiosInstance({
             method: 'POST',
             url: 'users.update',
@@ -115,5 +120,7 @@ class apiRest {
         })
     }
 }
+
+var randomUsername = _email => `${_email.replace(" ", ".")}.${Math.random()}`;
 
 module.exports = new apiRest();
