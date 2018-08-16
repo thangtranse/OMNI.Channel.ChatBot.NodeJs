@@ -72,8 +72,6 @@ app.get("/", (req, resp) => {
                     resp.end(data);
                 })
             }
-            // đăng ký lắng nghe
-            // apireal.login(req.session.passport.user);
         });
     } else {
         resp.end();
@@ -138,31 +136,6 @@ app.get('/webhook', (req, res) => {
         }
     }
 });
-
-/**
- * Thực hiện đăng nhập bằng tài khoản FB với ROCKET
- */
-var loginRocketWithFacebook = (sender_psid) => {
-    var response = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "Đăng nhập để trò chuyện cùng chúng tôi",
-                    "subtitle": "Tài khoản FB của bạn sẽ liên kết đến ứng dụng của chúng tôi...",
-                    "buttons": [
-                        {
-                            "type": "account_link",
-                            "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
-                        }
-                    ],
-                }]
-            }
-        }
-    }
-    MessengerSend.callSendAPI(sender_psid, response);
-}
 
 app.get('/login', (req, res) => {
     const accountLinkingToken = req.query.account_linking_token;

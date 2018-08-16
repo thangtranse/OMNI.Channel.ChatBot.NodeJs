@@ -1,5 +1,6 @@
 const db = require('../database/connectDb');
 const api = require('../helper-rocket/apiRest');
+const MessengerSend = require('send');
 
 /**
  * Handles messages events
@@ -51,6 +52,32 @@ const handleMessage = (sender_psid, received_message) => {
 function handlePostback(sender_psid, received_postback) {
     console.log("post_back", sender_psid);
     console.log("received_postback", received_postback);
+}
+
+
+/**
+ * Thực hiện đăng nhập bằng tài khoản FB với ROCKET
+ */
+var loginRocketWithFacebook = (sender_psid) => {
+    var response = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Đăng nhập để trò chuyện cùng chúng tôi",
+                    "subtitle": "Tài khoản FB của bạn sẽ liên kết đến ứng dụng của chúng tôi...",
+                    "buttons": [
+                        {
+                            "type": "account_link",
+                            "url": "https://ten-lua-webhook.herokuapp.com/auth/facebook"
+                        }
+                    ],
+                }]
+            }
+        }
+    }
+    MessengerSend.callSendAPI(sender_psid, response);
 }
 
 module.exports = {
