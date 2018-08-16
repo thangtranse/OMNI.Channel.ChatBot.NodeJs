@@ -61,7 +61,7 @@ class apiRest {
     updateProfile(_token, _uid, _data, callback) {
         axiosInstance({
             method: 'POST',
-            url: 'users.list?query={}',
+            url: 'users.update',
             headers: {
                 'X-Auth-Token': _token,
                 'X-User-Id': _uid,
