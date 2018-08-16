@@ -1,6 +1,6 @@
 const db = require('../database/connectDb');
 const api = require('../helper-rocket/apiRest');
-const MessengerSend = require('send');
+const MessengerSend = require('./send');
 
 /**
  * Handles messages events
