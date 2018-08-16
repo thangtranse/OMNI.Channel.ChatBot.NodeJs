@@ -118,7 +118,7 @@ const codeExecute = (user, data) => {
             break;
         case '--help':
             let temp = {
-                "text": "--searchuser <keyword> -> Tìm user với keyword"
+                "text": "--searchuser keyword -> Tìm user với keyword"
             }
             MessengerSend.callSendAPI(user.id_fb.stringValue, temp);
             break;

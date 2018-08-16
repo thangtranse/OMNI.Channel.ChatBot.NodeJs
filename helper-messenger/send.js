@@ -43,6 +43,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
             }
         }
     }
+    console.log("messages?access_token=" + PAGE_ACCESS_TOKEN);
     parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
     console.log("--222111----------------------------");
 }
