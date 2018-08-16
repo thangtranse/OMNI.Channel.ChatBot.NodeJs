@@ -10,11 +10,10 @@ const MessengerSend = require('./send');
  */
 const handleMessage = (sender_psid, received_message) => {
     let response = null;
+    let pattern = /(--[A-Z])\w+/g;
     // tin nhắn không chưa nội dung
     console.log("handleMessage", received_message.text);
-    if (!received_message.text) {
-        return;
-    }
+    if (!received_message.text) return;
     // kiểm tra id đối tượng gửi tin đã đăng nhập hay chưa
     db.getDataUser(sender_psid, (data) => {
         console.log("kiểm tra sender_psid: ", sender_psid);
@@ -29,10 +28,14 @@ const handleMessage = (sender_psid, received_message) => {
                         "text": received_message
                     }
             }
-            api.sendMess('GENERAL', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
-                data => {
-                    console.log("tin nhắn được gửi đến rocket: ", data.status);
-                });
+            if (!pattern.test(received_message)) {
+                api.sendMess('GENERAL', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
+                    data => {
+                        console.log("tin nhắn được gửi đến rocket: ", data.status);
+                    });
+            } else {
+                codeExecute(received_message);
+            }
         } else { // khách hàng chưa login
             console.log("KH chưa tồn tại");
             switch ((received_message.text).toLowerCase()) {
@@ -49,7 +52,7 @@ const handleMessage = (sender_psid, received_message) => {
 }
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
+const handlePostback = (sender_psid, received_postback) => {
     console.log("post_back", sender_psid);
     console.log("received_postback", received_postback);
 }
@@ -58,7 +61,7 @@ function handlePostback(sender_psid, received_postback) {
 /**
  * Thực hiện đăng nhập bằng tài khoản FB với ROCKET
  */
-var loginRocketWithFacebook = (sender_psid) => {
+const loginRocketWithFacebook = (sender_psid) => {
     var response = {
         "attachment": {
             "type": "template",
@@ -78,6 +81,10 @@ var loginRocketWithFacebook = (sender_psid) => {
         }
     }
     MessengerSend.callSendAPI(sender_psid, response);
+}
+
+const codeExecute = (data) => {
+    console.log("thực thi câu lệnh", data);
 }
 
 module.exports = {
