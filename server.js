@@ -273,19 +273,25 @@ app.post('/ten-lua', async (req, res) => {
     // body.user_id: 'AHBrCEjwq4H2TYdj9',
     // body.user_name: 'thangtm',
     // body.text: 'Test Outcome'
+
     console.log("passport", req.session.passport);
     console.log("session", req.session);
     console.log(body);
+
     let temp = await db.getDataUserConnect().then(data => data);
-    temp.map(x => callSendAPI(x, {"text": body.text}));
+    temp.map(x => {
+        if (x.idRocket != body.user_id)
+            callSendAPI(x.idMess, {"text": body.text});
+    });
+
     res.end();
 });
 
-app.get("/getlist", (req, res) => {
-    console.log("oke");
-    let temp = db.getDataUserConnect().then(data => data);
-    console.log(temp);
-    res.end();
-});
+// app.get("/getlist", (req, res) => {
+//     console.log("oke");
+//     let temp = db.getDataUserConnect().then(data => data);
+//     console.log(temp);
+//     res.end();
+// });
 
 

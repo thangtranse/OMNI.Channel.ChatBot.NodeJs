@@ -45,7 +45,10 @@ class connectDb {
         await citiesRef.get().then(snapshot => {
             snapshot.forEach(doc => {
                 if (typeof doc._fieldsProto.id_fb != "undefined") {
-                    data.push(doc._fieldsProto.id_fb.stringValue);
+                    data.push({
+                        idMess: doc._fieldsProto.id_fb.stringValue,
+                        idRocket: doc._fieldsProto.id_rocket.stringValue
+                    });
                 }
             });
         }, err => {
