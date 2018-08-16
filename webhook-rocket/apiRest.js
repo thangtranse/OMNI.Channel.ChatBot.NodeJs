@@ -58,6 +58,24 @@ class apiRest {
         });
     }
 
+    updateProfile(_token, _uid, _data, callback) {
+        axiosInstance({
+            method: 'POST',
+            url: 'users.list?query={}',
+            headers: {
+                'X-Auth-Token': _token,
+                'X-User-Id': _uid,
+                'Content-type': 'application/json'
+            },
+            data: {
+                userId: _uid,
+                data: _data
+            }
+        })
+            .then(response => callback(response.data))
+            .catch(err => console.log("Lỗi hã", err.response.data))
+    }
+
     getListUser(_token, _uid, _callback) {
         axiosInstance({
             method: 'GET',

@@ -68,6 +68,11 @@ app.get("/", (req, resp) => {
                 console.log("id nhận tin nhắn đây nè: ", id);
                 callSendAPI(id, {"text": `Xin chào "${data.data.me.name}"`});
                 callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#GENERAL" Hãy bắt đầu trò chuyện!`});
+
+                if (typeof data.data.me.username == "undefined") {
+                    api.updateProfile(data.data.authToken, data.data.userId, {"username": data.data.me.email});
+                }
+
                 fs.readFile('index.html', (err, data) => {
                     resp.end(data);
                 })
