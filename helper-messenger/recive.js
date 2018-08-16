@@ -28,10 +28,7 @@ const handleMessage = (sender_psid, received_message) => {
                         "text": received_message
                     }
             }
-            console.log("-----------------------------------------:", received_message);
-            console.log("-----------------------------------------:", pattern.test(received_message.toString().trim()));
-            console.log("-----------------------------------------:", received_message.toString().trim());
-            if (!pattern.test(received_message.toString().trim())) {
+            if (!pattern.test(received_message.text.trim())) {
                 api.sendMess('GENERAL', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
                     data => {
                         console.log("tin nhắn được gửi đến rocket: ", data.status);
