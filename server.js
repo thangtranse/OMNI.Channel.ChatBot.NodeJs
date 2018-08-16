@@ -61,25 +61,22 @@ passport.deserializeUser((user, done) => {
 // Khi đăng nhập thành công sẽ trỏ về link này
 app.get("/", (req, resp) => {
     if (id.length != 0 && typeof req.session.passport.user != "undefined") {
-        if (id.length != 0 && typeof req.session.passport.user != "undefined") {
-            api.loginWithFacebook(req.session.passport.user, (data) => {
-                if (data.status == "success") {
-
-                    db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
-                    console.log("id nhận tin nhắn đây nè: ", id);
-                    callSendAPI(id, {"text": `Xin chào "${data.data.me.name}"`});
-                    callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#GENERAL" Hãy bắt đầu trò chuyện!`});
-
-                    fs.readFile('index.html', (err, data) => {
-                        resp.end(data);
-                    })
-                }
-                // đăng ký lắng nghe
-                // apireal.login(req.session.passport.user);
-            });
-        } else {
-            resp.end();
-        }
+        api.loginWithFacebook(req.session.passport.user, (data) => {
+            if (data.status == "success") {
+                console.log("info: ", data.data);
+                db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
+                console.log("id nhận tin nhắn đây nè: ", id);
+                callSendAPI(id, {"text": `Xin chào "${data.data.me.name}"`});
+                callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#GENERAL" Hãy bắt đầu trò chuyện!`});
+                fs.readFile('index.html', (err, data) => {
+                    resp.end(data);
+                })
+            }
+            // đăng ký lắng nghe
+            // apireal.login(req.session.passport.user);
+        });
+    } else {
+        resp.end();
     }
 });
 
@@ -274,28 +271,8 @@ app.post('/ten-lua', async (req, res) => {
     console.log("session", req.session);
     console.log(body);
     let temp = await db.getDataUserConnect().then(data => data);
-    temp.map(x => callSendAPI(x, body.text));
+    temp.map(x => callSendAPI(x, {"text": body.text}));
     res.end();
-});
-
-// Creates the endpoint for our webhook
-app.get('/listusers', (req, res) => {
-
-    var login = b.login();
-
-    login.then(data => {
-        req.session.authToken = data.body.data.authToken;
-        req.session.userId = data.body.data.userId;
-        b.getListUser(req.session.authToken, req.session.userId, data => {
-            console.log(data);
-            let temp = data.toString();
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write("<pre>" + JSON.stringify(data) + "</pre>");
-            res.end();
-        });
-    })
-
-
 });
 
 app.get("/getlist", (req, res) => {
