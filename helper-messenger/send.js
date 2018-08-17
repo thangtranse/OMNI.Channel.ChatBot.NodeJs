@@ -22,8 +22,8 @@ const sendMessengerTemplateList = (sender_psid, list) => {
         list.users.map(data => {
             temp.push(
                 {
-                    "title": `"${data.username}"`,
-                    "subtitle": `"${data._id}"`,
+                    "title": `${data.username}`,
+                    "subtitle": `${data._id}`,
                 }
             )
         });
@@ -34,6 +34,13 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                     "template_type": "list",
                     "top_element_style": "compact",
                     "elements": temp,
+                    "buttons": [
+                        {
+                            "title": "View More",
+                            "type": "postback",
+                            "payload": "payload"
+                        }
+                    ]
                 }
             }
         }
