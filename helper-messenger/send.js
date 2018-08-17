@@ -33,7 +33,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 "payload": {
                     "template_type": "list",
                     "top_element_style": "compact",
-                    "elements": temp.toString(),
+                    "elements": temp,
                 }
             }
         }
@@ -48,6 +48,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
     console.log(test.attachment.payload.elements);
     console.log("----------------------------ththththt----------------------------");
     parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
+    parameterSentGraph("messages", sender_psid, test);
 }
 
 const parameterSentGraph = (endpoint, sender_psid, response) => {
