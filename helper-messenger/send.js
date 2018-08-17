@@ -80,6 +80,6 @@ const parameterSentGraph = (endpoint, sender_psid, response) => {
             );
         }
     });
-}
+} 
 
 module.exports = {callSendAPI, sendMessengerTemplateList}
