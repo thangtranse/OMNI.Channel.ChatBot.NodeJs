@@ -27,6 +27,8 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 }
             )
         });
+        console.log("------------------------------------------------------");
+        console.log(temp);
         test = {
             "attachment": {
                 "type": "template",
@@ -53,6 +55,8 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 }
             }
         }
+        console.log(test);
+        console.log("------------------------------------------------------");
     } else {
         test = {"text": "Không tìm thấy"}
     }
@@ -60,7 +64,6 @@ const sendMessengerTemplateList = (sender_psid, list) => {
     console.log(test);
     console.log("----------------------------iiiiiiiii----------------------------");
     parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
-    parameterSentGraph("messages", sender_psid, test);
 }
 
 const parameterSentGraph = (endpoint, sender_psid, response) => {
