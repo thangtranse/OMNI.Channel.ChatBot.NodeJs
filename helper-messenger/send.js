@@ -24,7 +24,6 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                     title: data.username,
                     subtitle: data._id,
                 })
-            )
         });
         test = {
             "attachment": {
