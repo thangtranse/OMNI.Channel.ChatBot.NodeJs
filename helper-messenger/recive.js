@@ -61,7 +61,6 @@ const handleMessage = (sender_psid, received_message) => {
                 case 'bắt đầu':
                     loginRocketWithFacebook(sender_psid);
                     break;
-
                 case 'ket thuc':
                 case 'kết thúc':
                 case 'đăng xuất':
@@ -69,9 +68,7 @@ const handleMessage = (sender_psid, received_message) => {
                     MessengerSend.callSendAPI(sender_psid, {"text": "Bạn chưa đăng nhập vui lòng gõ 'Bắt đầu' để đăng nhập"});
                     break;
                 default:
-                    response = {
-                        "text": received_message
-                    }
+                    privateCustomer(sender_psid, received_message);
             }
         }
     });
@@ -109,6 +106,11 @@ const loginRocketWithFacebook = (sender_psid) => {
     MessengerSend.callSendAPI(sender_psid, response);
 }
 
+/**
+ * Đăng xuất
+ * Xóa dữ liệu trên firebase
+ * @param sender_psid
+ */
 const logoutRocketWithAccountFacebook = (sender_psid) => {
     db.deleteUser(sender_psid);
     MessengerSend.callSendAPI(sender_psid, {text: "Bạn đã đăng xuất thành công"});
@@ -147,10 +149,19 @@ const codeExecute = (user, data) => {
             });
             break;
         case '--help':
-            let temp = {"text": "--searchuser keyword -> Tìm user với keyword"}
+            let temp = {text: "--searchuser keyword -> Tìm user với keyword"}
             MessengerSend.callSendAPI(user.id_fb.stringValue, temp);
             break;
     }
+}
+
+/**
+ *
+ * @param sender_psid
+ * @param received_message
+ */
+const privateCustomer = (sender_psid, received_message) => {
+
 }
 
 module.exports = {
