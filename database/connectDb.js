@@ -69,7 +69,7 @@ class connectDb {
 
     deleteUser(_value) {
         let db = admin.firestore();
-        let deleteDoc = db.collection('cities').doc(_value).delete();
+        let deleteDoc = db.collection('users').doc(_value).delete();
         console.log("đăng xuất: ", deleteDoc)
     }
 }
