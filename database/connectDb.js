@@ -18,7 +18,7 @@ class connectDb {
      * @param token_facebook
      * @param userId_rocket
      */
-    writeUserData = (userId_fb, name, token_rocket, token_facebook, userId_rocket) => {
+    writeUserData(userId_fb, name, token_rocket, token_facebook, userId_rocket) {
         set("users", userId_fb, name, token_rocket, token_facebook, userId_rocket)
     };
 
@@ -27,14 +27,18 @@ class connectDb {
      * @param _idUser
      * @param callbback
      */
-    getDataUser = (_idUser, callback) => get("users", _idUser, callback);
+    getDataUser(_idUser, callback) {
+        get("users", _idUser, callback);
+    }
 
     /**
      * Lấy danh sách thông tin user đang tương tác với hệ thống
      * @param _value
      * @param callback
      */
-    getListUserConnect = () => getListCollection("users");
+    getListUserConnect() {
+        getListCollection("users");
+    }
 
     queryTokenRocket(_value, callback) {
         var citiesRef = db.collection('users');
@@ -45,7 +49,9 @@ class connectDb {
             });
     }
 
-    deleteUser = (_value) => del("users", _value);
+    deleteUser(_value) {
+        del("users", _value);
+    }
 }
 
 const set = (_collection, userId_fb, name, token_rocket, token_facebook, userId_rocket) => {
