@@ -37,13 +37,16 @@ const sendMessengerTemplateList = (sender_psid, list) => {
         }
         list.users.map(data => {
             test.attachment.payload.elements.push({
-                title: data.username,
-                subtitle: data._id,
+                "title": data.username,
+                "subtitle": data._id,
             })
         });
     } else {
         test = {"text": "Không tìm thấy"}
     }
+    console.log("----------------------------------------------------------------------------11122");
+    console.log(test);
+    console.log("----------------------------------------------------------------------------11122");
     parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
     parameterSentGraph("messages", sender_psid, test);
 }
