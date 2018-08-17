@@ -65,6 +65,10 @@ const parameterSentGraph = (endpoint, sender_psid, response) => {
         },
         "message": response
     }
+
+    console.log("----------4444--------222222222----------------");
+    console.log(request_body);
+    console.log("----------4444--------222222222----------------");
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v2.6/me/" + endpoint,
