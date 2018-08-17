@@ -46,7 +46,7 @@ class apiRest {
             "method": "POST",
             "json": data
         }, (error, response, body) => {
-            if (!err) {
+            if (!error) {
                 console.log('Đăng nhập thành công!', body);
                 console.log('Đăng nhập thành công! event response.statusCode == 200: ', response.statusCode == 200);
                 return callback(body);
