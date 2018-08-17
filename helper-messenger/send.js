@@ -45,15 +45,11 @@ const sendMessengerTemplateList = (sender_psid, list) => {
             }
         }
     } else {
-        test = {
-            "text": "Không tìm thấy"
-        }
+        test = { "text": "Không tìm thấy" }
     }
     console.log("----------------------------ththththt----------------------------");
     console.log(test);
     console.log("----------------------------iiiiiiiii----------------------------");
-    console.log(test.attachment.payload.elements);
-    console.log("----------------------------ththththt----------------------------");
     parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
     parameterSentGraph("messages", sender_psid, test);
 }
