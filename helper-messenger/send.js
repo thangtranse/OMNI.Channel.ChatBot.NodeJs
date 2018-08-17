@@ -42,7 +42,9 @@ const sendMessengerTemplateList = (sender_psid, list) => {
             "text": "Không tìm thấy"
         }
     }
-
+    console.log("----------------------------ththththt----------------------------");
+    console.log(test);
+    console.log("----------------------------ththththt----------------------------");
     parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
 }
 
