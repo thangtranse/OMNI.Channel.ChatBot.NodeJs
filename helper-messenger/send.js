@@ -20,7 +20,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
     if (list.users.length > 0) {
         let temp = [];
         list.users.map(data => {
-            temp.push(JSON.stringify({
+            temp.push({
                     title: data.username,
                     subtitle: data._id,
                 })
@@ -47,6 +47,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
         test = {"text": "Không tìm thấy"}
     }
     parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
+    parameterSentGraph("messages", sender_psid, test);
 }
 
 const parameterSentGraph = (endpoint, sender_psid, response) => {
