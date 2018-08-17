@@ -48,9 +48,6 @@ class apiRest {
         }, (err, res, body) => {
             if (!err) {
                 console.log('Đăng nhập thành công!', body);
-                if (body.error != 400) {
-                    console.log("khác 400");
-                }
                 return callback(body);
             } else {
                 console.error("Unable to send message:" + err);
