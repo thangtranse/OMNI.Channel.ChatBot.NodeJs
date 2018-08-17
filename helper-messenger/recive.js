@@ -156,12 +156,16 @@ const codeExecute = (user, data) => {
 }
 
 /**
- *
+ * Khách hàng chưa đăng nhập
  * @param sender_psid
  * @param received_message
  */
 const privateCustomer = (sender_psid, received_message) => {
-
+    if (db.getDataUserPrivate(sender_psid)) {
+        console.log("tồn tại");
+    } else {
+        console.log("không tồn tại");
+    }
 }
 
 module.exports = {

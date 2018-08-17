@@ -87,6 +87,9 @@ app.get("/", (req, resp) => {
 app.post('/webhook', (req, res) => {
     let body = req.body;
     console.log("Nhập request từ Facebook");
+    console.log(body);
+    console.log("----------------------------");
+
     if (body.object === 'page') {
         body.entry.forEach((entry) => {
             if (!entry.messaging) {

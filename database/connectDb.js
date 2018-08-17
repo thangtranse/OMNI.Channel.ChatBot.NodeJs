@@ -52,6 +52,18 @@ class connectDb {
     deleteUser(_value) {
         del("users", _value);
     }
+
+    // PRIVATE CUSTOMER
+
+    async getDataUserPrivate(_idUser) {
+        return await get("users_private", _idUser, data => data);
+    }
+
+    createUserPrive(userId_fb, name, token_facebook){
+        console.log("test")
+    }
+
+    // PRIVATE CUSTOMER END
 }
 
 const set = (_collection, userId_fb, name, token_rocket, token_facebook, userId_rocket) => {
