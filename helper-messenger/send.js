@@ -20,11 +20,10 @@ const sendMessengerTemplateList = (sender_psid, list) => {
     if (list.users.length > 0) {
         let temp = [];
         list.users.map(data => {
-            temp.push(
-                {
+            temp.push(JSON.stringify({
                     title: data.username,
                     subtitle: data._id,
-                }
+                })
             )
         });
         test = {
