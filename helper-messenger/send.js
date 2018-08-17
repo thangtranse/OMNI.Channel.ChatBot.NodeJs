@@ -22,8 +22,8 @@ const sendMessengerTemplateList = (sender_psid, list) => {
         list.users.map(data => {
             temp.push(
                 {
-                    "title": data.username,
-                    "subtitle": data._id,
+                    title: data.username,
+                    subtitle: data._id,
                 }
             )
         });
@@ -57,16 +57,12 @@ const parameterSentGraph = (endpoint, sender_psid, response) => {
         },
         "message": response
     }
-
-    console.log("----------4444--------222222222----------------");
-    console.log(request_body);
-    console.log("----------4444--------222222222----------------");
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v2.6/me/" + endpoint,
         "qs": {"access_token": PAGE_ACCESS_TOKEN},
         "method": "POST",
-        "json": JSON.stringify(request_body)
+        "json": request_body
     }, (error, response, body) => {
         if (!error && response.statusCode === 200) {
             // Message has been successfully received by Facebook.
