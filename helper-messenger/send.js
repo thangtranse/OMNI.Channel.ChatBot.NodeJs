@@ -16,40 +16,34 @@ const callSendAPI = (sender_psid, response) => {
 
 
 const sendMessengerTemplateList = (sender_psid, list) => {
-    console.log("--222111----------------------------");
-    let test = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "list",
-                "top_element_style": "compact",
-                "elements": [
-                    {
-                        "title": "Classic T-Shirt Collection",
-                        "subtitle": "See all our colors",
-                    },
-                    {
-                        "title": "Classic White T-Shirt",
-                        "subtitle": "See all our colors",
-                    }, {
-                        "title": "Classic Blue T-Shirt",
-                        "subtitle": "100% Cotton, 200% Comfortable",
-                    }
-                ],
-                "buttons": [
-                    {
-                        "title": "View More",
-                        "type": "postback",
-                        "payload": "payload"
-                    }
-                ]
+    let test;
+    if (list.users.length > 0) {
+        let temp = [];
+        list.users.map(data => {
+            temp.push(
+                {
+                    "title": `${data.username}`,
+                    "subtitle": `${data._id}`,
+                }
+            )
+        });
+        test = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "list",
+                    "top_element_style": "compact",
+                    "elements": temp,
+                }
             }
         }
+    } else {
+        test = {
+            "text": "Không tìm thấy"
+        }
     }
-    console.log("messages?access_token=" + PAGE_ACCESS_TOKEN);
+
     parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
-    parameterSentGraph("messages", sender_psid, test);
-    console.log("--222111----------------------------");
 }
 
 const parameterSentGraph = (endpoint, sender_psid, response) => {

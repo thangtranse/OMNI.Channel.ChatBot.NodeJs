@@ -114,7 +114,7 @@ const codeExecute = (user, data) => {
             api.searchUser(keyword, user.token_rocket.stringValue, user.id_rocket.stringValue, data => {
                 console.log("------------------------111-----------------", data);
                 MessengerSend.callSendAPI(user.id_fb.stringValue, {"text": "thành công"});
-                MessengerSend.sendMessengerTemplateList(user.id_fb.stringValue, "");
+                MessengerSend.sendMessengerTemplateList(user.id_fb.stringValue, data);
             });
             break;
         case '--help':
