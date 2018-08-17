@@ -28,14 +28,14 @@ const sendMessengerTemplateList = (sender_psid, list) => {
             )
         });
         console.log("------------------------------------------------------");
-        console.log(temp);
+        console.log(temp.toString());
         test = {
             "attachment": {
                 "type": "template",
                 "payload": {
                     "template_type": "list",
                     "top_element_style": "compact",
-                    "elements": temp,
+                    "elements": temp.toString(),
                     "buttons": [
                         {
                             "title": "View More",
