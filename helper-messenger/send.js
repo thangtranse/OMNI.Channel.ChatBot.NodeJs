@@ -33,7 +33,16 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 "payload": {
                     "template_type": "list",
                     "top_element_style": "compact",
-                    "elements": temp,
+                    "elements": [
+                        {
+                            "title": "Classic T-Shirt Collection",
+                            "subtitle": "See all our colors",
+                        },
+                        {
+                            "title": "Classic White T-Shirt",
+                            "subtitle": "See all our colors",
+                        }
+                    ],
                     "buttons": [
                         {
                             "title": "View More",
@@ -45,7 +54,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
             }
         }
     } else {
-        test = { "text": "Không tìm thấy" }
+        test = {"text": "Không tìm thấy"}
     }
     console.log("----------------------------ththththt----------------------------");
     console.log(test);
