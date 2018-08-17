@@ -35,12 +35,12 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 }
             }
         }
-        list.users.forEach(data => {
+        // list.users.forEach(data => {
             test.attachment.payload.elements.push({
-                "title": "ahihi",
-                "subtitle": "ahshs"
+                "title": data.username,
+                "subtitle": data._id
             })
-        });
+        // });
     } else {
         test = {"text": "Không tìm thấy"}
     }
