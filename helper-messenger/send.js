@@ -21,9 +21,13 @@ const sendMessengerTemplateList = (sender_psid, list) => {
         let temp = [];
         list.users.map(data => {
             temp.push({
-                    title: data.username,
-                    subtitle: data._id,
-                })
+                title: data.username,
+                subtitle: data._id,
+            })
+            console.log({
+                title: data.username,
+                subtitle: data._id,
+            })
         });
         test = {
             "attachment": {
