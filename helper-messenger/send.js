@@ -18,24 +18,13 @@ const callSendAPI = (sender_psid, response) => {
 const sendMessengerTemplateList = (sender_psid, list) => {
     let test;
     if (list.users.length > 0) {
-        let temp = [];
-        list.users.map(data => {
-            temp.push({
-                title: data.username,
-                subtitle: data._id,
-            })
-            console.log({
-                title: data.username,
-                subtitle: data._id,
-            })
-        });
         test = {
             "attachment": {
                 "type": "template",
                 "payload": {
                     "template_type": "list",
                     "top_element_style": "compact",
-                    "elements": temp,
+                    "elements": [],
                     "buttons": [
                         {
                             "title": "View More",
@@ -46,6 +35,12 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 }
             }
         }
+        list.users.map(data => {
+            test.attachment.payload.elements.push({
+                title: data.username,
+                subtitle: data._id,
+            })
+        });
     } else {
         test = {"text": "Không tìm thấy"}
     }
