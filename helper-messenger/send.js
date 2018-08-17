@@ -22,8 +22,8 @@ const sendMessengerTemplateList = (sender_psid, list) => {
         list.users.map(data => {
             temp.push(
                 {
-                    "title": `${data.username}`,
-                    "subtitle": `${data._id}`,
+                    "title": `"${data.username}"`,
+                    "subtitle": `"${data._id}"`,
                 }
             )
         });
