@@ -20,8 +20,20 @@ const handleMessage = (sender_psid, received_message) => {
         if (typeof data != "undefined") { // khách hàng đã login
             console.log("Tồn tại: ", data);
             switch ((received_message.text).toLowerCase()) {
+                case 'bat dau':
+                case 'start':
+                case 'dang nhap':
+                case 'đăng nhập':
+                case 'login':
                 case 'bắt đầu':
                     MessengerSend.callSendAPI(sender_psid, {"text": "Bạn đã đăng nhập rồi!"});
+                    break;
+                case 'ket thuc':
+                case 'kết thúc':
+                case 'đăng xuất':
+                case 'dang xuat':
+                case 'end':
+                    logoutRocketWithAccountFacebook(sender_psid);
                     break;
                 default:
                     response = {
@@ -41,8 +53,20 @@ const handleMessage = (sender_psid, received_message) => {
         } else { // khách hàng chưa login
             console.log("KH chưa tồn tại");
             switch ((received_message.text).toLowerCase()) {
+                case 'bat dau':
+                case 'start':
+                case 'dang nhap':
+                case 'đăng nhập':
+                case 'login':
                 case 'bắt đầu':
                     loginRocketWithFacebook(sender_psid);
+                    break;
+
+                case 'ket thuc':
+                case 'kết thúc':
+                case 'đăng xuất':
+                case 'dang xuat':
+                    MessengerSend.callSendAPI(sender_psid, {"text": "Bạn chưa đăng nhập vui lòng gõ 'Bắt đầu' để đăng nhập"});
                     break;
                 default:
                     response = {
@@ -83,6 +107,11 @@ const loginRocketWithFacebook = (sender_psid) => {
         }
     }
     MessengerSend.callSendAPI(sender_psid, response);
+}
+
+const logoutRocketWithAccountFacebook = (sender_psid) => {
+    db.deleteUser(sender_psid);
+    MessengerSend.callSendAPI(sender_psid, {text: "Bạn đã đăng xuất thành công"});
 }
 
 /**

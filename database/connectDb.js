@@ -39,7 +39,7 @@ class connectDb {
      * @param callback
      */
     async getDataUserConnect() {
-        var db = admin.firestore();
+        let db = admin.firestore();
         let data = [];
         var citiesRef = db.collection('users');
         await citiesRef.get().then(snapshot => {
@@ -65,6 +65,12 @@ class connectDb {
             .catch(err => {
                 console.log('Error getting documents', err);
             });
+    }
+
+    deleteUser(_value) {
+        let db = admin.firestore();
+        let deleteDoc = db.collection('cities').doc(_value).delete();
+        console.log("đăng xuất: ", deleteDoc)
     }
 }
 
