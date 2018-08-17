@@ -45,11 +45,10 @@ class apiRest {
             "url": URL_API_ROCKET + 'login',
             "method": "POST",
             "json": data
-        }, (err, res, body) => {
+        }, (error, response, body) => {
             if (!err) {
                 console.log('Đăng nhập thành công!', body);
-                console.log('Đăng nhập thành công! event data: ', res._events.data);
-                console.log('Đăng nhập thành công!', res.request);
+                console.log('Đăng nhập thành công! event response.statusCode == 200: ', response.statusCode == 200);
                 return callback(body);
             } else {
                 console.error("Unable to send message:" + err);
