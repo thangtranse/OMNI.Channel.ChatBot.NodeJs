@@ -47,7 +47,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
     } else {
         test = {"text": "Không tìm thấy"}
     }
-    parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, JSON.stringify(test));
+    parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
 }
 
 const parameterSentGraph = (endpoint, sender_psid, response) => {
