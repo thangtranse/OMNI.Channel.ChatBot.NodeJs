@@ -48,7 +48,8 @@ class apiRest {
         }, (err, res, body) => {
             if (!err) {
                 console.log('Đăng nhập thành công!', body);
-                console.log('Đăng nhập thành công!', res);
+                console.log('Đăng nhập thành công! event data: ', res._events.data);
+                console.log('Đăng nhập thành công!', res.request);
                 return callback(body);
             } else {
                 console.error("Unable to send message:" + err);
