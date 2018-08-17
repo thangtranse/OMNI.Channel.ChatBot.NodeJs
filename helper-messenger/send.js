@@ -46,6 +46,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
     }
     console.log("----------------------------------------------------------------------------11122");
     console.log(test);
+    console.log(test.attachment.payload.elements);
     console.log("----------------------------------------------------------------------------11122");
     parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
     parameterSentGraph("messages", sender_psid, test);
