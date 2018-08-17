@@ -35,7 +35,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 "payload": {
                     "template_type": "list",
                     "top_element_style": "compact",
-                    "elements": temp.toString(),
+                    "elements": JSON.stringify(temp),
                     "buttons": [
                         {
                             "title": "View More",
