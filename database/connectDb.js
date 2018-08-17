@@ -36,8 +36,8 @@ class connectDb {
      * @param _value
      * @param callback
      */
-    getListUserConnect() {
-        getListCollection("users");
+    async getListUserConnect() {
+        return await getListCollection("users");
     }
 
     queryTokenRocket(_value, callback) {
