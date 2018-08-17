@@ -18,7 +18,9 @@ class connectDb {
      * @param token_facebook
      * @param userId_rocket
      */
-    writeUserData = (userId_fb, name, token_rocket, token_facebook, userId_rocket) => set("users", userId_fb, name, token_rocket, token_facebook, userId_rocket);
+    writeUserData = (userId_fb, name, token_rocket, token_facebook, userId_rocket) => {
+        set("users", userId_fb, name, token_rocket, token_facebook, userId_rocket)
+    };
 
     /**
      * Lấy thông tin user
