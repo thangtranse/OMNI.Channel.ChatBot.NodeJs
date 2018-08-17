@@ -27,7 +27,6 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 }
             )
         });
-        console.log("------------------------------------------------------");
         test = {
             "attachment": {
                 "type": "template",
@@ -45,8 +44,6 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 }
             }
         }
-        console.log(test);
-        console.log("------------------------------------------------------");
     } else {
         test = {"text": "Không tìm thấy"}
     }
@@ -69,7 +66,7 @@ const parameterSentGraph = (endpoint, sender_psid, response) => {
         "uri": "https://graph.facebook.com/v2.6/me/" + endpoint,
         "qs": {"access_token": PAGE_ACCESS_TOKEN},
         "method": "POST",
-        "json": request_body
+        "json": JSON.stringify(request_body)
     }, (error, response, body) => {
         if (!error && response.statusCode === 200) {
             // Message has been successfully received by Facebook.
