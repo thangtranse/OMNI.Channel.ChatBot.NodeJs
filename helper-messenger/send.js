@@ -38,7 +38,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
         list.users.map(data => {
             test.attachment.payload.elements.push({
                 "title": data.username,
-                "subtitle": data._id,
+                "subtitle": data._id
             })
         });
     } else {
