@@ -150,6 +150,6 @@ const randomUsername = _email => (`${_email.replace(/(\s)/g, ".")}.${Math.floor(
  * @param err
  */
 const error = err => {
-    console.log("API ERR: ", err.response.data);
+    console.log("API ERR: ", err.response);
 }
 module.exports = new apiRest();
