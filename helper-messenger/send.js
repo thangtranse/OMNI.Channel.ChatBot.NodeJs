@@ -20,12 +20,8 @@ const sendMessengerTemplateList = (sender_psid, list) => {
     if (list.users.length > 0) {
         let temp = [];
         list.users.map(data => {
-            temp.push(
-                {
-                    "title": `${data.username}`,
-                    "subtitle": `${data._id}`,
-                }
-            )
+            let t = '{ "title": "' + data.username + '", "subtitle": "' + data._id + '"}';
+            temp.push(t);
         });
         console.log("------------------------------------------------------");
         console.log(temp);
@@ -35,16 +31,7 @@ const sendMessengerTemplateList = (sender_psid, list) => {
                 "payload": {
                     "template_type": "list",
                     "top_element_style": "compact",
-                    "elements": [
-                        {
-                            "title": "Classic T-Shirt Collection",
-                            "subtitle": "See all our colors",
-                        },
-                        {
-                            "title": "Classic White T-Shirt",
-                            "subtitle": "See all our colors",
-                        }
-                    ],
+                    "elements": temp,
                     "buttons": [
                         {
                             "title": "View More",
