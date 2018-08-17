@@ -56,6 +56,7 @@ passport.deserializeUser((user, done) => {
 
 // Khi đăng nhập thành công sẽ trỏ về link này
 app.get("/", (req, resp) => {
+    console.log("oke chưa?");
     if (id.length != 0 && typeof req.session.passport.user != "undefined") {
         api.loginWithFacebook(req.session.passport.user, (data) => {
             if (data.status == "success") {
