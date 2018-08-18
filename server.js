@@ -180,6 +180,15 @@ app.post('/ten-lua', async (req, res) => {
     res.end();
 });
 
+// Creates the endpoint for our webhook
+app.post('/customerprivate', async (req, res) => {
+    let body = req.body;
+    console.log("-------------------------------------------------------");
+    console.log(body);
+    console.log("-------------------------------------------------------");
+    res.end();
+});
+
 app.get("/test", (req, res) => {
     let data = "--save thắng";
     let key = data.substr(0, data.indexOf(" "));
