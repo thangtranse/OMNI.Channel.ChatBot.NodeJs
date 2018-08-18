@@ -26,7 +26,7 @@ class connectDb {
             token_facebook: token_facebook.length > 0 ? token_facebook : "",
             name: name.length > 0 ? name : ""
         };
-        setCollection("users", temp)
+        setCollection("users", userId_fb, temp)
     };
 
     /**
@@ -79,7 +79,13 @@ class connectDb {
     // PRIVATE CUSTOMER END
 }
 
-const setCollection = (_collection, _data) => {
+/**
+ * 
+ * @param _collection
+ * @param userId_fb
+ * @param _data
+ */
+const setCollection = (_collection, userId_fb, _data) => {
     var db = admin.firestore();
     var docRef = db.collection(_collection).doc(userId_fb);
     var setAda = docRef.set(_data);
