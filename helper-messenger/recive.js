@@ -1,5 +1,6 @@
 const db = require('../database/connectDb');
 const api = require('../helper-rocket/apiRest');
+const graph = require('./graph');
 const MessengerSend = require('./send');
 
 /**
@@ -161,8 +162,15 @@ const codeExecute = (user, data) => {
  * @param received_message
  */
 const privateCustomer = (sender_psid, received_message) => {
-    db.getDataUserPrivate(sender_psid, data => {
-        if (typeof data != "undefined") {
+    db.getDataUserPrivate(sender_psid, async data => {
+        if (typeof data != "undefined") { // lần đầu gửi tn
+            let temp = await graph.getInforCustomerChatWithPage(sender_psid);
+            if (temp != 404)
+                db.createUserPrive(sender_psid, temp.first_name + " " + temp.last_name, temp.profile_pic);
+            else {
+                console.log("sai nè");
+            }
+        } else {
 
         }
     })

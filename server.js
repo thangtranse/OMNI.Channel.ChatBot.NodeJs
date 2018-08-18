@@ -191,6 +191,11 @@ app.get("/test", (req, res) => {
     res.end();
 });
 
+const t = require('./helper-messenger/graph');
+app.get("/fb", (req, res) => {
+    console.log("new: ", t.getInforCustomerChatWithPage('166143675731276'));
+});
+
 app.get("/livechat", (req, res) => {
     fs.readFile('./public/livechat.html', (err, data) => {
         res.end(data);
