@@ -173,9 +173,9 @@ const privateCustomer = (sender_psid, received_message) => {
                 let conver = JSON.parse(temp);
                 // Add Infor Database
                 let userAdmin = await api.login();
-                let nameChannel = sender_psid + "." + conver.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + conver.last_name.toLowerCase().trim().replace(/(\s)/g, ".");
+                let nameChannel = conver.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + conver.last_name.toLowerCase().trim().replace(/(\s)/g, ".") + sender_psid;
                 api.createChannel(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
-                    console.log("222 ", data2);
+                    console.log("222 ", data2.status);
                 });
                 api.createOutGoingWebhook(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
                     console.log("333 ", data2);
