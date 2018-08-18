@@ -43,7 +43,7 @@ class apiRest {
                 "serviceName": "facebook",
                 "accessToken": _token,
                 "secret": configs.facebookAuth.clientSecret,
-                "expiresIn": 200
+                "expiresIn": 500
             }
         })
             .then(response => callback(response.data))
