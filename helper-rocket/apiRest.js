@@ -1,5 +1,5 @@
 const request = require('request');
-const URL_API_ROCKET = 'http://ten-lua.herokuapp.com/api/v1/';
+const URL_API_ROCKET = 'https://ten-lua.herokuapp.com/api/v1/';
 var axios = require('axios');
 var configs = require("../config.json");
 
