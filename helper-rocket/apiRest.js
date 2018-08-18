@@ -35,20 +35,16 @@ class apiRest {
     }
 
     loginWithFacebook(_token, callback) {
-        let data = {
-            "serviceName": "facebook",
-            "accessToken": _token,
-            "secret": configs.facebookAuth.clientSecret,
-            "expiresIn": 500
-        };
-
         axiosInstance({
             method: 'POST',
             url: 'login',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            data: data
+            headers: {'Content-type': 'application/json'},
+            data: {
+                "serviceName": "facebook",
+                "accessToken": _token,
+                "secret": configs.facebookAuth.clientSecret,
+                "expiresIn": 200
+            }
         })
             .then(response => callback(response.data))
             .catch(err => error(err));
