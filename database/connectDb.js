@@ -68,11 +68,12 @@ class connectDb {
 
     createUserPrive(userId_fb, first_name, last_name, avatar) {
         let temp = {
-            userId_fb: userId_fb,
-            last_name: last_name,
-            avatar: avatar,
-            first_name: first_name
+            userId_fb: userId_fb.length > 0 ? userId_fb : "",
+            last_name: last_name.length > 0 ? last_name : "",
+            avatar: avatar.length > 0 ? avatar : "",
+            first_name: first_name.length > 0 ? first_name : ""
         }
+        console.log(temp);
         setCollection("users_private", userId_fb, temp);
     }
 
