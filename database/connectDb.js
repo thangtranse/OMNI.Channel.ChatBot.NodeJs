@@ -67,6 +67,10 @@ class connectDb {
     }
 
     createUserPrive(userId_fb, first_name, last_name, avatar) {
+        console.log(userId_fb);
+        console.log(first_name);
+        console.log(last_name);
+        console.log(avatar);
         let temp = {
             userId_fb: userId_fb.length > 0 ? userId_fb : "",
             last_name: last_name.length > 0 ? last_name : "",
