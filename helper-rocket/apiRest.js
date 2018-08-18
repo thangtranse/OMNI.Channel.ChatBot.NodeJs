@@ -35,6 +35,7 @@ class apiRest {
     }
 
     loginWithFacebook(_token, callback) {
+        console.log("Login with facebook");
         axiosInstance({
             method: 'POST',
             url: 'login',
