@@ -164,6 +164,7 @@ const codeExecute = (user, data) => {
 const privateCustomer = (sender_psid, received_message) => {
     console.log("key word ctl + 2");
     db.getDataUserPrivate(sender_psid, async data => {
+        console.log("data: ", data);
         if (typeof data != "undefined") { // lần đầu gửi tn
             console.log("Lần đầu gửi tin nhắn nha bà con");
             let temp = await graph.getInforCustomerChatWithPage(sender_psid);
