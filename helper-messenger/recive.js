@@ -184,7 +184,7 @@ const privateCustomer = (sender_psid, received_message) => {
                 console.log("sai nè");
             }
         }
-        api.sendMess(data.nameChannel.stringValue, received_message, userAdmin.authToken, userAdmin.userId,
+        api.sendMess(data.nameChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
             data => {
                 console.log("tin nhắn được gửi đến rocket: ", data.status);
             });
