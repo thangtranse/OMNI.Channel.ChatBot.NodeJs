@@ -177,8 +177,7 @@ const privateCustomer = (sender_psid, received_message) => {
                         api.createOutGoingWebhook(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
                             console.log("thành công");
                         });
-                        db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel);
-                        console.log("thaaaaaaaaaaaaaaaaaaaa", data2);
+                        db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel, data2.data.channel._id);
                     }
                 });
             }
@@ -186,7 +185,7 @@ const privateCustomer = (sender_psid, received_message) => {
                 console.log("sai nè");
             }
         }
-        api.sendMess(data.nameChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
+        api.sendMess(data.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
             data => {
                 console.log("tin nhắn được gửi đến rocket: ", data.status);
             });

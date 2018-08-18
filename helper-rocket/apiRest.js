@@ -146,6 +146,20 @@ class apiRest {
             .catch(err => error(err));
     }
 
+    /**
+     *
+     * @param channelName
+     * @param _useridAdmin
+     * @param _authAdmin
+     * @param callback
+     * {
+     *     data: {
+     *         channel: { id, name, fnam, t,msgs,userCount,u, customFields, ts,ro,sysMes, _updateAt }
+     *         success
+     *         }
+     *     }
+     * }
+     */
     createChannel(channelName, _useridAdmin, _authAdmin, callback) {
         axiosInstance({
             method: 'POST',
