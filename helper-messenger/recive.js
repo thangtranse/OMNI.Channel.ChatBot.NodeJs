@@ -165,16 +165,22 @@ const privateCustomer = (sender_psid, received_message) => {
     console.log("key word ctl + 2");
     db.getDataUserPrivate(sender_psid, async data => {
         console.log("data: ", data);
-        if (typeof data != "undefined") { // lần đầu gửi tn
+        if (typeof data != "undefined") {
             console.log("oke");
-        } else {
-            console.log("und");
-            console.log("Lần đầu gửi tin nhắn nha bà con");
+        } else {// lần đầu gửi tin nhắn
             let temp = await graph.getInforCustomerChatWithPage(sender_psid);
             if (temp != 404) {
                 let conver = JSON.parse(temp);
-                console.log("1hi : ", conver);
-                db.createUserPrive(sender_psid, conver.first_name, conver.last_name, conver.profile_pic);
+                // Add Infor Database
+                let userAdmin = await api.login();
+                let nameChannel = sender_psid + "." + conver.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + conver.last_name.toLowerCase().trim().replace(/(\s)/g, ".");
+                api.createChannel(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
+                    console.log("222 ", data2);
+                });
+                api.createOutGoingWebhook(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
+                    console.log("333 ", data2);
+                });
+                db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel);
             }
             else {
                 console.log("sai nè");

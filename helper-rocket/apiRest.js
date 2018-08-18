@@ -1,5 +1,6 @@
 const request = require('request');
 const URL_API_ROCKET = 'https://ten-lua.herokuapp.com/api/v1/';
+const URL_WEBHOOK_CALLBACK = 'http://ten-lua-webhook.herokuapp.com/customerprivate';
 var axios = require('axios');
 var configs = require("../config.json");
 
@@ -13,8 +14,26 @@ class apiRest {
     constructor() {
     }
 
+    /**
+     {
+        userId: 'AHBrCEjwq4H2TYdj9',
+        authToken: '1_aP69HkRa_VZLlaryjUA0v69xSYMN9keFM1KQkb6pA',
+        me:
+        { _id: 'AHBrCEjwq4H2TYdj9',
+        name: 'thangtm',
+        emails: [ [Object] ],
+        status: 'away',
+        statusConnection: 'away',
+        username: 'thangtm',
+        utcOffset: 7,
+        active: true,
+        roles: [ 'admin', 'bot' ],
+        settings: { preferences: [Object] } }
+    }
+     * @returns {Promise<any>}
+     */
     login() {
-        var promise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             var request_body = {
                 username: 'thangtm',
                 password: 'zxc123'
@@ -24,14 +43,13 @@ class apiRest {
                 "method": "POST",
                 "json": request_body
             }, (err, res, body) => {
-                if (!err) {
-                    resolve(res);
+                if (!err && body.status == 'success') {
+                    resolve(body.data);
                 } else {
                     reject(err)
                 }
             });
         })
-        return promise;
     }
 
     loginWithFacebook(_token, callback) {
@@ -127,6 +145,51 @@ class apiRest {
             .then(response => _callback(response.data))
             .catch(err => error(err));
     }
+
+    createChannel(channelName, _useridAdmin, _authAdmin, callback) {
+        axiosInstance({
+            method: 'POST',
+            url: 'channels.create',
+            headers: {
+                'X-Auth-Token': _authAdmin,
+                'X-User-Id': _useridAdmin
+            },
+            data: {
+                name: channelName,
+                members: []
+            }
+        }).then(response => {
+            return callback(response)
+        }).catch(function (message) {
+            console.log(message);
+        })
+    }
+
+    createOutGoingWebhook(_name, _useridAdmin, _authAdmin, callback) {
+        axiosInstance({
+            method: 'POST',
+            url: 'integrations.create',
+            headers: {
+                'X-Auth-Token': _authAdmin,
+                'X-User-Id': _useridAdmin
+            },
+            data: {
+                type: "webhook-outgoing",
+                name: _name,
+                event: "sendMessage",
+                enabled: true,
+                username: "rocket.cat",
+                urls: [URL_WEBHOOK_CALLBACK],
+                scriptEnabled: false,
+                channel: '#' + _name
+            }
+        }).then(response => {
+            return callback(response)
+        }).catch(function (message) {
+            console.log(message);
+        })
+    }
+
 }
 
 /**
@@ -145,4 +208,5 @@ const randomUsername = _email => (`${_email.replace(/(\s)/g, ".")}.${Math.floor(
 const error = err => {
     console.log("API ERR: ", err.response);
 }
+
 module.exports = new apiRest();

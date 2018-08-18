@@ -189,14 +189,13 @@ app.post('/customerprivate', async (req, res) => {
     res.end();
 });
 
-app.get("/test", (req, res) => {
-    let data = "--save thắng";
-    let key = data.substr(0, data.indexOf(" "));
-    let keyword = data.slice(-data.indexOf(" "), data.length).trim();
 
-    console.log(key);
-    console.log(keyword);
-
+app.get("/test", async (req, res) => {
+    let a = await api.login();
+    api.createChannel("11223345", a.userId, a.authToken, data => {
+        console.log(data)
+        api.createOutGoingWebhook("11223345", a.userId, a.authToken);
+    });
     res.end();
 });
 

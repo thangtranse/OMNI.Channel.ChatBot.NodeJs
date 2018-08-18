@@ -66,18 +66,14 @@ class connectDb {
         getDocument("users_private", _userId, callback);
     }
 
-    createUserPrive(userId_fb, first_name, last_name, avatar) {
-        console.log(userId_fb);
-        console.log(first_name);
-        console.log(last_name);
-        console.log(avatar);
+    createUserPrivate(userId_fb, first_name, last_name, avatar, nameChannel) {
         let temp = {
             userId_fb: userId_fb.length > 0 ? userId_fb : "",
             last_name: last_name.length > 0 ? last_name : "",
             avatar: avatar.length > 0 ? avatar : "",
-            first_name: first_name.length > 0 ? first_name : ""
+            first_name: first_name.length > 0 ? first_name : "",
+            nameChannel: nameChannel.length > 0 ? nameChannel : ""
         }
-        console.log(temp);
         setCollection("users_private", userId_fb, temp);
     }
 
