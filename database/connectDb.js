@@ -19,7 +19,14 @@ class connectDb {
      * @param userId_rocket
      */
     writeUserData(userId_fb, name, token_rocket, token_facebook, userId_rocket) {
-        setCollection("users", userId_fb, name, token_rocket, token_facebook, userId_rocket)
+        let temp = {
+            id_fb: userId_fb.length > 0 ? userId_fb : "",
+            id_rocket: userId_rocket.length > 0 ? userId_rocket : "",
+            token_rocket: token_rocket.length > 0 ? token_rocket : "",
+            token_facebook: token_facebook.length > 0 ? token_facebook : "",
+            name: name.length > 0 ? name : ""
+        };
+        setCollection("users", temp)
     };
 
     /**
@@ -59,23 +66,23 @@ class connectDb {
         getDocument("users_private", _userId, callback);
     }
 
-    createUserPrive(userId_fb, name, token_facebook) {
-        console.log("test")
+    createUserPrive(userId_fb, first_name, last_name, avatar) {
+        let temp = {
+            userId_fb: userId_fb,
+            last_name: last_name,
+            avatar: avatar,
+            first_name: first_name
+        }
+        setCollection("users_private", temp);
     }
 
     // PRIVATE CUSTOMER END
 }
 
-const setCollection = (_collection, userId_fb, name, token_rocket, token_facebook, userId_rocket) => {
+const setCollection = (_collection, _data) => {
     var db = admin.firestore();
     var docRef = db.collection(_collection).doc(userId_fb);
-    var setAda = docRef.set({
-        id_fb: userId_fb.length > 0 ? userId_fb : "",
-        id_rocket: userId_rocket.length > 0 ? userId_rocket : "",
-        token_rocket: token_rocket.length > 0 ? token_rocket : "",
-        token_facebook: token_facebook.length > 0 ? token_facebook : "",
-        name: name.length > 0 ? name : ""
-    });
+    var setAda = docRef.set(_data);
 }
 
 const delCollection = (_collection, _value) => {
