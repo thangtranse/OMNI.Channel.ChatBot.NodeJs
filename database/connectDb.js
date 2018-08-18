@@ -73,17 +73,17 @@ class connectDb {
             avatar: avatar,
             first_name: first_name
         }
-        setCollection("users_private", temp);
+        setCollection("users_private", userId_fb, temp);
     }
 
     // PRIVATE CUSTOMER END
 }
 
 /**
- * 
- * @param _collection
- * @param userId_fb
- * @param _data
+ *
+ * @param _collection: tên collection
+ * @param userId_fb: tên document
+ * @param _data: array fiels
  */
 const setCollection = (_collection, userId_fb, _data) => {
     var db = admin.firestore();
