@@ -14,7 +14,6 @@ const callSendAPI = (sender_psid, response) => {
     graph.parameterSentGraph("messages", sender_psid, response);
 }
 
-
 const sendMessengerTemplateList = (sender_psid, list) => {
     let test;
     if (list.users.length > 0) {

@@ -164,15 +164,13 @@ const codeExecute = (user, data) => {
 const privateCustomer = (sender_psid, received_message) => {
     console.log("key word ctl + 2");
     db.getDataUserPrivate(sender_psid, async data => {
+        let userAdmin = await api.login();
         console.log("data: ", data);
-        if (typeof data != "undefined") {
-            console.log("oke");
-        } else {// lần đầu gửi tin nhắn
+        if (typeof data == "undefined" && typeof data.nameChannel.stringValue == "undefined") {
             let temp = await graph.getInforCustomerChatWithPage(sender_psid);
             if (temp != 404) {
                 let conver = JSON.parse(temp);
                 // Add Infor Database
-                let userAdmin = await api.login();
                 let nameChannel = conver.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + conver.last_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + sender_psid;
                 api.createChannel(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
                     if (data2.status == 200) {
@@ -186,6 +184,10 @@ const privateCustomer = (sender_psid, received_message) => {
                 console.log("sai nè");
             }
         }
+        api.sendMess(data.nameChannel.stringValue, received_message, userAdmin.authToken, userAdmin.userId,
+            data => {
+                console.log("tin nhắn được gửi đến rocket: ", data.status);
+            });
     })
 }
 

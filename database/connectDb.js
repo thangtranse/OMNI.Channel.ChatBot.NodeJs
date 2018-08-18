@@ -62,6 +62,17 @@ class connectDb {
 
     // PRIVATE CUSTOMER
 
+    /**
+     *
+     * @param _userId
+     * @param callback
+     *
+     * avatar.stringValue/valueType
+     * first_name.stringValue/valueType
+     * nameChannel.stringValue/valueType
+     * userId_fb.stringValue/valueType
+     * last_name.stringValue/valueType
+     */
     getDataUserPrivate(_userId, callback) {
         getDocument("users_private", _userId, callback);
     }
