@@ -177,8 +177,9 @@ const privateCustomer = (sender_psid, received_message) => {
             console.log("Lần đầu gửi tin nhắn nha bà con");
             let temp = await graph.getInforCustomerChatWithPage(sender_psid);
             if (temp != 404) {
-                console.log("1hi : ", temp);
-                db.createUserPrive(sender_psid, temp.first_name, temp.last_name, temp.profile_pic);
+                let conver = JSON.parse(temp);
+                console.log("1hi : ", conver);
+                db.createUserPrive(sender_psid, conver.first_name, conver.last_name, conver.profile_pic);
             }
             else {
                 console.log("sai nè");
