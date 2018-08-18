@@ -190,10 +190,10 @@ app.get("/test", (req, res) => {
 
     res.end();
 });
+
 app.get("/livechat", (req, res) => {
     fs.readFile('./public/livechat.html', (err, data) => {
         res.end(data);
     })
 });
-
 

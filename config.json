@@ -21,5 +21,5 @@
     "clientSecret": "b5222fa7378e3add050404750c0fdc5d",
     "callbackURL": "https://ten-lua-webhook.herokuapp.com/auth/facebook/callback"
   },
-  "PAGE_ACCESS_TOKEN": "EAAG9mksIwrUBADCOKb8P8r7Sjsev2xsZA5WKc2VufdsYRvXwJAeXXR8v2Y9GDVYW9KN3DNIIJQKegkgZAit8CShPByHIWp9hi3WIcMO86KgleMqWZBB60coWGpkdwEJEpVRc3fe4p1s35ymMBvZB7OZAZAG5M2TBl9LGMa1YZB1lwZDZD"
+  "PAGE_ACCESS_TOKEN": "EAAG9mksIwrUBAFq5hhOFNlsnkFRcvPjSskgJ9PcwZAtqJjZBXC5G6emhECxNiROSf3IOiZBZA3gige2LvijcA6ZBesJK7r1tnzE1AniJAddFBsouHigbuFMzv5GijINrymCOrYav98dMJYeNUSO3GKA0ZBN2vnb84QXnrA098Y0gZDZD"
 }

@@ -161,11 +161,11 @@ const codeExecute = (user, data) => {
  * @param received_message
  */
 const privateCustomer = (sender_psid, received_message) => {
-    if (db.getDataUserPrivate(sender_psid)) {
-        console.log("tồn tại");
-    } else {
-        console.log("không tồn tại");
-    }
+    db.getDataUserPrivate(sender_psid, data => {
+        if (typeof data != "undefined") {
+
+        }
+    })
 }
 
 module.exports = {

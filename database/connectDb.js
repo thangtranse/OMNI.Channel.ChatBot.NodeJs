@@ -19,7 +19,7 @@ class connectDb {
      * @param userId_rocket
      */
     writeUserData(userId_fb, name, token_rocket, token_facebook, userId_rocket) {
-        set("users", userId_fb, name, token_rocket, token_facebook, userId_rocket)
+        setCollection("users", userId_fb, name, token_rocket, token_facebook, userId_rocket)
     };
 
     /**
@@ -28,7 +28,7 @@ class connectDb {
      * @param callbback
      */
     getDataUser(_idUser, callback) {
-        get("users", _idUser, callback);
+        getDocument("users", _idUser, callback);
     }
 
     /**
@@ -50,23 +50,23 @@ class connectDb {
     }
 
     deleteUser(_value) {
-        del("users", _value);
+        delCollection("users", _value);
     }
 
     // PRIVATE CUSTOMER
 
-    async getDataUserPrivate(_idUser) {
-        return await get("users_private", _idUser, data => data);
+    getDataUserPrivate(_userId, callback) {
+        getDocument("users_private", _userId, callback);
     }
 
-    createUserPrive(userId_fb, name, token_facebook){
+    createUserPrive(userId_fb, name, token_facebook) {
         console.log("test")
     }
 
     // PRIVATE CUSTOMER END
 }
 
-const set = (_collection, userId_fb, name, token_rocket, token_facebook, userId_rocket) => {
+const setCollection = (_collection, userId_fb, name, token_rocket, token_facebook, userId_rocket) => {
     var db = admin.firestore();
     var docRef = db.collection(_collection).doc(userId_fb);
     var setAda = docRef.set({
@@ -78,12 +78,12 @@ const set = (_collection, userId_fb, name, token_rocket, token_facebook, userId_
     });
 }
 
-const del = (_collection, _value) => {
+const delCollection = (_collection, _value) => {
     let db = admin.firestore();
     let deleteDoc = db.collection(_collection).doc(_value).delete();
 }
 
-const get = (_collection, _idUser, callback) => {
+const getDocument = (_collection, _idUser, callback) => {
     var db = admin.firestore();
     var sfRef = db.collection(_collection).doc(_idUser);
     sfRef.get().then(collections => callback(collections._fieldsProto));
