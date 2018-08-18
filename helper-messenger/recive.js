@@ -162,6 +162,7 @@ const codeExecute = (user, data) => {
  * @param received_message
  */
 const privateCustomer = (sender_psid, received_message) => {
+    console.log("key word ctl + 2");
     db.getDataUserPrivate(sender_psid, async data => {
         if (typeof data != "undefined") { // lần đầu gửi tn
             console.log("Lần đầu gửi tin nhắn nha bà con");
@@ -172,7 +173,14 @@ const privateCustomer = (sender_psid, received_message) => {
                 console.log("sai nè");
             }
         } else {
-
+            console.log("und");
+            console.log("Lần đầu gửi tin nhắn nha bà con");
+            let temp = await graph.getInforCustomerChatWithPage(sender_psid);
+            if (temp != 404)
+                db.createUserPrive(sender_psid, temp.first_name + " " + temp.last_name, temp.profile_pic);
+            else {
+                console.log("sai nè");
+            }
         }
     })
 }
