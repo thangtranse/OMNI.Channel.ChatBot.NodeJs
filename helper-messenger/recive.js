@@ -178,17 +178,22 @@ const privateCustomer = (sender_psid, received_message) => {
                             console.log("thành công");
                         });
                         db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel, data2.data.channel._id);
+                        api.sendMess(data.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
+                            data => {
+                                console.log("tin nhắn được gửi đến rocket: ", data.status);
+                            });
                     }
                 });
             }
             else {
                 console.log("sai nè");
             }
+        } else {
+            api.sendMess(data.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
+                data => {
+                    console.log("tin nhắn được gửi đến rocket: ", data.status);
+                });
         }
-        api.sendMess(data.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
-            data => {
-                console.log("tin nhắn được gửi đến rocket: ", data.status);
-            });
     })
 }
 
