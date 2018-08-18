@@ -39,22 +39,19 @@ class apiRest {
             "serviceName": "facebook",
             "accessToken": _token,
             "secret": configs.facebookAuth.clientSecret,
-            "expiresIn": 300
+            "expiresIn": 500
         };
-        request({
-            "url": URL_API_ROCKET + 'login',
-            "method": "POST",
-            "json": data
-        }, (error, response, body) => {
-            if (!error) {
-                console.log('Đăng nhập thành công!', body);
-                console.log('Đăng nhập thành error!', error);
-                console.log('Đăng nhập thành công! event response.statusCode == 200: ', response.statusCode);
-                return callback(body);
-            } else {
-                console.error("Unable to send message:" + err);
-            }
-        });
+
+        axiosInstance({
+            method: 'POST',
+            url: 'login',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            data: data
+        })
+            .then(response => callback(response.data))
+            .catch(err => error(err));
     }
 
     updateProfile(_token, _uid, _data, callback) {
