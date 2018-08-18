@@ -1,5 +1,6 @@
 const request = require('request');
 const config = require('../config');
+const PAGE_ACCESS_TOKEN = config.PAGE_ACCESS_TOKEN;
 
 const parameterSentGraph = (endpoint, sender_psid, response) => {
     let request_body = {
