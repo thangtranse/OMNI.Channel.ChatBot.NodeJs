@@ -175,8 +175,10 @@ const privateCustomer = (sender_psid, received_message) => {
                 api.createChannel(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
                     if (data2.status == 200) {
                         api.createOutGoingWebhook(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
-                            db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel);
+                            console.log("thành công");
                         });
+                        db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel);
+                        console.log("thaaaaaaaaaaaaaaaaaaaa", data2);
                     }
                 });
             }
