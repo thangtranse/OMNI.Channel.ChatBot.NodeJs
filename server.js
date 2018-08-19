@@ -201,7 +201,7 @@ app.post('/customerprivate', async (req, res) => {
 
 app.get("/zalowebhook", async (req, res) => {
     console.log("----------------------------------");
-    console.log(req);
+    console.log(req.query);
     res.end();
 });
 
