@@ -197,6 +197,17 @@ app.post('/customerprivate', async (req, res) => {
 });
 
 
+// ZALO
+
+app.get("/zalowebhook", async (req, res) => {
+    console.log("----------------------------------");
+    console.log(req);
+    res.end();
+});
+
+// ZALO END
+
+
 app.get("/test", async (req, res) => {
     db.queryIdChannel("thang.tran.1661436757312768", data => {
         console.log("ahihi: ", data);
