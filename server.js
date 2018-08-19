@@ -181,20 +181,23 @@ app.post('/ten-lua', async (req, res) => {
 });
 
 // Creates the endpoint for our webhook
+/**
+ * {
+ *     bot, channel_id, channel_name, message_id, timestamp, user_id, user_name, text
+ * }
+ */
 app.post('/customerprivate', async (req, res) => {
     let body = req.body;
-    console.log("-------------------------------------------------------");
-    console.log(body);
-    console.log("-------------------------------------------------------");
+    db.queryIdChannel(body.channel_name, data => {
+        MessengerSend.callSendAPI(data.userId_fb, {text: body.text});
+    });
     res.end();
 });
 
 
 app.get("/test", async (req, res) => {
-    let a = await api.login();
-    api.createChannel("11223345", a.userId, a.authToken, data => {
-        console.log(data)
-        api.createOutGoingWebhook("11223345", a.userId, a.authToken);
+    db.queryIdChannel("thang.tran.1661436757312768", data => {
+        console.log("ahihi: ", data);
     });
     res.end();
 });
