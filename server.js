@@ -189,6 +189,7 @@ app.post('/ten-lua', async (req, res) => {
 app.post('/customerprivate', async (req, res) => {
     let body = req.body;
     db.queryIdChannel(body.channel_name, data => {
+        console.log("1----2---3----4----:", body);
         MessengerSend.callSendAPI(data.userId_fb, {text: body.text});
     });
     res.end();
