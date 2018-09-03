@@ -10,6 +10,11 @@
     "useSockJs": true,
     "url": "wss://ten-lua.herokuapp.com/websocket"
   },
+  "zalo": {
+    "appId": "803208755570311483",
+    "redirectUri": "http://ten-lua-webhook.herokuapp.com/zalowebhook",
+    "secretkey": "KYwms2Hxm8ICWhvUMTiW"
+  },
   "firebase": {
     "apiKey": "AIzaSyCDp93JTc75sIZhgx4KLYFjryiYdDzPTdk",
     "authDomain": "ten-lua.firebaseapp.com",
