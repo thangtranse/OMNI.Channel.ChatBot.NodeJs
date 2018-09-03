@@ -198,12 +198,14 @@ app.post('/customerprivate', async (req, res) => {
 
 
 // ZALO
-
 app.get("/zalowebhook", async (req, res) => {
     console.log("----------------------------------");
     console.log(req.query);
     res.end();
 });
+
+
+
 
 // ZALO END
 
