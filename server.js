@@ -12,6 +12,10 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(session({secret: 'SCC-Thangtm13'}));
 // Session END
 
+// Zalo
+const apiZalo = require('./helper-zalo/apiOpen');
+// END Zalo
+
 const api = require('./helper-rocket/apiRest');
 const MessengerRecive = require('./helper-messenger/recive');
 const MessengerSend = require('./helper-messenger/send');
@@ -201,9 +205,10 @@ app.post('/customerprivate', async (req, res) => {
 app.get("/zalowebhook", async (req, res) => {
     console.log("----------------------------------");
     console.log(req.query);
+
+    apiZalo.sending(req.query.fromuid, "Thắng đang lắng nghe");
     res.end();
 });
-
 
 
 
