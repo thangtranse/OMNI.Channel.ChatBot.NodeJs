@@ -15,7 +15,7 @@
     "redirectUri": "https://ten-lua-webhook.herokuapp.com/zalowebhook",
     "secretkey": "KYwms2Hxm8ICWhvUMTiW"
   },
-  "zalotoken": "9118795054354162368&code=cgCsJYc-GbEjvoXx9if_HQgjPM5MdtanvAqjI7AmE2NqcrGFGS0_9RFFQ6qEc7D4zQLe57cEB47IhpajM89S1EtTDozdw6PGuunfGo-tSm-Ez2Xu9yuv4UVsOn8hyKHXzOXxC4J9P02Yb2CCH_0A9lsgU5z_WW9nnSf_UsZf5JxC_WmQAzHZ2DgpM0ObnJKsul9K6rIqEZV6YIy15lbDNVJJ3rOUlN58uSeyVdloAmY8zHjt5TPz9w6NOGDRhKLFwvOjDYBZRGxZafacOllaIj7UlXHHyPa4bzkmPPKJOcSl0KG-KaTyTjCl8Mn0Qpz5vq4q1mmVH3ohGJ0i6He_9Vj2F1W_3ZCdsKKqVyPWtmu4l10N",
+  "zalotoken": "cgCsJYc-GbEjvoXx9if_HQgjPM5MdtanvAqjI7AmE2NqcrGFGS0_9RFFQ6qEc7D4zQLe57cEB47IhpajM89S1EtTDozdw6PGuunfGo-tSm-Ez2Xu9yuv4UVsOn8hyKHXzOXxC4J9P02Yb2CCH_0A9lsgU5z_WW9nnSf_UsZf5JxC_WmQAzHZ2DgpM0ObnJKsul9K6rIqEZV6YIy15lbDNVJJ3rOUlN58uSeyVdloAmY8zHjt5TPz9w6NOGDRhKLFwvOjDYBZRGxZafacOllaIj7UlXHHyPa4bzkmPPKJOcSl0KG-KaTyTjCl8Mn0Qpz5vq4q1mmVH3ohGJ0i6He_9Vj2F1W_3ZCdsKKqVyPWtmu4l10N",
   "firebase": {
     "apiKey": "AIzaSyCDp93JTc75sIZhgx4KLYFjryiYdDzPTdk",
     "authDomain": "ten-lua.firebaseapp.com",
