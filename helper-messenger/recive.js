@@ -5,6 +5,9 @@ const MessengerSend = require('./send');
 
 /**
  * Handles messages events
+ *
+ * Nhận tin nhắn từ FACEBOOK
+ *
  * Phản hồi tin nhắn khách hàng
  * @param sender_psid: id-user gửi tin nhắn
  * @param received_message: nội dung tin nhắn
@@ -19,7 +22,7 @@ const handleMessage = (sender_psid, received_message) => {
     db.getDataUser(sender_psid, (data) => {
         console.log("kiểm tra sender_psid: ", sender_psid);
         if (typeof data != "undefined") { // khách hàng đã login
-            console.log("Tồn tại: ", data);
+            console.log("Tồn tại: ", data.data);
             switch ((received_message.text).toLowerCase()) {
                 case 'bat dau':
                 case 'start':
