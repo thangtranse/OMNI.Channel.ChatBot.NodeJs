@@ -18,11 +18,11 @@ const handleMessage = (sender_psid, received_message) => {
     // tin nhắn không chưa nội dung
     console.log("handleMessage", received_message.text);
     if (!received_message.text) return;
-    // kiểm tra id đối tượng gửi tin đã đăng nhập hay chưa
+
+    // kiểm tra id đối tượng gửi tin nhắn đã đăng nhập hay chưa
     db.getDataUser(sender_psid, (data) => {
         console.log("kiểm tra sender_psid: ", sender_psid);
         if (typeof data != "undefined") { // khách hàng đã login
-            console.log("Tồn tại: ", data.data);
             switch ((received_message.text).toLowerCase()) {
                 case 'bat dau':
                 case 'start':
@@ -46,12 +46,14 @@ const handleMessage = (sender_psid, received_message) => {
             }
 
             // Kiểm tra xem người dùng có sử dụng câu lệnh không
-            if (!pattern.test(received_message.text.trim())) {
-                api.sendMess('GENERAL', received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
+            if (!pattern.test(received_message.text.trim())) { // không sử dụng câu lệnh
+                console.log("thang không sử dụng câu lệnh: ", received_message.text.trim());
+                api.sendMess('GENERAL',
+                    received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
                     data => {
                         console.log("tin nhắn được gửi đến rocket: ", data.status);
                     });
-            } else {
+            } else { // sử dụng câu lệnh
                 codeExecute(data, received_message);
             }
         } else { // khách hàng chưa login

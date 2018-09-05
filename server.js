@@ -96,14 +96,14 @@ app.get("/", (req, resp) => {
 app.post('/webhook', (req, res) => {
     let body = req.body;
     console.log("Nhập request từ Facebook");
-    console.log(body);
     console.log("----------------------------");
-
     if (body.object === 'page') {
         body.entry.forEach((entry) => {
+
             if (!entry.messaging) {
                 return;
             }
+
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
@@ -113,8 +113,7 @@ app.post('/webhook', (req, res) => {
                     MessengerRecive.handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
                     console.log("else 1");
-                }
-                if (messagingEvent.postback) {
+                } else if (messagingEvent.postback) {
                     console.log("if 2 postback", messagingEvent.postback);
                     MessengerRecive.handlePostback(sender_psid, messagingEvent.postback);
                 } else {
