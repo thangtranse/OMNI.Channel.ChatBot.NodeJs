@@ -9,6 +9,17 @@ var axiosInstance = axios.create({
     timeout: 5000
 });
 
+/**
+ * Thực hiện:
+ * - login
+ * - loginWithFacebook
+ * - updateProfile
+ * - getListUser
+ * - sendMess
+ * - searchUser
+ * - createChannel
+ * - createOutGoingWebhook
+ */
 class apiRest {
 
     constructor() {

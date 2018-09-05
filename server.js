@@ -14,6 +14,7 @@ app.use(session({secret: 'SCC-Thangtm13'}));
 
 // Zalo
 const apiZalo = require('./helper-zalo/apiOpen');
+const zaloRecive = require('./helper-zalo/recive');
 // END Zalo
 
 const api = require('./helper-rocket/apiRest');
@@ -31,6 +32,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
+
 // xác định đăng nhập từ FB
 app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
@@ -205,16 +207,17 @@ app.post('/customerprivate', async (req, res) => {
 app.get("/zalowebhook", async (req, res) => {
     console.log("----------------------------------");
     console.log(req.query);
+    console.log("----------------------------------");
 
-    apiZalo.sending(req.query.fromuid, "Thắng đang lắng nghe");
+    zaloRecive.handleMessage(req.query);
     res.end();
 });
-
 
 
 // ZALO END
 
 
+// TEST
 app.get("/test", async (req, res) => {
     db.queryIdChannel("thang.tran.1661436757312768", data => {
         console.log("ahihi: ", data);

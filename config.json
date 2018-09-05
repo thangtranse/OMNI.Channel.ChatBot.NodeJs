@@ -1,4 +1,5 @@
 {
+  "mongodb": "mongodb://thangtm:thangtm@123@ds163781.mlab.com:63781/heroku_sqgqkksc",
   "server": {
     "host": "https://ten-lua.herokuapp.com",
     "port": 7677,

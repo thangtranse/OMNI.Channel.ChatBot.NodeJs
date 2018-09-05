@@ -1,4 +1,4 @@
-const firebase = require("firebase");
+// const firebase = require("firebase");
 const admin = require('firebase-admin');
 const serviceAccount = require('../ten-lua-firebase-adminsdk-8yey4-eaac26d921');
 var db;
@@ -13,7 +13,8 @@ class connectDb {
     }
 
     /**
-     *
+     * thực hiện lưu thông tin User khi User đăng nhập bằng fb
+     * * lưu vào document "users"
      * @param userId_fb
      * @param name
      * @param token_rocket
@@ -33,7 +34,7 @@ class connectDb {
 
     /**
      * Lấy thông tin user
-     * @param _idUser
+     * @param _idUser : khi biết id user
      * @param callbback
      */
     getDataUser(_idUser, callback) {
@@ -42,13 +43,17 @@ class connectDb {
 
     /**
      * Lấy danh sách thông tin user đang tương tác với hệ thống
-     * @param _value
      * @param callback
      */
     async getListUserConnect() {
         return await getListCollection("users");
     }
 
+    /**
+     * Thực hiện tìm kiếm id user facebook
+     * @param _value: id user facebook
+     * @param callback
+     */
     queryTokenRocket(_value, callback) {
         var citiesRef = db.collection('users');
         var query = citiesRef.where('id_fb', '==', _value).get()
@@ -58,6 +63,10 @@ class connectDb {
             });
     }
 
+    /**
+     * Thực hiện xóa User
+     * @param _value: id collection
+     */
     deleteUser(_value) {
         delCollection("users", _value);
     }
