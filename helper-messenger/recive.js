@@ -18,7 +18,6 @@ const handleMessage = (sender_psid, received_message) => {
     // tin nhắn không chưa nội dung
     console.log("handleMessage", received_message.text);
     if (!received_message.text) return;
-
     // kiểm tra id đối tượng gửi tin nhắn đã đăng nhập hay chưa
     db.getDataUser(sender_psid, (data) => {
         console.log("kiểm tra sender_psid: ", sender_psid);
@@ -44,7 +43,6 @@ const handleMessage = (sender_psid, received_message) => {
                         "text": received_message
                     }
             }
-
             // Kiểm tra xem người dùng có sử dụng câu lệnh không
             if (!pattern.test(received_message.text.trim())) { // không sử dụng câu lệnh
                 console.log("thang không sử dụng câu lệnh: ", received_message.text.trim());
