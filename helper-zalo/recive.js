@@ -1,6 +1,5 @@
 const db = require("../database/connectDb");
 
-
 const handleMessage = (_data) => {
     switch (_data.event) {
         case 'sendgifmsg': // tin nhắn dạng gif

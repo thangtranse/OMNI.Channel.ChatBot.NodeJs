@@ -171,6 +171,7 @@ const privateCustomer = (sender_psid, received_message) => {
     db.getDataUserPrivate(sender_psid, async data => {
         let userAdmin = await api.login();
         console.log("data: ", data);
+        console.log("data login: ", userAdmin);
         if (typeof data == "undefined") {
             let temp = await graph.getInforCustomerChatWithPage(sender_psid);
             if (temp != 404) {
