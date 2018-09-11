@@ -167,7 +167,7 @@ const codeExecute = (user, data) => {
  * @param received_message
  */
 const privateCustomer = (sender_psid, received_message) => {
-    console.log("key word ctl + 2");
+    console.log("key word ctl + 2: ", sender_psid);
     db.getDataUserPrivate(sender_psid, async data => {
         let userAdmin = await api.login();
         console.log("data: ", data);
