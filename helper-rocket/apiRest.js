@@ -157,7 +157,7 @@ class apiRest {
     /**
      * Thực hiện tạo Channel:
      *
-     * Mặc định sẽ Add thêm USER ADMIN vào
+     * Mặc định sẽ Add thêm USER "admin" vào
      *
      * @param channelName: Tên channel
      * @param _useridAdmin: ID ADMIN dùng để tạo channel
@@ -181,7 +181,7 @@ class apiRest {
             },
             data: {
                 name: channelName,
-                members: ["Admin"]
+                members: ["admin"]
             }
         }).then(response => {
             return callback(response)
