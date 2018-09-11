@@ -64,7 +64,6 @@ class apiRest {
     }
 
     loginWithFacebook(_token, callback) {
-        console.log("Login with facebook");
         axiosInstance({
             method: 'POST',
             url: 'login',
@@ -81,12 +80,10 @@ class apiRest {
     }
 
     updateProfile(_token, _uid, _data, callback) {
-        console.log("1122");
         if (typeof _data.username != 'undefined') {
             console.log("oke");
             _data.username = randomUsername(_data.username);
         }
-        console.log("112233", _data.username);
         axiosInstance({
             method: 'POST',
             url: 'users.update',
