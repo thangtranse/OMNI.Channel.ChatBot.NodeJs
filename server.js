@@ -13,7 +13,7 @@ var id = "";
 // Session
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({secret: 'SCC-Thangtm13'}));
-app.use(express.static('./debug.log'));
+app.use(express.static('debug.log'));
 // Session END
 
 // Thực hiện ghi Log ra file
