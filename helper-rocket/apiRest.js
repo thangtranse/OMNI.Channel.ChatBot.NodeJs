@@ -192,6 +192,7 @@ class apiRest {
     }
 
     createOutGoingWebhook(_name, _useridAdmin, _authAdmin, callback) {
+        _name  = clearUnikey(_name);
         axiosInstance({
             method: 'POST',
             url: 'integrations.create',
