@@ -88,12 +88,12 @@ app.get("/", (req, resp) => {
     }
 });
 
-app.post("viber", (res, resp) => {
+app.post("/viber", (res, resp) => {
     console.log("thangtm: ", res.data);
     resp.end();
 })
 
-app.get("viber", (res, resp) => {
+app.get("/viber", (res, resp) => {
     console.log("thangtm get: ", res.data);
     resp.end();
 })
