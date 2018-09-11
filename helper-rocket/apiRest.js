@@ -185,8 +185,8 @@ class apiRest {
             }
         }).then(response => {
             return callback(response)
-        }).catch(function (message) {
-            console.log("createchannel: ", message);
+        }).catch(message => {
+            console.log("createchannel lỗi gì đây: ", message);
         })
     }
 
@@ -214,7 +214,6 @@ class apiRest {
             console.log("webhook lỗi: ", message);
         })
     }
-
 }
 
 /**
