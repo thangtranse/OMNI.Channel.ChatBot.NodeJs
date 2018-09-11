@@ -1,5 +1,5 @@
 const db = require('../database/connectDb');
-const api = require('../helper-rocket/apiRest');
+const apiRocket = require('../helper-rocket/apiRest');
 const graph = require('./graph');
 const MessengerSend = require('./send');
 
@@ -45,9 +45,10 @@ const handleMessage = (sender_psid, received_message) => {
             }
             // Kiểm tra xem người dùng có sử dụng câu lệnh không
             if (!pattern.test(received_message.text.trim())) { // không sử dụng câu lệnh
-                console.log("thang không sử dụng câu lệnh: ", received_message.text.trim());
-                api.sendMess('GENERAL',
-                    received_message.text, data.token_rocket.stringValue, data.id_rocket.stringValue,
+                apiRocket.sendMess('GENERAL',
+                    received_message.text,
+                    data.token_rocket.stringValue,
+                    data.id_rocket.stringValue,
                     data => {
                         console.log("tin nhắn được gửi đến rocket: ", data.status);
                     });
@@ -146,7 +147,7 @@ const codeExecute = (user, data) => {
     switch (key) {
         case '--searchuser':
             console.log("key word là : ", keyword);
-            api.searchUser(keyword, user.token_rocket.stringValue, user.id_rocket.stringValue, data => {
+            apiRocket.searchUser(keyword, user.token_rocket.stringValue, user.id_rocket.stringValue, data => {
                 console.log("------------------------111-----------------", data);
                 MessengerSend.callSendAPI(user.id_fb.stringValue, {"text": "thành công"});
                 MessengerSend.sendMessengerTemplateList(user.id_fb.stringValue, data);
@@ -165,24 +166,21 @@ const codeExecute = (user, data) => {
  * @param received_message
  */
 const privateCustomer = (sender_psid, received_message) => {
-    console.log("key word ctl + 2: ", sender_psid);
     db.getDataUserPrivate(sender_psid, async data => {
-        let userAdmin = await api.login();
-        console.log("data: ", data);
-        console.log("data login: ", userAdmin);
+        let userAdmin = await apiRocket.login();
         if (typeof data == "undefined") {
             let temp = await graph.getInforCustomerChatWithPage(sender_psid);
             if (temp != 404) {
                 let conver = JSON.parse(temp);
                 // Add Infor Database
                 let nameChannel = conver.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + conver.last_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + sender_psid;
-                api.createChannel(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
+                apiRocket.createChannel(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
                     if (data2.status == 200) {
-                        api.createOutGoingWebhook(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
+                        apiRocket.createOutGoingWebhook(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
                             console.log("thành công");
                         });
                         db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel, data2.data.channel._id);
-                        api.sendMess(data2.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
+                        apiRocket.sendMess(data2.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
                             data => {
                                 console.log("tin nhắn được gửi đến rocket: ", data.status);
                             });
@@ -193,7 +191,7 @@ const privateCustomer = (sender_psid, received_message) => {
                 console.log("sai nè");
             }
         } else {
-            api.sendMess(data.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
+            apiRocket.sendMess(data.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
                 data => {
                     console.log("tin nhắn được gửi đến rocket: ", data.status);
                 });

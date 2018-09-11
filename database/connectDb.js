@@ -121,7 +121,6 @@ class connectDb {
                 console.log('Error getting documents', err);
             });
     }
-
     // PRIVATE CUSTOMER END
 }
 
