@@ -1,16 +1,30 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const session = require('express-session')
-const db = require('./database/connectDb');
 const fs = require('fs');
 const configAuth = require('./config');
+const util = require('util');
 const app = express().use(bodyParser.json());
+const db = require('./database/connectDb');
+const session = require('express-session');
+const passport = require('passport');
+
 var id = "";
 
 // Session
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({secret: 'SCC-Thangtm13'}));
+app.use(express.static('./debug.log'));
 // Session END
+
+// Thực hiện ghi Log ra file
+var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
+var log_stdout = process.stdout;
+
+console.log = function(d) { //
+    log_file.write(util.format(d) + '\n');
+    log_stdout.write(util.format(d) + '\n');
+};
+// END - Thực hiện ghi Log ra file
 
 // Zalo
 const apiZalo = require('./helper-zalo/apiOpen');
@@ -22,12 +36,11 @@ const MessengerRecive = require('./helper-messenger/recive');
 const MessengerSend = require('./helper-messenger/send');
 
 // Start Server
-app.set('port', process.env.PORT || 1337);
+app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), () => console.log('webhook is listening in port: ', app.get("port")));
 // Start Server END
 
 // Passport FB
-const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
@@ -62,9 +75,6 @@ passport.deserializeUser((user, done) => {
 
 // Khi đăng nhập thành công sẽ trỏ về link này
 app.get("/", (req, resp) => {
-    console.log("oke chưa?");
-    console.log(resp.data);
-    console.log("id: ", id);
     if (id.length != 0 && typeof req.session.passport.user != "undefined") {
         api.loginWithFacebook(req.session.passport.user, (data) => {
             if (data.status == "success") {
@@ -89,23 +99,12 @@ app.get("/", (req, resp) => {
 });
 
 app.post("/viber", (res, resp) => {
-    console.log("thangtm: ", res.data);
+    console.log("thangtm viber: ", res);
     resp.end();
 })
 
-
-var fs = require('fs');
-var util = require('util');
-var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
-var log_stdout = process.stdout;
-
-console.log = function(d) { //
-    log_file.write(util.format(d) + '\n');
-    log_stdout.write(util.format(d) + '\n');
-};
-
 app.get("/viber", (res, resp) => {
-    console.log("thangtm get: ", res.data);
+    console.log("thangtm get viber: ", res);
     resp.end();
 })
 
@@ -223,7 +222,7 @@ app.post('/customerprivate', async (req, res) => {
 
 // ZALO
 app.get("/zalowebhook", async (req, res) => {
-    console.log("----------------------------------");
+    console.log("----zalowebhook------------------------------");
     console.log(req.query);
     console.log("----------------------------------");
 
