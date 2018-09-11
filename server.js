@@ -16,16 +16,6 @@ app.use(session({secret: 'SCC-Thangtm13'}));
 app.use(express.static('debug.log'));
 // Session END
 
-// Thực hiện ghi Log ra file
-var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
-var log_stdout = process.stdout;
-
-console.log = function(d) { //
-    log_file.write(util.format(d) + '\n');
-    log_stdout.write(util.format(d) + '\n');
-};
-// END - Thực hiện ghi Log ra file
-
 // Zalo
 const apiZalo = require('./helper-zalo/apiOpen');
 const zaloRecive = require('./helper-zalo/recive');
