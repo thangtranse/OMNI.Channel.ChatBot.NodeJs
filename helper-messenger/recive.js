@@ -184,7 +184,7 @@ const privateCustomer = (sender_psid, received_message) => {
                         });
                         db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel, data2.data.channel._id);
                         console.log("ahihi: ", data2.data);
-                        apiRocket.sendMess(data2.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
+                        apiRocket.sendMess(data2._id, received_message.text, userAdmin.authToken, userAdmin.userId,
                             data => {
                                 console.log("tin nhắn được gửi đến rocket: ", data.status);
                             });
