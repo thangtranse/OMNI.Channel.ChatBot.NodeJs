@@ -148,6 +148,7 @@ class apiRest {
 
     // Tương tự thằng trên nhưng sử dụng PROMISE
     sendMsgRock(roomID, msg, _nameSent, _urlAvatar) {
+        console.log("thahahahahahaa: ", _urlAvatar)
         return new Promise((resolve, reject) => {
             axiosInstance({
                 method: 'POST',

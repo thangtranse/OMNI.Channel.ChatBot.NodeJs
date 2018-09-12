@@ -41,13 +41,11 @@ const handleMessage = async (_data) => {
         case 'sendmsg': // tin nhắn dạng text
             break;
     }
-
     forwardRocket(idRoomRocket, _data, inforUser);
 }
 
 // Chuyển tiếp tin nhắn ZALO sang Rocket
 const forwardRocket = (_idRoomRocket, _dataMsg, _dataUser) => {
-    console.log("ahihi: ahihihihihihi", Object.values(_dataUser.avatars)[1]);
     apiRocket.sendMsgRock(_idRoomRocket,
         _dataMsg.message, _dataUser.displayName,
         _dataUser.avatars.length > 0 ? Object.values(_dataUser.avatars)[1] : "");
