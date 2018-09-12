@@ -21,7 +21,6 @@ const handleMessage = (sender_psid, received_message) => {
     if (!received_message.text) return;
     // kiểm tra id đối tượng gửi tin nhắn đã đăng nhập hay chưa
     db.getDataUser(sender_psid, (data) => {
-        console.log("kiểm tra sender_psid: ", sender_psid);
         if (typeof data != "undefined") { // khách hàng đã login
             switch ((received_message.text).toLowerCase()) {
                 case 'bat dau':
@@ -46,6 +45,7 @@ const handleMessage = (sender_psid, received_message) => {
             }
             // Kiểm tra xem người dùng có sử dụng câu lệnh không
             if (!pattern.test(received_message.text.trim())) { // không sử dụng câu lệnh
+                console.log("dòng 48: ", data);
                 apiRocket.sendMess('GENERAL',
                     received_message.text,
                     data.token_rocket.stringValue,
@@ -146,9 +146,7 @@ const codeExecute = (user, data) => {
     let keyword = data.text.substring((data.text.indexOf(" ")), data.text.length).trim();
     switch (key) {
         case '--searchuser':
-            console.log("key word là : ", keyword);
             apiRocket.searchUser(keyword, user.token_rocket.stringValue, user.id_rocket.stringValue, data => {
-                console.log("------------------------111-----------------", data);
                 MessengerSend.callSendAPI(user.id_fb.stringValue, {"text": "thành công"});
                 MessengerSend.sendMessengerTemplateList(user.id_fb.stringValue, data);
             });
@@ -168,35 +166,33 @@ const codeExecute = (user, data) => {
 const privateCustomer = (sender_psid, received_message) => {
     db.getDataUserPrivate(sender_psid, async data => {
         let userAdmin = await apiRocket.login();
+        let temp = await graph.getInforCustomerChatWithPage(sender_psid);
+        let conver = JSON.parse(temp);
+
         if (typeof data == "undefined") {
-            let temp = await graph.getInforCustomerChatWithPage(sender_psid);
             if (temp != 404) {
-                let conver = JSON.parse(temp);
-
-                // Add Infor Database
                 let nameChannel = conver.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + conver.last_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + sender_psid;
-                nameChannel =  ProcessStr.clearUnikey(nameChannel);
-
+                nameChannel = ProcessStr.clearUnikey(nameChannel);
                 apiRocket.createChannel(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
                     if (data2.status == 200) {
                         apiRocket.createOutGoingWebhook(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
-                            console.log("thành công");
+                            console.log("Tạo webhook Thành công: ", data2);
                         });
                         db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel, data2.data.channel._id);
-                        console.log("ahihi: ", data2.data);
                         apiRocket.sendMess(data2.data.channel._id, received_message.text, userAdmin.authToken, userAdmin.userId,
+                            conver.first_name, conver.last_name, conver.profile_pic,
                             data => {
                                 console.log("tin nhắn được gửi đến rocket: ", data.status);
                             });
                     }
                 });
-
             }
             else {
                 console.log("sai nè");
             }
         } else {
             apiRocket.sendMess(data.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
+                conver.first_name, conver.last_name, conver.profile_pic,
                 data => {
                     console.log("tin nhắn được gửi đến rocket: ", data.status);
                 });

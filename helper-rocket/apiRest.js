@@ -114,8 +114,16 @@ class apiRest {
             .catch(err => error(err));
     }
 
-    // 5.  Messages
-    sendMess(roomID, msg, _token, _uid, callback) {
+    /**
+     * 5.  Messages
+     *
+     * @param roomID: ID PHÒNG
+     * @param msg: NỘI DUNG TIN NHẮN
+     * @param _token: TOKEN ROCKET NGƯỜI GỬI
+     * @param _uid: ID ROCKET NGƯỜI GỬI
+     * @param callback
+     */
+    sendMess(roomID, msg, _token, _uid, _firstName, _lassName, _urlAvatar , callback) {
         axiosInstance({
             method: 'POST',
             url: 'chat.sendMessage',
@@ -125,6 +133,8 @@ class apiRest {
             },
             data: {
                 message: {
+                    alias: `${_firstName} ${_lassName}`,
+                    avatar: _urlAvatar,
                     rid: roomID,
                     msg: msg
                 }
