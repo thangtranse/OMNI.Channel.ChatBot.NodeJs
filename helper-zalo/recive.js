@@ -13,7 +13,7 @@ const handleMessage = async (_data) => {
      */
     inforUser.displayName = inforUser.displayName.toLowerCase().trim().replace(/(\s)/g, ".");
     inforUser.displayName = ProcessStr.clearUnikey(inforUser.displayName);
-    let nameRoomRocket = `Zalo.${inforUser.displayName}.${inforUser.userId}`;
+    let nameRoomRocket = `Zalo.v1.${inforUser.displayName}.${inforUser.userId}`;
     let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
     let idRoomRocket;
     if (infoRoomRocket.success) {
