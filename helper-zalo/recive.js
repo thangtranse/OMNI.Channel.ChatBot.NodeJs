@@ -47,9 +47,10 @@ const handleMessage = async (_data) => {
 
 // Chuyển tiếp tin nhắn ZALO sang Rocket
 const forwardRocket = (_idRoomRocket, _dataMsg, _dataUser) => {
+    console.log("ahihi: ahihihihihihi", Object.values(_dataUser.avatars)[1]);
     apiRocket.sendMsgRock(_idRoomRocket,
         _dataMsg.message, _dataUser.displayName,
-        _dataUser.avatars.leading > 0 ? Object.values(_dataUser.avatars)[1] : "");
+        _dataUser.avatars.length > 0 ? Object.values(_dataUser.avatars)[1] : "");
 }
 
 module.exports = {handleMessage}
