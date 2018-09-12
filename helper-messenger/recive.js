@@ -1,6 +1,7 @@
 const db = require('../database/connectDb');
 const apiRocket = require('../helper-rocket/apiRest');
 const graph = require('./graph');
+const ProcessStr = require('../libs/processStr');
 const MessengerSend = require('./send');
 
 /**
@@ -56,7 +57,6 @@ const handleMessage = (sender_psid, received_message) => {
                 codeExecute(data, received_message);
             }
         } else { // khách hàng chưa login
-            console.log("KH chưa tồn tại");
             switch ((received_message.text).toLowerCase()) {
                 case 'bat dau':
                 case 'start':
@@ -172,21 +172,25 @@ const privateCustomer = (sender_psid, received_message) => {
             let temp = await graph.getInforCustomerChatWithPage(sender_psid);
             if (temp != 404) {
                 let conver = JSON.parse(temp);
+
                 // Add Infor Database
                 let nameChannel = conver.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + conver.last_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + sender_psid;
+                nameChannel =  ProcessStr.clearUnikey(nameChannel);
+
                 apiRocket.createChannel(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
                     if (data2.status == 200) {
                         apiRocket.createOutGoingWebhook(nameChannel, userAdmin.userId, userAdmin.authToken, data2 => {
                             console.log("thành công");
                         });
                         db.createUserPrivate(sender_psid, conver.first_name, conver.last_name, conver.profile_pic, nameChannel, data2.data.channel._id);
-                        console.log("ahihi: ", data2);
+                        console.log("ahihi: ", data2.data);
                         apiRocket.sendMess(data2.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
                             data => {
                                 console.log("tin nhắn được gửi đến rocket: ", data.status);
                             });
                     }
                 });
+
             }
             else {
                 console.log("sai nè");
