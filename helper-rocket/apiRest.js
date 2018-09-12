@@ -148,7 +148,6 @@ class apiRest {
 
     // Tương tự thằng trên nhưng sử dụng PROMISE
     sendMsgRock(roomID, msg, _nameSent, _urlAvatar) {
-        console.log("thahahahahahaa: ", _urlAvatar)
         return new Promise((resolve, reject) => {
             axiosInstance({
                 method: 'POST',
@@ -167,10 +166,10 @@ class apiRest {
                 }
             })
                 .then(response => {
-                    console.log("thanh công ne: ", response);
+                    console.log("thanh công ne: ", response.data);
                 })
                 .catch(err => {
-                    console.log("thanh công thất bại: ", err);
+                    console.log("thanh công thất bại: ", err.response.data);
                 });
         })
     }
@@ -319,6 +318,34 @@ class apiRest {
             console.log("webhook lỗi: ", message);
         })
     }
+
+    // Tương tự thằng trên nhưng dùng Promise
+    createOutGoingWebhookRocket(_name) {
+        return new Promise((resolve, reject) => {
+            axiosInstance({
+                method: 'POST',
+                url: 'integrations.create',
+                headers: {
+                    'X-Auth-Token': configs.rocket.token,
+                    'X-User-Id': configs.rocket.userid
+                },
+                data: {
+                    type: "webhook-outgoing",
+                    name: _name,
+                    event: "sendMessage",
+                    enabled: true,
+                    username: "rocket.cat",
+                    urls: [URL_WEBHOOK_CALLBACK],
+                    scriptEnabled: false,
+                    channel: '#' + _name
+                }
+            }).then(response => {
+                resolve(response.data);
+            }).catch(function (message) {
+                reject(message.response.data);
+            })
+        });
+    }
 }
 
 /**
@@ -329,13 +356,15 @@ class apiRest {
  * @param _email
  * @returns {string}
  */
-const randomUsername = _email => (`${_email.replace(/(\s)/g, ".")}.${Math.floor((Math.random() * 100))}`).toLowerCase();
+const
+    randomUsername = _email => (`${_email.replace(/(\s)/g, ".")}.${Math.floor((Math.random() * 100))}`).toLowerCase();
 /**
  * Hiển thị lỗi
  * @param err
  */
-const error = err => {
-    console.log("API REST ERR: ", err.response);
-}
+const
+    error = err => {
+        console.log("API REST ERR: ", err.response);
+    }
 
 module.exports = new apiRest();

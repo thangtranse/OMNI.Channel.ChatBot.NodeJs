@@ -13,13 +13,16 @@ const handleMessage = async (_data) => {
      */
     inforUser.displayName = inforUser.displayName.toLowerCase().trim().replace(/(\s)/g, ".");
     inforUser.displayName = ProcessStr.clearUnikey(inforUser.displayName);
+
     let nameRoomRocket = `Zalo.v1.${inforUser.displayName}.${inforUser.userId}`;
     let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
     let idRoomRocket;
+
     if (infoRoomRocket.success) {
         idRoomRocket = infoRoomRocket.channel._id;
     } else {
         let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
+        let createWebhookRocket = await apiRocket.createOutGoingWebhookRocket(nameRoomRocket).then(data => data).catch(data => data);
         idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
     }
     // kiểm tra giá trị
@@ -46,9 +49,12 @@ const handleMessage = async (_data) => {
 
 // Chuyển tiếp tin nhắn ZALO sang Rocket
 const forwardRocket = (_idRoomRocket, _dataMsg, _dataUser) => {
+    if (_dataUser.avatars)
+        _dataUser.avatars = Object.values(_dataUser.avatars)[1];
+    else
+        _dataUser.avatars = "";
     apiRocket.sendMsgRock(_idRoomRocket,
-        _dataMsg.message, _dataUser.displayName,
-        _dataUser.avatars.length > 0 ? Object.values(_dataUser.avatars)[1] : "");
+        _dataMsg.message, _dataUser.displayName, _dataUser.avatars);
 }
 
 module.exports = {handleMessage}
