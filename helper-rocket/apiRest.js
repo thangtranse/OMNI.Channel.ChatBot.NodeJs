@@ -221,7 +221,7 @@ class apiRest {
             },
             data: {
                 name: channelName,
-                members: ["thangtm"]
+                members: ["admin"]
             }
         }).then(response => {
             return callback(response)
