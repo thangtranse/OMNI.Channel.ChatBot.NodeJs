@@ -18,10 +18,19 @@ const sending = (_userId, _message) => {
     })
 }
 
+/**
+ * Thực hiện lấy thông tin User
+ * @param _userId
+ * @returns {Promise<any>}
+ */
 const getInforUser = (_userId) => {
     return new Promise((resolve, reject) => {
-        ZOAClient.api('getprofile', {uid: _userId}, function (response) {
-            console.log('getprofile: ',response);
+        ZOAClient.api('getprofile', {uid: _userId}, response => {
+            if (response.errorCode == 1) {
+                resolve(response.data);
+            }else{
+                console.log("error API ZALO: ", response);
+            }
         })
     })
 }

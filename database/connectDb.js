@@ -71,6 +71,17 @@ class connectDb {
         delCollection("users", _value);
     }
 
+    // ZALO CUSTOMER
+    getInforUserZalo(_userId, callback) {
+        getDocument("users_zalo", _userId, callback);
+    }
+
+    createInforUserZalo(_userId, _data) {
+        setCollection("users_zalo", _userId, _data);
+    }
+
+    // END ZALO CUSTOMER
+
     // PRIVATE CUSTOMER
 
     /**
@@ -88,6 +99,15 @@ class connectDb {
         getDocument("users_private", _userId, callback);
     }
 
+    /**
+     * Tạo Document
+     * @param userId_fb
+     * @param first_name
+     * @param last_name
+     * @param avatar
+     * @param nameChannel
+     * @param idChannel
+     */
     createUserPrivate(userId_fb, first_name, last_name, avatar, nameChannel, idChannel) {
         let temp = {
             userId_fb: userId_fb.length > 0 ? userId_fb : "",
@@ -101,6 +121,7 @@ class connectDb {
     }
 
     /**
+     * Tìm kiếm Document theo tên Channel
      * {
      *      idChannel,userId_fb, last_name, first_name, avatar, nameChannel
      * }
@@ -121,6 +142,7 @@ class connectDb {
                 console.log('Error getting documents', err);
             });
     }
+
     // PRIVATE CUSTOMER END
 }
 

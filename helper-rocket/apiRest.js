@@ -9,6 +9,8 @@ var axiosInstance = axios.create({
     timeout: 5000
 });
 
+var token, id;
+
 /**
  * Thực hiện:
  * - login
@@ -123,7 +125,7 @@ class apiRest {
      * @param _uid: ID ROCKET NGƯỜI GỬI
      * @param callback
      */
-    sendMess(roomID, msg, _token, _uid, _firstName, _lassName, _urlAvatar , callback) {
+    sendMess(roomID, msg, _token, _uid, _firstName, _lassName, _urlAvatar, callback) {
         axiosInstance({
             method: 'POST',
             url: 'chat.sendMessage',
@@ -142,6 +144,34 @@ class apiRest {
         })
             .then(response => callback(response))
             .catch(err => error(err));
+    }
+
+    // Tương tự thằng trên nhưng sử dụng PROMISE
+    sendMsgRock(roomID, msg, _nameSent, _urlAvatar) {
+        return new Promise((resolve, reject) => {
+            axiosInstance({
+                method: 'POST',
+                url: 'chat.sendMessage',
+                headers: {
+                    'X-Auth-Token': configs.rocket.token,
+                    'X-User-Id': configs.rocket.userid
+                },
+                data: {
+                    message: {
+                        alias: _nameSent,
+                        avatar: _urlAvatar,
+                        rid: roomID,
+                        msg: msg
+                    }
+                }
+            })
+                .then(response => {
+                    console.log("thanh công ne: ", response);
+                })
+                .catch(err => {
+                    console.log("thanh công thất bại: ", err);
+                });
+        })
     }
 
     /**
@@ -191,12 +221,76 @@ class apiRest {
             },
             data: {
                 name: channelName,
-                members: ["admin"]
+                members: ["thangtm"]
             }
         }).then(response => {
             return callback(response)
         }).catch(message => {
-            console.log("createchannel lỗi gì đây: ", message);
+            console.log("createchannel lỗi gì đây: ", message.response.data);
+        })
+    }
+
+    // Tương tự thằng trên nhưng sử dụng Promise
+    createChannelRocket(_channelName) {
+        return new Promise((reject, resolve) => {
+            axiosInstance({
+                method: 'POST',
+                url: 'channels.create',
+                headers: {
+                    'X-Auth-Token': configs.rocket.token,
+                    'X-User-Id': configs.rocket.userid
+                },
+                data: {
+                    name: _channelName,
+                    members: ["admin"]
+                }
+            }).then(response => {
+                resolve(response.data);
+            }).catch(message => {
+                console.log("error");
+                reject(message.response.data);
+            })
+        });
+    }
+
+    /**
+     *
+     * @param channelName
+     * @param _idAdmin
+     * @param _authAdmin
+     * @param callback
+     *  { channel:
+          { _id: 'YSWAzzr8zubHCxWc2',
+            name: 'ngan.nguyen.2297198383653874',
+            fname: 'ngan.nguyen.2297198383653874',
+            t: 'c',
+            msgs: 14,
+            usersCount: 2,
+            u: [Object],
+            customFields: {},
+            ts: '2018-09-12T02:55:21.187Z',
+            ro: false,
+            sysMes: true,
+            _updatedAt: '2018-09-12T03:24:44.713Z',
+            lastMessage: [Object],
+            lm: '2018-09-12T03:24:44.657Z' },
+         success: true }
+     }
+     */
+    infoChannel(channelName) {
+        return new Promise((resolve, reject) => {
+            axiosInstance({
+                method: 'GET',
+                url: 'channels.info?roomName=' + channelName,
+                headers: {
+                    'X-Auth-Token': configs.rocket.token,
+                    'X-User-Id': configs.rocket.userid
+                }
+            }).then(response => {
+                resolve(response.data);
+            }).catch(message => {
+                reject(message.response.data);
+            })
         })
     }
 
