@@ -15,6 +15,7 @@ const handleMessage = (_data) => {
         case 'sendimagemsg': // tin nhắn dạng hình
             break;
         case 'sendmsg': // tin nhắn dạng text
+            console.log("thangtm: ", _data);
             break;
     }
 }
