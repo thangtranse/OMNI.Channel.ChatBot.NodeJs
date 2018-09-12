@@ -18,4 +18,12 @@ const sending = (_userId, _message) => {
     })
 }
 
-module.exports = {sending}
+const getInforUser = (_userId) => {
+    return new Promise((resolve, reject) => {
+        ZOAClient.api('getprofile', {uid: _userId}, function (response) {
+            console.log('getprofile: ',response);
+        })
+    })
+}
+
+module.exports = {sending, getInforUser}
