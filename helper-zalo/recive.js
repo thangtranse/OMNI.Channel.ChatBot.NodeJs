@@ -21,7 +21,8 @@ const handleMessage = (_data) => {
             break;
         case 'sendmsg': // tin nhắn dạng text
             console.log("thangtm: ", _data);
-            apiOpen.getInforUser(_data.fromoid);
+            
+            apiOpen.getInforUser(_data.fromuid);
 
             break;
     }
