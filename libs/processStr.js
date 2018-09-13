@@ -21,7 +21,7 @@ const clearUnikey = _data => {
  * @param _str
  */
 const getIdFormRocket = (_str) => {
-    return _str.slice(_str.lastIndexOf('.'));
+    return _str.slice(_str.lastIndexOf('.') + 1);
 }
 
 module.exports = {clearUnikey, getIdFormRocket}
