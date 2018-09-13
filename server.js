@@ -216,6 +216,12 @@ app.get("/zalowebhook", async (req, res) => {
     res.end();
 });
 
+app.post("/webhook_zalo", (req, res) => {
+    let body = req.body;
+    console.log("webhook zalo: ", body);
+    res.end();
+});
+
 // ZALO END
 
 

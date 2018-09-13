@@ -22,7 +22,8 @@ const handleMessage = async (_data) => {
         idRoomRocket = infoRoomRocket.channel._id;
     } else {
         let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
-        let createWebhookRocket = await apiRocket.createOutGoingWebhookRocket(nameRoomRocket).then(data => data).catch(data => data);
+        // Phương thức không đồng bộ
+        let createWebhookRocket = apiRocket.createOutGoingWebhookRocket_ZALO(nameRoomRocket).then(data => data).catch(data => data);
         idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
     }
     // kiểm tra giá trị

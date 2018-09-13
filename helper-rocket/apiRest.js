@@ -1,6 +1,7 @@
 const request = require('request');
 const URL_API_ROCKET = 'https://ten-lua.herokuapp.com/api/v1/';
 const URL_WEBHOOK_CALLBACK = 'http://ten-lua-webhook.herokuapp.com/customerprivate';
+const URL_WEBHOOK_CALLBACK_ZALO = 'http://ten-lua-webhook.herokuapp.com/webhook_zalo';
 var axios = require('axios');
 var configs = require("../config.json");
 
@@ -320,7 +321,7 @@ class apiRest {
     }
 
     // Tương tự thằng trên nhưng dùng Promise
-    createOutGoingWebhookRocket(_name) {
+    createOutGoingWebhookRocket_ZALO(_name) {
         return new Promise((resolve, reject) => {
             axiosInstance({
                 method: 'POST',
@@ -335,7 +336,7 @@ class apiRest {
                     event: "sendMessage",
                     enabled: true,
                     username: "rocket.cat",
-                    urls: [URL_WEBHOOK_CALLBACK],
+                    urls: [URL_WEBHOOK_CALLBACK_ZALO],
                     scriptEnabled: false,
                     channel: '#' + _name
                 }
