@@ -13,6 +13,8 @@ const handleMessage = async (_data) => {
 
     let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
 
+    console.log("tang: ", nameSender);
+
     let idRoomRocket;
     if (infoRoomRocket.success) {
         idRoomRocket = infoRoomRocket.channel._id;
