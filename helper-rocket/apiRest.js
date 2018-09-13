@@ -2,6 +2,7 @@ const request = require('request');
 const URL_API_ROCKET = 'https://ten-lua.herokuapp.com/api/v1/';
 const URL_WEBHOOK_CALLBACK = 'http://ten-lua-webhook.herokuapp.com/customerprivate';
 const URL_WEBHOOK_CALLBACK_ZALO = 'http://ten-lua-webhook.herokuapp.com/webhook_zalo';
+const URL_WEBHOOK_CALLBACK_VIBER = 'http://ten-lua-webhook.herokuapp.com/webhook_viber';
 var axios = require('axios');
 var configs = require("../config.json");
 
@@ -337,6 +338,34 @@ class apiRest {
                     enabled: true,
                     username: "rocket.cat",
                     urls: [URL_WEBHOOK_CALLBACK_ZALO],
+                    scriptEnabled: false,
+                    channel: '#' + _name
+                }
+            }).then(response => {
+                resolve(response.data);
+            }).catch(function (message) {
+                reject(message.response.data);
+            })
+        });
+    }
+
+    // Tương tự thằng trên nhưng dùng Promise
+    createOutGoingWebhookRocket_VIBER(_name) {
+        return new Promise((resolve, reject) => {
+            axiosInstance({
+                method: 'POST',
+                url: 'integrations.create',
+                headers: {
+                    'X-Auth-Token': configs.rocket.token,
+                    'X-User-Id': configs.rocket.userid
+                },
+                data: {
+                    type: "webhook-outgoing",
+                    name: _name,
+                    event: "sendMessage",
+                    enabled: true,
+                    username: "rocket.cat",
+                    urls: [URL_WEBHOOK_CALLBACK_VIBER],
                     scriptEnabled: false,
                     channel: '#' + _name
                 }

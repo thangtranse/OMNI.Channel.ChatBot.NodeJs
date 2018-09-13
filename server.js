@@ -89,14 +89,15 @@ app.get("/", (req, resp) => {
     }
 });
 
+const reciveViber = require("./helper-viber/recive");
+
 app.post("/viber", (res, resp) => {
-    console.log("thangtm viber: ", res.body);
+    reciveViber.handleMessage(res.body);
     resp.end();
 })
 
-const thang = require("./helper-viber/apiViber");
+
 app.get("/viber", (res, resp) => {
-    thang.sendMsg();
     resp.end();
 })
 

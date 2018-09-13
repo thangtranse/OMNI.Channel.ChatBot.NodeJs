@@ -1,4 +1,3 @@
-const db = require("../database/connectDb");
 const ProcessStr = require("../libs/processStr");
 const apiRocket = require("../helper-rocket/apiRest");
 const apiOpen = require("./apiOpen");
