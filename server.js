@@ -19,6 +19,7 @@ app.use(express.static('debug.log'));
 // Zalo
 const apiZalo = require('./helper-zalo/apiOpen');
 const zaloRecive = require('./helper-zalo/recive');
+const zaloSend = require('./helper-zalo/send');
 // END Zalo
 
 const api = require('./helper-rocket/apiRest');
@@ -218,7 +219,7 @@ app.get("/zalowebhook", async (req, res) => {
 
 app.post("/webhook_zalo", (req, res) => {
     let body = req.body;
-    console.log("webhook zalo: ", body);
+    zaloSend.forwardZalo(body);
     res.end();
 });
 

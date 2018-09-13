@@ -16,5 +16,12 @@ const clearUnikey = _data => {
     return _data;
 }
 
+/**
+ * Thực hiện tách chuổi lấy id
+ * @param _str
+ */
+const getIdFormRocket = (_str) => {
+    return _str.slice(_str.lastIndexOf('.'));
+}
 
-module.exports = {clearUnikey}
+module.exports = {clearUnikey, getIdFormRocket}
