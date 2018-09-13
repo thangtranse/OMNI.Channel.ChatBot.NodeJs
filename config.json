@@ -1,6 +1,7 @@
 {
   "mongodb": "mongodb://thangtm:thangtm@123@ds163781.mlab.com:63781/heroku_sqgqkksc",
   "rocket": {
+    "username": "thangtm",
     "userid": "AHBrCEjwq4H2TYdj9",
     "token": "7HQCTuVgDAABcnHNj4WkoPH1Ehwz_ikM8BT6H6wwD5H"
   },

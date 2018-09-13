@@ -203,7 +203,7 @@ app.post('/ten-lua', async (req, res) => {
 app.post('/customerprivate', async (req, res) => {
     let body = req.body;
     db.queryIdChannel(body.channel_name, data => {
-        console.log("1----2---3----4----:", body);
+        console.log("customerprivate:: ", body);
         if (body.user_id != "AHBrCEjwq4H2TYdj9")
             MessengerSend.callSendAPI(data.userId_fb, {text: body.text});
     });
