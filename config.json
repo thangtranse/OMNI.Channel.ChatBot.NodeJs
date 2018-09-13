@@ -33,5 +33,8 @@
     "clientSecret": "b5222fa7378e3add050404750c0fdc5d",
     "callbackURL": "https://ten-lua-webhook.herokuapp.com/auth/facebook/callback"
   },
+  "viber": {
+    "token": "4871a5f75f67d401-ad23ec19550c35b6-705e7ec8a2f8ff4e"
+  },
   "PAGE_ACCESS_TOKEN": "EAAG9mksIwrUBAJqgOwJVnlA3ZAEbVjXt5J83UioWPrn2LvKNwQGJqzaRvnIFqJats24YVDVvK2OtB1NFtyBqfPQ8yZAh4wVh0OhPxlcMpyRkJJQuOEZBURtZBIOanvO49v74OcepxRgnpcJeavKoKbbD9kv7GhKZAONjYga5kagZDZD"
 }
