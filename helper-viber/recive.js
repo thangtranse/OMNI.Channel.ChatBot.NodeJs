@@ -1,15 +1,26 @@
 const apiViber = require("./apiViber");
 const apiRocket = require("../helper-rocket/apiRest");
 const ProcessStr = require("../libs/processStr");
+const config = require("../config");
+const mongodb = require("../database/mongodb");
 
 const handleMessage = async (_data) => {
     /**
      * _Data: {event, timestamp, message_token, sender: {id, name, avatar, language, country, api_version}, message, silent}
      */
+
+    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.sender.id}).then(data => data);
+
+    if(checkDataUser){
+
+    }else{
+
+    }
+
     let nameSender = _data.sender.name.toLowerCase().trim().replace(/(\s)/g, ".");
     nameSender = ProcessStr.clearUnikey(nameSender);
 
-    let nameRoomRocket = `Viber.${nameSender}.${_data.sender.id}`;
+    let nameRoomRocket = `Viber.${nameSender}`;
 
     let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
 
