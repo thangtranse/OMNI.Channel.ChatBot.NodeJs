@@ -11,7 +11,7 @@ const forwardZalo = async (_data) => {
     console.log("không vào được id: ", _data.channel_id);
     console.log("không vào được: ", getDataUser);
     if (getDataUser) {
-        let uidZalo = getDataUser.fromoid;
+        let uidZalo = getDataUser.userId;
         console.log("uidZalo: ", uidZalo);
         apiOpen.sending(uidZalo, _data.text);
     }
