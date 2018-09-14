@@ -291,6 +291,7 @@ class apiRest {
             }).then(response => {
                 resolve(response.data);
             }).catch(message => {
+                console.log("erro infoChannel: ", message.response);
                 reject(message.response.data);
             })
         })

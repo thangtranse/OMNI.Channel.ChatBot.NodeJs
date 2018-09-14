@@ -248,3 +248,9 @@ app.get("/livechat", (req, res) => {
     })
 });
 
+const thang = require('./database/mongodb');
+app.get("/mongo", async (req, res) => {
+    console.log("thangtm: ", await thang.findOne("forward_msg", {"ahihi": "5555", "âcc": "khungr"}).then(data => data));
+    res.end();
+});
+

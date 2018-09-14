@@ -1,5 +1,9 @@
 {
-  "mongodb": "mongodb://thangtm:thangtm@123@ds163781.mlab.com:63781/heroku_sqgqkksc",
+  "mongodb": {
+    "url": "mongodb://thangtm:thangtm%40123@ds163781.mlab.com:63781/heroku_sqgqkksc",
+    "dbname": "heroku_sqgqkksc",
+    "collection": "forward_msg"
+  },
   "rocket": {
     "username": "thangtm",
     "userid": "AHBrCEjwq4H2TYdj9",
