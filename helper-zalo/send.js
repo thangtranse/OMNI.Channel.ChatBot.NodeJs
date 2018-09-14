@@ -1,15 +1,17 @@
 const ProcessStr = require('../libs/processStr');
 const config = require('../config');
 const apiOpen = require('./apiOpen');
+const mongodb = require('../database/mongodb');
 
-const forwardZalo = (_data) => {
+const forwardZalo = async (_data) => {
     /**
      * _data: {bot, channel_id, channel_name, message_id, timestamp, user_id, user_name, text, alias}
      */
-    if (_data.user_name.trim() == config.rocket.username) return;
-
-    let uidZalo = ProcessStr.getIdFormRocket(_data.channel_name);
-    apiOpen.sending(uidZalo, _data.text);
+    var getDataUser = await mongodb.findOne(config.mongodb.collection, {"idRoomRocket": _data.channel_id}).then(data => data);
+    if (getDataUser) {
+        let uidZalo = getDataUser.fromoid;
+        apiOpen.sending(uidZalo, _data.text);
+    }
 }
 
 

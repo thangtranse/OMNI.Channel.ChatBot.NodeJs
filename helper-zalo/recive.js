@@ -12,8 +12,11 @@ const handleMessage = async (_data) => {
     var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.fromuid}).then(data => data);
 
     let inforUser = null;
+    let idRoomRocket;
+
     if (checkDataUser) {
         inforUser = checkDataUser;
+        idRoomRocket = checkDataUser.idRoomRocket;
     } else {
         inforUser = await apiOpen.getInforUser(_data.fromuid).then(data => data);
         /**
@@ -24,7 +27,7 @@ const handleMessage = async (_data) => {
         inforUser.localSent = "Zalo";
         let nameRoomRocket = `Zalo.${inforUser.displayName}`;
         let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
-        let idRoomRocket;
+
         if (infoRoomRocket.success) {
             idRoomRocket = infoRoomRocket.channel._id;
         } else {
@@ -40,7 +43,7 @@ const handleMessage = async (_data) => {
         inforUser.nameRoomRocket = nameRoomRocket;
         var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
     }
-    
+
     switch (_data.event) {
         case 'sendgifmsg': // tin nhắn dạng gif
             break;
