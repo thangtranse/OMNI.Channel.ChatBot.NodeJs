@@ -8,10 +8,13 @@ const forwardZalo = async (_data) => {
      * _data: {bot, channel_id, channel_name, message_id, timestamp, user_id, user_name, text, alias}
      */
     var getDataUser = await mongodb.findOne(config.mongodb.collection, {"idRoomRocket": _data.channel_id}).then(data => data);
+    console.log("không vào được: ");
     if (getDataUser) {
         let uidZalo = getDataUser.fromoid;
+        console.log("uidZalo: ", uidZalo);
         apiOpen.sending(uidZalo, _data.text);
     }
+
 }
 
 
