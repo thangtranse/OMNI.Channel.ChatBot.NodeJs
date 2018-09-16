@@ -11,29 +11,33 @@ const handleMessage = async (_data) => {
 
     var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.sender.id}).then(data => data);
 
-    if(checkDataUser){
+    let inforUser = null;
+    var idRoomRocket = null;
 
-    }else{
+    if (checkDataUser) {
 
+    } else { // chưa có nè
+        let nameSender = _data.sender.name.toLowerCase().trim().replace(/(\s)/g, ".");
+        nameSender = ProcessStr.clearUnikey(nameSender);
+        let nameRoomRocket = `Viber.${nameSender}`;
+        let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
+
+        if (infoRoomRocket.success) {
+            idRoomRocket = infoRoomRocket.channel._id;
+        } else {
+            let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
+            // Phương thức không đồng bộ
+            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket_VIBER(nameRoomRocket).then(data => data).catch(data => data);
+            idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
+        }
+
+        inforUser.localSent = "Viber";
+        inforUser.nameRoomRocket = nameRoomRocket;
+        inforUser.idRoomRocket = idRoomRocket;
+        inforUser.infor = _data.sender;
+
+        var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
     }
-
-    let nameSender = _data.sender.name.toLowerCase().trim().replace(/(\s)/g, ".");
-    nameSender = ProcessStr.clearUnikey(nameSender);
-
-    let nameRoomRocket = `Viber.${nameSender}`;
-
-    let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
-
-    let idRoomRocket;
-    if (infoRoomRocket.success) {
-        idRoomRocket = infoRoomRocket.channel._id;
-    } else {
-        let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
-        // Phương thức không đồng bộ
-        let createWebhookRocket = apiRocket.createOutGoingWebhookRocket_VIBER(nameRoomRocket).then(data => data).catch(data => data);
-        idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
-    }
-
     // kiểm tra giá trị
     if (typeof idRoomRocket == "undefined") return;
 
