@@ -90,6 +90,7 @@ app.get("/", (req, resp) => {
 });
 
 const reciveViber = require("./helper-viber/recive");
+const sendViber = require("./helper-viber/send");
 
 app.post("/viber", (res, resp) => {
     console.log("thangtm: ", res.body);
@@ -98,8 +99,8 @@ app.post("/viber", (res, resp) => {
 })
 
 app.post("/webhook_viber", (res, resp) => {
-    console.log("thangtm: ", res.body);
-    reciveViber.handleMessage(res.body);
+    console.log("webhook_viber: ", res.body);
+    sendViber.forwardViber(res.body);
     resp.end();
 })
 
