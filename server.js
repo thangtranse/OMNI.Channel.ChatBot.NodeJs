@@ -119,9 +119,6 @@ app.post('/webhook', (req, res) => {
      * body: {object, entry : [{id, time, messaging: {} }]}
      */
     console.log("Nhập request từ Facebook");
-    console.log("----------------------------");
-    console.log("POST webhook facebook: ", body.object.entry[0].messaging);
-    console.log("----------------------------");
 
     if (body.object === 'page') {
         body.entry.forEach((entry) => {
@@ -261,7 +258,30 @@ app.get("/livechat", (req, res) => {
 
 const thang = require('./database/mongodb');
 app.get("/mongo", async (req, res) => {
-    console.log("thangtm: ", await thang.findOne("forward_msg", {"ahihi": "5555", "âcc": "khungr"}).then(data => data));
+    writeLog("key", "Thắng");
+    writeLog("key", "Thắng 2");
     res.end();
 });
 
+app.get("/logs", async (req, res) => {
+    fs.readFile('./historyLogs.log', (err, data) => {
+        res.header("Content-Type", "application/json; charset=utf-8");
+        res.end(data);
+    })
+});
+
+app.get("/logs_reset", async (req, res) => {
+    fs.writeFile('./historyLogs.log', "", (err, data) => {
+        res.header("Content-Type", "application/json; charset=utf-8");
+        res.end(data);
+    })
+});
+
+const writeLog = (_header, _data) => {
+    let date = new Date();
+    _data = '\n' + date.getDay() + "\\" + date.getMonth() + " " + date.getHours() + ":" + date.getMinutes() + "=>" + _header + ':\n-----------------\n' + _data + '\n-----------------\n';
+    fs.appendFile('./historyLogs.log', _data, function (err) {
+        if (err) return console.error(err);
+        console.log("Thành công");
+    });
+}
