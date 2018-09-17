@@ -97,6 +97,12 @@ app.post("/viber", (res, resp) => {
     resp.end();
 })
 
+app.post("/webhook_viber", (res, resp) => {
+    console.log("thangtm: ", res.body);
+    reciveViber.handleMessage(res.body);
+    resp.end();
+})
+
 
 app.get("/viber", (res, resp) => {
     resp.end();

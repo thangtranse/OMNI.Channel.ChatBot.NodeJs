@@ -1,4 +1,3 @@
-const apiViber = require("./apiViber");
 const apiRocket = require("../helper-rocket/apiRest");
 const ProcessStr = require("../libs/processStr");
 const config = require("../config");
