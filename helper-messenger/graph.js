@@ -4,10 +4,13 @@ const PAGE_ACCESS_TOKEN = config.PAGE_ACCESS_TOKEN;
 
 const parameterSentGraph = (endpoint, sender_psid, response) => {
     let request_body = {
+        "messaging_type": "",
         "recipient": {
             "id": sender_psid
         },
-        "message": response
+        "message": {
+            "text": response
+        }
     }
     // Send the HTTP request to the Messenger Platform
     request({

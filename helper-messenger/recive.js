@@ -38,8 +38,6 @@ const handleMessage = async (sender_psid, received_message) => {
 
         var nameSender = inforUser.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + inforUser.last_name.toLowerCase().trim().replace(/(\s)/g, ".");
 
-        console.log("thang2: ", inforUser);
-
         nameSender = 'Facebook.' + nameSender;
         nameSender = ProcessStr.clearUnikey(nameSender);
 

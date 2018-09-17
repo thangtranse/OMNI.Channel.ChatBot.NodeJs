@@ -6,8 +6,7 @@ const config = require("../config");
 const forwardFacebook = async (_data) => {
     var getDataUser = await mongodb.findOne(config.mongodb.collection, {"idRoomRocket": _data.channel_id}).then(data => data);
     if (getDataUser && _data.user_name.trim() != config.rocket.username) {
-        let uidFacebook = getDataUser.userId;
-        callSendAPI(uidFacebook, _data.text);
+        callSendAPI(getDataUser.uid, _data.text);
     }
 }
 
@@ -21,6 +20,8 @@ const forwardFacebook = async (_data) => {
  */
 const callSendAPI = (sender_psid, response) => {
 // Construct the message body
+    console.log("sender_psid", sender_psid);
+    console.log("response", response);
     graph.parameterSentGraph("messages", sender_psid, response);
 }
 
