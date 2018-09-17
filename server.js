@@ -213,11 +213,7 @@ app.post('/ten-lua', async (req, res) => {
  */
 app.post('/webhook_facebook', async (req, res) => {
     let body = req.body;
-    db.queryIdChannel(body.channel_name, data => {
-        console.log("webhook_facebook:: ", body);
-        if (body.user_id != "AHBrCEjwq4H2TYdj9")
-            MessengerSend.callSendAPI(data.userId_fb, {text: body.text});
-    });
+    writeLog("webhook_facebook: ", body);
     res.end();
 });
 
