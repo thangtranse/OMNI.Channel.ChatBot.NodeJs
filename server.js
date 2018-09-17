@@ -117,11 +117,13 @@ app.post('/webhook', (req, res) => {
     let body = req.body;
     console.log("Nhập request từ Facebook");
     console.log("----------------------------");
+    console.log("POST webhook facebook: ", body);
+    console.log("----------------------------");
+
     if (body.object === 'page') {
         body.entry.forEach((entry) => {
-            if (!entry.messaging) {
-                return;
-            }
+            if (!entry.messaging) return;
+
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
