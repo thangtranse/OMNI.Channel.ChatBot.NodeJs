@@ -4,9 +4,11 @@ const config = require("../config");
 
 const forwardViber = async (_data) => {
     console.log("forwardViber: ", _data);
-    // var getDataUser = await mongodb.findOne(config.mongodb.collection, {"idRoomRocket": _data.channel_id}).then(data => data);
-
-
+    var getDataUser = await mongodb.findOne(config.mongodb.collection, {"idRoomRocket": _data.channel_id}).then(data => data);
+    if (getDataUser && _data.user_name.trim() != config.rocket.username) {
+        let uidViber = getDataUser.uid;
+        apiViber.sendMsg(uidViber, _data.text);
+    }
 }
 
 module.exports = {forwardViber}

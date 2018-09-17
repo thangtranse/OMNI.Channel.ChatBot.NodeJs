@@ -99,7 +99,6 @@ app.post("/viber", (res, resp) => {
 })
 
 app.post("/webhook_viber", (res, resp) => {
-    console.log("webhook_viber: ", res.body);
     sendViber.forwardViber(res.body);
     resp.end();
 })
