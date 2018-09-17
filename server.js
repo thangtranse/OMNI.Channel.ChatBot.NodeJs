@@ -93,7 +93,7 @@ const reciveViber = require("./helper-viber/recive");
 const sendViber = require("./helper-viber/send");
 
 app.post("/viber", (res, resp) => {
-    console.log("thangtm: ", res.body);
+    console.log("POST viber: ", res.body);
     reciveViber.handleMessage(res.body);
     resp.end();
 })

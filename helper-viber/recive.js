@@ -8,6 +8,11 @@ const handleMessage = async (_data) => {
      * _Data: {event, timestamp, message_token, sender: {id, name, avatar, language, country, api_version}, message, silent}
      */
 
+    /**
+     * Chưa xử lý trường hợp seen, delivery
+     */
+    if (_data.event != 'message') return;
+
     var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.sender.id}).then(data => data);
 
     let inforUser = {};
