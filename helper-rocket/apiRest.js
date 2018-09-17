@@ -168,10 +168,12 @@ class apiRest {
                 }
             })
                 .then(response => {
-                    console.log("thanh công ne: ", response.data);
+                    console.log("sendMsgRock: ", response.data);
+                    resolve(response.data);
                 })
                 .catch(err => {
-                    console.log("thanh công thất bại: ", err.response.data);
+                    console.log("error sendMsgRock: ", err.response.data);
+                    reject(err.response.data);
                 });
         })
     }
@@ -291,7 +293,7 @@ class apiRest {
             }).then(response => {
                 resolve(response.data);
             }).catch(message => {
-                console.log("erro infoChannel: ", message.response);
+                console.log("erro  apiRest  infoChannel: ", message.response);
                 reject(message.response.data);
             })
         })

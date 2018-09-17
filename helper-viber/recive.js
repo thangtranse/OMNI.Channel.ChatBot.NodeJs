@@ -11,11 +11,11 @@ const handleMessage = async (_data) => {
 
     var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.sender.id}).then(data => data);
 
-    let inforUser = null;
+    let inforUser = {};
     var idRoomRocket = null;
-
+    console.log("checkDataUser: ", checkDataUser);
     if (checkDataUser) {
-
+        idRoomRocket = checkDataUser.idRoomRocket;
     } else { // chưa có nè
         let nameSender = _data.sender.name.toLowerCase().trim().replace(/(\s)/g, ".");
         nameSender = ProcessStr.clearUnikey(nameSender);
@@ -31,10 +31,12 @@ const handleMessage = async (_data) => {
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
         }
 
+        inforUser.infor = _data.sender;
         inforUser.localSent = "Viber";
         inforUser.nameRoomRocket = nameRoomRocket;
         inforUser.idRoomRocket = idRoomRocket;
-        inforUser.infor = _data.sender;
+        inforUser.uid = _data.sender.id;
+
 
         var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
     }
@@ -46,6 +48,11 @@ const handleMessage = async (_data) => {
 
 // Chuyển tiếp tin nhắn ZALO sang Rocket
 const forwardRocket = (_idRoomRocket, _dataMsg) => {
+    console.log("_idRoomRocket", _idRoomRocket);
+    console.log("_dataMsg.message", _dataMsg.message);
+    console.log(" _dataMsg.sender.name", _dataMsg.sender.name);
+    console.log("_dataMsg.sender.avatar", _dataMsg.sender.avatar);
+
     apiRocket.sendMsgRock(_idRoomRocket,
         _dataMsg.message, _dataMsg.sender.name, _dataMsg.sender.avatar);
 }
