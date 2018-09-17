@@ -1,6 +1,14 @@
 const graph = require('./graph');
 const PAGE_ACCESS_TOKEN = require('../config').PAGE_ACCESS_TOKEN;
 
+const forwardFacebook = async (_data) => {
+    var getDataUser = await mongodb.findOne(config.mongodb.collection, {"idRoomRocket": _data.channel_id}).then(data => data);
+    if (getDataUser && _data.user_name.trim() != config.rocket.username) {
+        let uidFacebook = getDataUser.userId;
+        callSendAPI(uidFacebook, _data.text);
+    }
+}
+
 /**
  * Sends response messages via the Send API
  * @param sender_psid: id người nhắn tin
@@ -47,4 +55,4 @@ const sendMessengerTemplateList = (sender_psid, list) => {
     graph.parameterSentGraph("messages", sender_psid, test);
 }
 
-module.exports = {callSendAPI, sendMessengerTemplateList}
+module.exports = {callSendAPI, sendMessengerTemplateList, forwardFacebook}
