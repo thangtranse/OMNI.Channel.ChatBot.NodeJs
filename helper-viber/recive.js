@@ -53,7 +53,7 @@ const forwardRocket = (_idRoomRocket, _dataMsg) => {
     console.log("_dataMsg.sender.avatar", _dataMsg.sender.avatar);
 
     apiRocket.sendMsgRock(_idRoomRocket,
-        _dataMsg.message, _dataMsg.sender.name, _dataMsg.sender.avatar);
+        _dataMsg.message.text, _dataMsg.sender.name, _dataMsg.sender.avatar);
 }
 
 module.exports = {handleMessage}
