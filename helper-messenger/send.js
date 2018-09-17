@@ -1,5 +1,7 @@
 const graph = require('./graph');
+const mongodb = require("../database/mongodb");
 const PAGE_ACCESS_TOKEN = require('../config').PAGE_ACCESS_TOKEN;
+const config = require("../config");
 
 const forwardFacebook = async (_data) => {
     var getDataUser = await mongodb.findOne(config.mongodb.collection, {"idRoomRocket": _data.channel_id}).then(data => data);
