@@ -119,7 +119,7 @@ app.post('/webhook', (req, res) => {
      * body: {object, entry : [{id, time, messaging: {} }]}
      */
     console.log("Nhập request từ Facebook");
-
+    writeLog("Nhập request từ Facebook", body);
     if (body.object === 'page') {
         body.entry.forEach((entry) => {
             if (!entry.messaging) return;
