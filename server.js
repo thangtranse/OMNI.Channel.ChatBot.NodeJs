@@ -211,10 +211,10 @@ app.post('/ten-lua', async (req, res) => {
  *     bot, channel_id, channel_name, message_id, timestamp, user_id, user_name, text
  * }
  */
-app.post('/customerprivate', async (req, res) => {
+app.post('/webhook_facebook', async (req, res) => {
     let body = req.body;
     db.queryIdChannel(body.channel_name, data => {
-        console.log("customerprivate:: ", body);
+        console.log("webhook_facebook:: ", body);
         if (body.user_id != "AHBrCEjwq4H2TYdj9")
             MessengerSend.callSendAPI(data.userId_fb, {text: body.text});
     });

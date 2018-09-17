@@ -27,12 +27,19 @@ const handleMessage = async (sender_psid, received_message) => {
     var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": sender_psid}).then(data => data);
 
     var idRoomRocket = null;
+    var inforUser = null;
     if (checkDataUser) { // tồn tại thông tin
-
+        idRoomRocket = checkDataUser.idRoomRocket;
+        inforUser = checkDataUser;
     } else { // chưa có thông tin User
         // Lấy thông tin USER FACEBOOK
-        var inforUser = await graph.getInforCustomerChatWithPage(sender_psid).then(data => data);
+        inforUser = await graph.getInforCustomerChatWithPage(sender_psid).then(data => data);
+        inforUser = JSON.parse(inforUser);
+
         var nameSender = inforUser.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + inforUser.last_name.toLowerCase().trim().replace(/(\s)/g, ".");
+
+        console.log("thang2: ", inforUser);
+
         nameSender = 'Facebook.' + nameSender;
         nameSender = ProcessStr.clearUnikey(nameSender);
 
@@ -41,18 +48,20 @@ const handleMessage = async (sender_psid, received_message) => {
         if (infoRoomRocket.success) {
             idRoomRocket = infoRoomRocket.channel._id;
         } else {
-            let createRoomRocket = await apiRocket.createChannelRocket(nameSender).then(data => data);
+            console.log("run this");
+            let createRoomRocket = await apiRocket.createChannelRocket(nameSender).then(data => data).catch(data => data);
+            console.log("createRoomRocket: ", createRoomRocket);
             // Phương thức không đồng bộ
-            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket_VIBER(nameSender).then(data => data);
+            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket_FACEBOOK(nameSender).then(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
-
+            console.log("idRoomRocket: ", idRoomRocket);
         }
 
         inforUser.localSent = "Facebook";
         inforUser.nameRoomRocket = nameSender;
         inforUser.idRoomRocket = idRoomRocket;
         inforUser.uid = sender_psid;
-
+        console.log("inforUser: ", inforUser);
         var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
 
     }
