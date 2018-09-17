@@ -116,11 +116,11 @@ app.get("/viber", (res, resp) => {
 app.post('/webhook', (req, res) => {
     let body = req.body;
     /**
-     * body: {id, time, messaging: {}}
+     * body: {object, entry : [{id, time, messaging: {} }]}
      */
     console.log("Nhập request từ Facebook");
     console.log("----------------------------");
-    console.log("POST webhook facebook: ", body.messaging);
+    console.log("POST webhook facebook: ", body.object.entry[0].messaging);
     console.log("----------------------------");
 
     if (body.object === 'page') {
