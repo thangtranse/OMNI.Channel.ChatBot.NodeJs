@@ -118,25 +118,25 @@ app.post('/webhook', (req, res) => {
     /**
      * body: {object, entry : [{id, time, messaging: {} }]}
      */
-    console.log("Nhập request từ Facebook");
-    writeLog("Nhập request từ Facebook", JSON.stringify(body));
     if (body.object === 'page') {
         body.entry.forEach((entry) => {
             if (!entry.messaging) return;
-
             let pageEntry = entry.messaging;
             pageEntry.forEach((messagingEvent) => {
                 let sender_psid = messagingEvent.sender.id;
-                id = sender_psid;
                 if (messagingEvent.message) {
                     console.log("if 1", messagingEvent);
+                    writeLog("Nhập request từ Facebook - messagingEvent.message", JSON.stringify(body));
                     MessengerRecive.handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
+                    writeLog("Nhập request từ Facebook - !messagingEvent.message", JSON.stringify(body));
                     console.log("else 1");
                 } else if (messagingEvent.postback) {
+                    writeLog("Nhập request từ Facebook - messagingEvent.postback", JSON.stringify(body));
                     console.log("if 2 postback", messagingEvent.postback);
                     MessengerRecive.handlePostback(sender_psid, messagingEvent.postback);
                 } else {
+                    writeLog("Nhập request từ Facebook - !messagingEvent.postback", JSON.stringify(body));
                     console.log("else 2", messagingEvent.postback);
                     // console.error('Webhook received unknown messagingEvent: ', messagingEvent);
                 }

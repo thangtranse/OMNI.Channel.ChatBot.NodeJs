@@ -33,6 +33,7 @@ const handleMessage = async (_data) => {
             // Phương thức không đồng bộ
             let createWebhookRocket = apiRocket.createOutGoingWebhookRocket_VIBER(nameRoomRocket).then(data => data).catch(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
+
         }
 
         inforUser.infor = _data.sender;

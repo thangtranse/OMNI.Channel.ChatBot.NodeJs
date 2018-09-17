@@ -3,6 +3,8 @@ const apiRocket = require('../helper-rocket/apiRest');
 const graph = require('./graph');
 const ProcessStr = require('../libs/processStr');
 const MessengerSend = require('./send');
+const mongodb = require("../database/mongodb");
+const config = require("../config");
 
 /**
  * Handles messages events
@@ -13,70 +15,106 @@ const MessengerSend = require('./send');
  * @param sender_psid: id-user gửi tin nhắn
  * @param received_message: nội dung tin nhắn
  */
-const handleMessage = (sender_psid, received_message) => {
+const handleMessage = async (sender_psid, received_message) => {
     let response = null;
     let pattern = /^(-){2}([a-zA-Z])\w+/g;
-    // tin nhắn không chưa nội dung
+
     console.log("handleMessage", received_message.text);
+
+    // tin nhắn không chứa nội dung
     if (!received_message.text) return;
-    // kiểm tra id đối tượng gửi tin nhắn đã đăng nhập hay chưa
-    db.getDataUser(sender_psid, (data) => {
-        if (typeof data != "undefined") { // khách hàng đã login
-            switch ((received_message.text).toLowerCase()) {
-                case 'bat dau':
-                case 'start':
-                case 'dang nhap':
-                case 'đăng nhập':
-                case 'login':
-                case 'bắt đầu':
-                    MessengerSend.callSendAPI(sender_psid, {"text": "Bạn đã đăng nhập rồi!"});
-                    break;
-                case 'ket thuc':
-                case 'kết thúc':
-                case 'đăng xuất':
-                case 'dang xuat':
-                case 'end':
-                    logoutRocketWithAccountFacebook(sender_psid);
-                    break;
-                default:
-                    response = {
-                        "text": received_message
-                    }
-            }
-            // Kiểm tra xem người dùng có sử dụng câu lệnh không
-            if (!pattern.test(received_message.text.trim())) { // không sử dụng câu lệnh
-                console.log("dòng 48: ", data);
-                apiRocket.sendMess('GENERAL',
-                    received_message.text,
-                    data.token_rocket.stringValue,
-                    data.id_rocket.stringValue,
-                    data => {
-                        console.log("tin nhắn được gửi đến rocket: ", data.status);
-                    });
-            } else { // sử dụng câu lệnh
-                codeExecute(data, received_message);
-            }
-        } else { // khách hàng chưa login
-            switch ((received_message.text).toLowerCase()) {
-                case 'bat dau':
-                case 'start':
-                case 'dang nhap':
-                case 'đăng nhập':
-                case 'login':
-                case 'bắt đầu':
-                    loginRocketWithFacebook(sender_psid);
-                    break;
-                case 'ket thuc':
-                case 'kết thúc':
-                case 'đăng xuất':
-                case 'dang xuat':
-                    MessengerSend.callSendAPI(sender_psid, {"text": "Bạn chưa đăng nhập vui lòng gõ 'Bắt đầu' để đăng nhập"});
-                    break;
-                default:
-                    privateCustomer(sender_psid, received_message);
-            }
+
+    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": sender_psid}).then(data => data);
+
+    var idRoomRocket = null;
+    if (checkDataUser) { // tồn tại thông tin
+
+    } else { // chưa có thông tin User
+        // Lấy thông tin USER FACEBOOK
+        var inforUser = await graph.getInforCustomerChatWithPage(sender_psid).then(data => data);
+        var nameSender = inforUser.first_name.toLowerCase().trim().replace(/(\s)/g, ".") + "." + inforUser.last_name.toLowerCase().trim().replace(/(\s)/g, ".");
+        nameSender = 'Facebook.' + nameSender;
+        nameSender = ProcessStr.clearUnikey(nameSender);
+
+        let infoRoomRocket = await apiRocket.infoChannel(nameSender).then(data => data).catch(data => data);
+
+        if (infoRoomRocket.success) {
+            idRoomRocket = infoRoomRocket.channel._id;
+        } else {
+            let createRoomRocket = await apiRocket.createChannelRocket(nameSender).then(data => data);
+            // Phương thức không đồng bộ
+            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket_VIBER(nameSender).then(data => data);
+            idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
+
         }
-    });
+
+        inforUser.localSent = "Facebook";
+        inforUser.nameRoomRocket = nameSender;
+        inforUser.idRoomRocket = idRoomRocket;
+        inforUser.uid = sender_psid;
+
+        var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
+
+    }
+    forwardRocket(idRoomRocket, received_message.text, inforUser);
+    // // kiểm tra id đối tượng gửi tin nhắn đã đăng nhập hay chưa
+    // db.getDataUser(sender_psid, (data) => {
+    //     if (typeof data != "undefined") { // khách hàng đã login
+    //         switch ((received_message.text).toLowerCase()) {
+    //             case 'bat dau':
+    //             case 'start':
+    //             case 'dang nhap':
+    //             case 'đăng nhập':
+    //             case 'login':
+    //             case 'bắt đầu':
+    //                 MessengerSend.callSendAPI(sender_psid, {"text": "Bạn đã đăng nhập rồi!"});
+    //                 break;
+    //             case 'ket thuc':
+    //             case 'kết thúc':
+    //             case 'đăng xuất':
+    //             case 'dang xuat':
+    //             case 'end':
+    //                 logoutRocketWithAccountFacebook(sender_psid);
+    //                 break;
+    //             default:
+    //                 response = {
+    //                     "text": received_message
+    //                 }
+    //         }
+    //         // Kiểm tra xem người dùng có sử dụng câu lệnh không
+    //         if (!pattern.test(received_message.text.trim())) { // không sử dụng câu lệnh
+    //             console.log("dòng 48: ", data);
+    //             apiRocket.sendMess('GENERAL',
+    //                 received_message.text,
+    //                 data.token_rocket.stringValue,
+    //                 data.id_rocket.stringValue,
+    //                 data => {
+    //                     console.log("tin nhắn được gửi đến rocket: ", data.status);
+    //                 });
+    //         } else { // sử dụng câu lệnh
+    //             codeExecute(data, received_message);
+    //         }
+    //     } else { // khách hàng chưa login
+    //         switch ((received_message.text).toLowerCase()) {
+    //             case 'bat dau':
+    //             case 'start':
+    //             case 'dang nhap':
+    //             case 'đăng nhập':
+    //             case 'login':
+    //             case 'bắt đầu':
+    //                 loginRocketWithFacebook(sender_psid);
+    //                 break;
+    //             case 'ket thuc':
+    //             case 'kết thúc':
+    //             case 'đăng xuất':
+    //             case 'dang xuat':
+    //                 MessengerSend.callSendAPI(sender_psid, {"text": "Bạn chưa đăng nhập vui lòng gõ 'Bắt đầu' để đăng nhập"});
+    //                 break;
+    //             default:
+    //                 privateCustomer(sender_psid, received_message);
+    //         }
+    //     }
+    // });
 }
 
 // Handles messaging_postbacks events
@@ -198,6 +236,12 @@ const privateCustomer = (sender_psid, received_message) => {
                 });
         }
     })
+}
+
+// Chuyển tiếp tin nhắn ZALO sang Rocket
+const forwardRocket = (_idRoomRocket, _dataMsg, _infoUser) => {
+    apiRocket.sendMsgRock(_idRoomRocket,
+        _dataMsg, _infoUser.first_name + " " + _infoUser.last_name, _infoUser.profile_pic);
 }
 
 module.exports = {
