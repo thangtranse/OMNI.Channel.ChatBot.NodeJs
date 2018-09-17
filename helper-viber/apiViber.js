@@ -11,7 +11,7 @@ const sendMsg = (_userId, _dataMsg) => {
                 "Content-Type": "application/json"
             },
             json: {
-                receiver: _userId.trum(),
+                receiver: _userId.trim(),
                 min_api_version: 1,
                 sender: {
                     name: "John McClane",
