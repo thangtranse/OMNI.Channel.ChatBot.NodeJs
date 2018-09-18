@@ -9,9 +9,9 @@ const handleMessage = async (_data) => {
     /**
      * _data: { fromoid, phone, appid, msgid, event, pageid, message, oaid, mac, timestamp }
      */
-<<<<<<< HEAD
+
     var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.fromuid}).then(data => data);
-=======
+
     let msgRocket = msgRocketModel.find({"uid": _data.fromuid}, (err, result) => {
         return new Promise((resolve, reject) => {
             if (err) reject(err)
@@ -19,7 +19,7 @@ const handleMessage = async (_data) => {
         })
     })
     var checkDataUser = await msgRocket.then(data => data).catch(data => data);
->>>>>>> f9f25aab6d5ab30646526be4c5d494a2fe3588e9
+
 
     let inforUser = null;
     let idRoomRocket;
