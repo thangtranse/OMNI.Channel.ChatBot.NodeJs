@@ -1,14 +1,23 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const configAuth = require('./config');
+const config = require('./config');
 const util = require('util');
 const app = express().use(bodyParser.json());
-const db = require('./database/connectDb');
 const session = require('express-session');
 const passport = require('passport');
 
 var id = "";
+
+
+var mongoose = require('mongoose');
+mongoose.connect(config.mongodb.url);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    console.log("Connect complete!");
+});
+
 
 // Session
 app.set('trust proxy', 1) // trust first proxy
@@ -25,7 +34,7 @@ const zaloSend = require('./helper-zalo/send');
 const api = require('./helper-rocket/apiRest');
 const MessengerRecive = require('./helper-messenger/recive');
 const MessengerSend = require('./helper-messenger/send');
-
+//
 // Start Server
 app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), () => console.log('webhook is listening in port: ', app.get('port')));
@@ -48,7 +57,7 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
-passport.use(new FacebookStrategy(configAuth.facebookAuth,
+passport.use(new FacebookStrategy(config.facebookAuth,
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
             // Lấy được token khi User thực hiện đăng nhập
@@ -233,31 +242,10 @@ app.post("/webhook_zalo", (req, res) => {
 
 // ZALO END
 
-
-// TEST
-app.get("/test", async (req, res) => {
-    db.queryIdChannel("thang.tran.1661436757312768", data => {
-        console.log("ahihi: ", data);
-    });
-    res.end();
-});
-
-const t = require('./helper-messenger/graph');
-app.get("/fb", (req, res) => {
-    console.log("new: ", t.getInforCustomerChatWithPage('166143675731276'));
-});
-
 app.get("/livechat", (req, res) => {
     fs.readFile('./public/livechat.html', (err, data) => {
         res.end(data);
     })
-});
-
-const thang = require('./database/mongodb');
-app.get("/mongo", async (req, res) => {
-    writeLog("key", "Thắng");
-    writeLog("key", "Thắng 2");
-    res.end();
 });
 
 app.get("/logs", async (req, res) => {
@@ -283,3 +271,23 @@ const writeLog = (_header, _data) => {
     });
 }
 
+var m = require("./libs/models/msgRocket");
+app.get("/mongoose_create", async (req, res) => {
+    m.create({localSent: "123", idRoomRocket: "456", nameRoomRocket: "789", uid: "111"}, (err, result) => {
+        if (!err) console.log("thanh công", result)
+        else
+            console.log("erorr", err)
+        res.end();
+    });
+});
+app.get("/mongoose_find", async (req, res) => {
+    let thangg = m.find({localSent: "1234"}, (err, result) => {
+        return new Promise((resolve, reject) => {
+            if (!err) resolve(result)
+            else
+                reject(err)
+        })
+    });
+
+    thangg.then(data => res.end(JSON.stringify(data)))
+});

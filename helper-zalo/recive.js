@@ -1,6 +1,7 @@
 const ProcessStr = require("../libs/processStr");
 const apiRocket = require("../helper-rocket/apiRest");
 const mongodb = require("../database/mongodb");
+const msgRocketModel = require("../libs/models/msgRocket")
 const apiOpen = require("./apiOpen");
 const config = require("../config");
 
@@ -8,7 +9,6 @@ const handleMessage = async (_data) => {
     /**
      * _data: { fromoid, phone, appid, msgid, event, pageid, message, oaid, mac, timestamp }
      */
-
     var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.fromuid}).then(data => data);
 
     let inforUser = null;

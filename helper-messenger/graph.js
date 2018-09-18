@@ -57,11 +57,17 @@ const getInforCustomerChatWithPage = (_Userid,) => {
     })
 }
 
-///<PSID>?fields=first_name,last_name,profile_pic&access_token=<PAGE_ACCESS_TOKEN>"
-
-// const result =
+/**
+ * Gửi tin nhắn "text" sang người dùng Facebook
+ * @param sender_psid
+ * @param response
+ */
+const sentMsgFacebook = (sender_psid, response) => {
+    parameterSentGraph("messages", sender_psid, response);
+}
 
 module.exports = {
     parameterSentGraph,
-    getInforCustomerChatWithPage
+    getInforCustomerChatWithPage,
+    sentMsgFacebook
 }

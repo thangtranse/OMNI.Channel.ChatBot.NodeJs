@@ -1,7 +1,7 @@
 const apiRocket = require("../helper-rocket/apiRest");
 const ProcessStr = require("../libs/processStr");
-const config = require("../config");
 const mongodb = require("../database/mongodb");
+const config = require("../config");
 
 const handleMessage = async (_data) => {
     /**

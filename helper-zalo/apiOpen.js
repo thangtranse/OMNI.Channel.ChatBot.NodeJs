@@ -2,7 +2,6 @@
 // const zsConfig = config.zalo;
 // const ZSClient = new ZaloSocial(zsConfig);
 const config = require('../config');
-
 const ZaloOA = require('zalo-sdk').ZaloOA;
 const zaConfig = {
     oaid: config.zalo.appId,
