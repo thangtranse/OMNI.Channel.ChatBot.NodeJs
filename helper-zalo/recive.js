@@ -15,7 +15,7 @@ const handleMessage = async (_data) => {
             else resolve(result)
         })
     })
-    var checkDataUser = await msgRocket.then(data => data);
+    var checkDataUser = await msgRocket.then(data => data).catch(data => data);
 
     let inforUser = null;
     let idRoomRocket;
