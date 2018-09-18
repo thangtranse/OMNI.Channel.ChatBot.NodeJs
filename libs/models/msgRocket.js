@@ -4,7 +4,7 @@ class msgRocket {
 
     constructor(_localSent, _idRoomRocket, _nameRoomRocket, _uid, _userDetail) {
         localSent = _localSent;
-        idRoomRocket = idRoomRocket;
+        idRoomRocket = _idRoomRocket;
         nameRoomRocket = _nameRoomRocket;
         uid = _uid;
         userDetail = _userDetail;
