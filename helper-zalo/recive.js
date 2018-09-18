@@ -3,6 +3,7 @@ const apiRocket = require("../helper-rocket/apiRest");
 const mongodb = require("../database/mongodb");
 const apiOpen = require("./apiOpen");
 const forwardRocket = require("../libs/forwardRocket")
+const msgRocketModel = require("../libs/models/msgRocket")
 const config = require("../config");
 
 const handleMessage = async (_data) => {
@@ -20,10 +21,12 @@ const handleMessage = async (_data) => {
         idRoomRocket = checkDataUser.idRoomRocket;
     } else {
         inforUser = await apiOpen.getInforUser(_data.fromuid).then(data => data);
+
         /**
          * inforUser { userGender:, userId:, userIdByApp:, avatar:, avatars: 120/240, displayName:, birthDate:, sharedInfo:, tagsAndNotesInfo:}
          */
-        let displayName = inforUser.displayName.toLowerCase().trim().replace(/(\s)/g, ".");
+
+        let displayName = displayName.toLowerCase().trim().replace(/(\s)/g, ".");
         displayName = ProcessStr.clearUnikey(displayName);
         let nameRoomRocket = `Zalo.${displayName}`;
         let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
@@ -39,8 +42,9 @@ const handleMessage = async (_data) => {
         // kiểm tra giá trị
         if (typeof idRoomRocket == "undefined") return;
 
-        var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
+        let msgRocket = new msgRocketModel.msgRocket("Zalo", idRoomRocket, nameRoomRocket, inforUser.userId, inforUser)
 
+        var insertDataUser = await mongodb.insert(config.mongodb.collection, msgRocket.toJson()).then(data => data);
     }
 
     switch (_data.event) {
