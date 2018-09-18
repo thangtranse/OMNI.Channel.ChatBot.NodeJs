@@ -7,16 +7,13 @@ const app = express().use(bodyParser.json());
 const session = require('express-session');
 const passport = require('passport');
 
-var id = "";
-
-
-var mongoose = require('mongoose');
-mongoose.connect(config.mongodb.url);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-    console.log("Connect complete!");
-});
+// var mongoose = require('mongoose');
+// mongoose.connect(config.mongodb.url);
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function () {
+//     console.log("Connect complete!");
+// });
 
 
 // Session
@@ -24,6 +21,13 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(session({secret: 'SCC-Thangtm13'}));
 app.use(express.static('debug.log'));
 // Session END
+
+app.set('view engine', 'ejs')
+app.set('views', './public');
+
+app.get("/thang", (res, resp) => {
+    resp.render("thang");
+})
 
 // Zalo
 const apiZalo = require('./helper-zalo/apiOpen');
@@ -45,7 +49,6 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
-
 // xác định đăng nhập từ FB
 app.get('/auth/facebook', passport.authenticate('facebook'));
 // Xử lý dữ liệu callback về
@@ -57,14 +60,13 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
-passport.use(new FacebookStrategy(config.facebookAuth,
-    function (accessToken, refreshToken, profile, done) {
-        process.nextTick(function () {
-            // Lấy được token khi User thực hiện đăng nhập
-            done(null, accessToken);
-        });
-    }
-));
+
+passport.use(new FacebookStrategy(config.facebookAuth, function (accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
+        // Lấy được token khi User thực hiện đăng nhập
+        done(null, accessToken);
+    });
+}));
 passport.serializeUser((user, done) => {
     done(null, user);
 });
@@ -111,7 +113,6 @@ app.post("/webhook_viber", (res, resp) => {
     sendViber.forwardViber(res.body);
     resp.end();
 })
-
 
 app.get("/viber", (res, resp) => {
     resp.end();
