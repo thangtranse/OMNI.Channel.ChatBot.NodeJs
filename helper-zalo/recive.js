@@ -9,13 +9,13 @@ const handleMessage = async (_data) => {
     /**
      * _data: { fromoid, phone, appid, msgid, event, pageid, message, oaid, mac, timestamp }
      */
-    let msgRocketModel = msgRocketModel.find({"uid": _data.fromuid}, (err, result) => {
+    let msgRocket = msgRocketModel.find({"uid": _data.fromuid}, (err, result) => {
         return new Promise((resolve, reject) => {
             if (err) reject(err)
             else resolve(result)
         })
     })
-    var checkDataUser = await msgRocketModel.then(data => data);
+    var checkDataUser = await msgRocket.then(data => data);
 
     let inforUser = null;
     let idRoomRocket;

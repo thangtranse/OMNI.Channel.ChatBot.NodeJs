@@ -9,14 +9,14 @@ const forwardZalo = async (_data) => {
      * _data: {bot, channel_id, channel_name, message_id, timestamp, user_id, user_name, text, alias}
      */
 
-    let msgRocketModel = msgRocketModel.find({"idRoomRocket": _data.channel_id}, (err, result) => {
+    let msgRocket = msgRocketModel.find({"idRoomRocket": _data.channel_id}, (err, result) => {
         return new Promise((resolve, reject) => {
             if (err) reject(err)
             else resolve(result)
         })
     })
 
-    var getDataUser = await msgRocketModel.then(data => data)
+    var getDataUser = await msgRocket.then(data => data)
 
     if (getDataUser && _data.user_name.trim() != config.rocket.username) {
         let uidZalo = getDataUser.uid;
