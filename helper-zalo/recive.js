@@ -1,8 +1,8 @@
 const ProcessStr = require("../libs/processStr");
 const apiRocket = require("../helper-rocket/apiRest");
 const mongodb = require("../database/mongodb");
-const msgRocketModel = require("../libs/models/msgRocket")
 const apiOpen = require("./apiOpen");
+const forwardRocket = require("../libs/forwardRocket")
 const config = require("../config");
 
 const handleMessage = async (_data) => {
@@ -11,15 +11,6 @@ const handleMessage = async (_data) => {
      */
 
     var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.fromuid}).then(data => data);
-
-    let msgRocket = msgRocketModel.find({"uid": _data.fromuid}, (err, result) => {
-        return new Promise((resolve, reject) => {
-            if (err) reject(err)
-            else resolve(result)
-        })
-    })
-    var checkDataUser = await msgRocket.then(data => data).catch(data => data);
-
 
     let inforUser = null;
     let idRoomRocket;
@@ -48,16 +39,8 @@ const handleMessage = async (_data) => {
         // kiểm tra giá trị
         if (typeof idRoomRocket == "undefined") return;
 
-        // var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
-        msgRocketModel.create({
-            localSent: "Zalo",
-            idRoomRocket: idRoomRocket,
-            nameRoomRocket: nameRoomRocket,
-            uid: _data.fromuid,
-            userDetail: inforUser
-        }, (err, result) => {
-            if (err) console.log("msgRocketModel.create error:", err)
-        })
+        var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
+
     }
 
     switch (_data.event) {
@@ -77,17 +60,13 @@ const handleMessage = async (_data) => {
             break;
     }
     if (typeof inforUser == "undefined") return;
-    forwardRocket(idRoomRocket, _data, inforUser);
-}
 
-// Chuyển tiếp tin nhắn ZALO sang Rocket
-const forwardRocket = (_idRoomRocket, _dataMsg, _dataUser) => {
-    if (_dataUser.avatars)
-        _dataUser.avatars = Object.values(_dataUser.avatars)[1];
-    else
-        _dataUser.avatars = "";
-    apiRocket.sendMsgRock(_idRoomRocket,
-        _dataMsg.message, _dataUser.displayName, _dataUser.avatars);
+    if (inforUser.avatars) {
+        inforUser.avatars = Object.values(inforUser.avatars)[1];
+    } else {
+        inforUser.avatars = "";
+    }
+    forwardRocket.forwardRocket(idRoomRocket, _data.message, inforUser.displayName, inforUser.avatars)
 }
 
 module.exports = {handleMessage}

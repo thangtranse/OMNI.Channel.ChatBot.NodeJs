@@ -1,25 +1,25 @@
-const mongoose = require('mongoose')
+var localSent, idRoomRocket, nameRoomRocket, uid, userDetail;
 
-var schemaMsgRocket = mongoose.Schema({
-    localSent: {
-        type: String,
-        required: true
-    },
-    idRoomRocket: {
-        type: String,
-        required: true
-    },
-    nameRoomRocket: {
-        type: String,
-        required: true
-    },
-    uid: {
-        type: String,
-        required: true
-    },
+class msgRocket {
 
-    userDetail: Object
-})
+    constructor(_localSent, _idRoomRocket, _nameRoomRocket, _uid, _userDetail) {
+        localSent = _localSent;
+        idRoomRocket = idRoomRocket;
+        nameRoomRocket = _nameRoomRocket;
+        uid = _uid;
+        userDetail = _userDetail;
+    }
 
-module.exports = mongoose.model('msgRocket', schemaMsgRocket)
+    toJson() {
+        return {
+            localSent: localSent,
+            idRoomRocket: idRoomRocket,
+            nameRoomRocket: nameRoomRocket,
+            uid: uid,
+            userDetail: userDetail
+        }
+    }
+}
+
+module.exports = {msgRocket}
 
