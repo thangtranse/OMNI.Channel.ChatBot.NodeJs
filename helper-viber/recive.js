@@ -32,7 +32,7 @@ const handleMessage = async (_data) => {
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
         }
 
-        let msgRocket = new msgRocketModel.msgRocket("Viber", idRoomRocket, nameRoomRocket, _data, sender.id, _data.sender);
+        let msgRocket = new msgRocketModel.msgRocket("Viber", idRoomRocket, nameRoomRocket, _data.sender.id, _data.sender);
         mongodb.insert(config.mongodb.collection, msgRocket.toJson()).then(data => data);
     }
     // kiểm tra giá trị
