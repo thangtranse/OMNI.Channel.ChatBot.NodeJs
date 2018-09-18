@@ -1,5 +1,6 @@
 {
   "name": "facebook_messenger",
+  "homepage": "https://ten-lua.herokuapp.com",
   "version": "1.0.0",
   "description": "Test API",
   "main": "index.js",
@@ -17,10 +18,8 @@
     "ddp-login": "^1.0.10",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "firebase": "^5.3.1",
-    "firebase-admin": "^6.0.0",
-    "firebase-functions": "^2.0.5",
     "mongodb": "^3.1.4",
+    "mongoose": "^5.2.15",
     "passport": "~0.3.2",
     "passport-facebook": "~2.1.1",
     "passport-google-oauth": "~1.0.0",

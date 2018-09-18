@@ -1,5 +1,28 @@
+const config = require('../config');
+const mongodb = require('../database/mongodb');
+const apiOpen = require('../helper-zalo/apiOpen');
+const apiViber = require("../helper-viber/apiViber");
+const graph = require("../helper-messenger/graph");
 
-// Chuyển tiếp tin nhắn sang Rocket
+// Tin nhắn fb
+const forwardRocket = (_idRoomRocket, _dataMsg, _infoUser) => {
+    apiRocket.sendMsgRock(_idRoomRocket,
+        _dataMsg, _infoUser.first_name + " " + _infoUser.last_name, _infoUser.profile_pic);
+}
+
+
+// Chuyển tiếp tin nhắn ZALO sang Rocket
+const forwardRocket = (_idRoomRocket, _dataMsg) => {
+    console.log("_idRoomRocket", _idRoomRocket);
+    console.log("_dataMsg.message", _dataMsg.message);
+    console.log(" _dataMsg.sender.name", _dataMsg.sender.name);
+    console.log("_dataMsg.sender.avatar", _dataMsg.sender.avatar);
+
+    apiRocket.sendMsgRock(_idRoomRocket,
+        _dataMsg.message.text, _dataMsg.sender.name, _dataMsg.sender.avatar);
+}
+
+// Chuyển tiếp tin nhắn ZALO sang Rocket
 const forwardRocket = (_idRoomRocket, _dataMsg, _dataUser) => {
     if (_dataUser.avatars)
         _dataUser.avatars = Object.values(_dataUser.avatars)[1];
@@ -10,4 +33,4 @@ const forwardRocket = (_idRoomRocket, _dataMsg, _dataUser) => {
 }
 
 
-module.exports = {}
+module.exports = {forwardRocket}

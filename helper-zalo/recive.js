@@ -1,6 +1,7 @@
 const ProcessStr = require("../libs/processStr");
 const apiRocket = require("../helper-rocket/apiRest");
 const mongodb = require("../database/mongodb");
+const msgRocketModel = require("../libs/models/msgRocket")
 const apiOpen = require("./apiOpen");
 const config = require("../config");
 
@@ -8,8 +9,13 @@ const handleMessage = async (_data) => {
     /**
      * _data: { fromoid, phone, appid, msgid, event, pageid, message, oaid, mac, timestamp }
      */
-
-    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.fromuid}).then(data => data);
+    let msgRocketModel = msgRocketModel.find({"uid": _data.fromuid}, (err, result) => {
+        return new Promise((resolve, reject) => {
+            if (err) reject(err)
+            else resolve(result)
+        })
+    })
+    var checkDataUser = await msgRocketModel.then(data => data);
 
     let inforUser = null;
     let idRoomRocket;
@@ -22,10 +28,9 @@ const handleMessage = async (_data) => {
         /**
          * inforUser { userGender:, userId:, userIdByApp:, avatar:, avatars: 120/240, displayName:, birthDate:, sharedInfo:, tagsAndNotesInfo:}
          */
-        inforUser.displayName = inforUser.displayName.toLowerCase().trim().replace(/(\s)/g, ".");
-        inforUser.displayName = ProcessStr.clearUnikey(inforUser.displayName);
-        inforUser.localSent = "Zalo";
-        let nameRoomRocket = `Zalo.${inforUser.displayName}`;
+        let displayName = inforUser.displayName.toLowerCase().trim().replace(/(\s)/g, ".");
+        displayName = ProcessStr.clearUnikey(displayName);
+        let nameRoomRocket = `Zalo.${displayName}`;
         let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
 
         if (infoRoomRocket.success) {
@@ -39,9 +44,16 @@ const handleMessage = async (_data) => {
         // kiểm tra giá trị
         if (typeof idRoomRocket == "undefined") return;
 
-        inforUser.idRoomRocket = idRoomRocket;
-        inforUser.nameRoomRocket = nameRoomRocket;
-        var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
+        // var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
+        msgRocketModel.create({
+            localSent: "Zalo",
+            idRoomRocket: idRoomRocket,
+            nameRoomRocket: nameRoomRocket,
+            uid: _data.fromuid,
+            userDetail: inforUser
+        }, (err, result) => {
+            if (err) console.log("msgRocketModel.create error:", err)
+        })
     }
 
     switch (_data.event) {
