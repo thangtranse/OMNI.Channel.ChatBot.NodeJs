@@ -44,7 +44,7 @@ const handleMessage = async (_data) => {
 
         let msgRocket = new msgRocketModel.msgRocket("Zalo", idRoomRocket, nameRoomRocket, inforUser.userId, inforUser)
 
-        var insertDataUser = await mongodb.insert(config.mongodb.collection, msgRocket.toJson()).then(data => data);
+        mongodb.insert(config.mongodb.collection, msgRocket.toJson()).then(data => data);
     }
 
     switch (_data.event) {
