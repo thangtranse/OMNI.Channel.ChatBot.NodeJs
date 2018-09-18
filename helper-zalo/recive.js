@@ -26,7 +26,7 @@ const handleMessage = async (_data) => {
          * inforUser { userGender:, userId:, userIdByApp:, avatar:, avatars: 120/240, displayName:, birthDate:, sharedInfo:, tagsAndNotesInfo:}
          */
 
-        let displayName = displayName.toLowerCase().trim().replace(/(\s)/g, ".");
+        let displayName = inforUser.displayName.toLowerCase().trim().replace(/(\s)/g, ".");
         displayName = ProcessStr.clearUnikey(displayName);
         let nameRoomRocket = `Zalo.${displayName}`;
         let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
