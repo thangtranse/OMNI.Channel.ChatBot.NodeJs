@@ -3,9 +3,11 @@
   "homepage": "https://ten-lua.herokuapp.com",
   "version": "1.0.0",
   "description": "Test API",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -p",
+    "watch": "webpack --watch"
   },
   "author": "Thangtm",
   "license": "ISC",
@@ -19,7 +21,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "mongodb": "^3.1.4",
+    "mongodb": "^3.1.6",
     "mongoose": "^5.2.15",
     "passport": "~0.3.2",
     "passport-facebook": "~2.1.1",
@@ -29,5 +31,9 @@
     "request": "^2.88.0",
     "ws": "^6.0.0",
     "zalo-sdk": "^2.0.4"
+  },
+  "devDependencies": {
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.0"
   }
 }
