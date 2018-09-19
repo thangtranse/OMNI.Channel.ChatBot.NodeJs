@@ -293,9 +293,10 @@ app.get("/mongoose_find", async (req, res) => {
     thangg.then(data => res.end(JSON.stringify(data)))
 });
 
-
+const reciveSkype = require("./helper-skype/recive");
 app.get("/webhook_azure", (req, res) => {
     writeLog("GET webhook_azure", JSON.stringify(req.body));
+    reciveSkype(req.body);
     res.end();
 })
 
