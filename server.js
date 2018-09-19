@@ -295,11 +295,11 @@ app.get("/mongoose_find", async (req, res) => {
 
 
 app.get("/webhook_azure", (req, res) => {
-    writeLog("GET webhook_azure", req.body);
+    writeLog("GET webhook_azure", JSON.stringify(req.body));
     res.end();
 })
 
 app.post("/webhook_azure", (req, res) => {
-    writeLog("GET webhook_azure", req.body);
+    writeLog("GET webhook_azure", JSON.stringify(req.body));
     res.end();
 })
