@@ -292,3 +292,14 @@ app.get("/mongoose_find", async (req, res) => {
 
     thangg.then(data => res.end(JSON.stringify(data)))
 });
+
+
+app.get("/webhook_azure", (req, res) => {
+    writeLog("GET webhook_azure", req.body);
+    res.end();
+})
+
+app.post("/webhook_azure", (req, res) => {
+    writeLog("GET webhook_azure", req.body);
+    res.end();
+})
