@@ -296,11 +296,11 @@ app.get("/mongoose_find", async (req, res) => {
 const reciveSkype = require("./helper-skype/recive");
 app.get("/webhook_azure", (req, res) => {
     writeLog("GET webhook_azure", JSON.stringify(req.body));
-    reciveSkype(req.body);
     res.end();
 })
 
 app.post("/webhook_azure", (req, res) => {
-    writeLog("GET webhook_azure", JSON.stringify(req.body));
+    writeLog("POST webhook_azure", JSON.stringify(req.body));
+    reciveSkype.handleMessage(req.body);
     res.end();
 })
