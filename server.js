@@ -296,7 +296,7 @@ app.get("/mongoose_find", async (req, res) => {
 const reciveSkype = require("./helper-skype/recive");
 const send = require("./helper-skype/send");
 // Rocket gửi request về
-app.get("/webhook_skype", (req, res) => {
+app.post("/webhook_skype", (req, res) => {
     send.forwardViber(res.data);
     res.end();
 })
