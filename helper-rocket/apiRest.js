@@ -409,6 +409,34 @@ class apiRest {
             })
         });
     }
+
+    // Tương tự thằng trên nhưng dùng Promise
+    createOutGoingWebhookRocket(_url, _name) {
+        return new Promise((resolve, reject) => {
+            axiosInstance({
+                method: 'POST',
+                url: 'integrations.create',
+                headers: {
+                    'X-Auth-Token': configs.rocket.token,
+                    'X-User-Id': configs.rocket.userid
+                },
+                data: {
+                    type: "webhook-outgoing",
+                    name: _name,
+                    event: "sendMessage",
+                    enabled: true,
+                    username: "rocket.cat",
+                    urls: _url,
+                    scriptEnabled: false,
+                    channel: '#' + _name
+                }
+            }).then(response => {
+                resolve(response.data);
+            }).catch(function (message) {
+                reject(message.response.data);
+            })
+        });
+    }
 }
 
 /**

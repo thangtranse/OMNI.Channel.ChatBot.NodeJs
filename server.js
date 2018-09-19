@@ -294,6 +294,12 @@ app.get("/mongoose_find", async (req, res) => {
 });
 
 const reciveSkype = require("./helper-skype/recive");
+// Rocket gửi request về
+app.get("/webhook_skype", (req, res) => {
+
+    res.end();
+})
+
 app.get("/webhook_azure", (req, res) => {
     writeLog("GET webhook_azure", JSON.stringify(req.body));
     res.end();

@@ -49,7 +49,7 @@ const handleMessage = async (sender_psid, received_message) => {
             let createRoomRocket = await apiRocket.createChannelRocket(nameSender).then(data => data).catch(data => data);
             console.log("createRoomRocket: ", createRoomRocket);
             // Phương thức không đồng bộ
-            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket_FACEBOOK(nameSender).then(data => data);
+            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket(config.url_webhook.URL_WEBHOOK_CALLBACK_FACEBOOK, nameSender).then(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
             console.log("idRoomRocket: ", idRoomRocket);
         }
