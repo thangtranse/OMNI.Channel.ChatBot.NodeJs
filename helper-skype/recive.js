@@ -17,14 +17,15 @@ const handleMessage = async (_data) => {
     } else { // chưa có nè
         let nameSender = _data.from.name.toLowerCase().trim().replace(/(\s)/g, ".");
         nameSender = ProcessStr.clearUnikey(nameSender);
-        let nameRoomRocket = `Skype.${nameSender}`;
+        let nameRoomRocket = `Skype.${nameSender}.v1`;
         let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
         if (infoRoomRocket.success) {
             idRoomRocket = infoRoomRocket.channel._id;
         } else {
             let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
             // Phương thức không đồng bộ
-            await apiRocket.createOutGoingWebhookRocket(config.url_webhook.URL_WEBHOOK_CALLBACK_SKYPE, nameRoomRocket).then(data => data).catch(data => data);
+            let createWebhookRocket = await apiRocket.createOutGoingWebhookRocket(config.url_webhook.URL_WEBHOOK_CALLBACK_SKYPE, nameRoomRocket).then(data => data).catch(data => data);
+            console.log("thang created webhook", createWebhookRocket);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
         }
 
