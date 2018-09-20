@@ -14,7 +14,7 @@ const handleMessage = async (_data) => {
      * Chưa xử lý trường hợp seen, delivery
      */
     if (_data.event != 'message') return;
-    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.sender.id}).then(data => data);
+    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.sender.id}).then(data => data).catch(data => data);
     var idRoomRocket = null;
     if (checkDataUser) {
         idRoomRocket = checkDataUser.idRoomRocket;

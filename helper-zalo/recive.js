@@ -11,7 +11,7 @@ const handleMessage = async (_data) => {
      * _data: { fromoid, phone, appid, msgid, event, pageid, message, oaid, mac, timestamp }
      */
 
-    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.fromuid}).then(data => data);
+    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.fromuid}).then(data => data).catch(data => data);
 
     let inforUser = null;
     let idRoomRocket;

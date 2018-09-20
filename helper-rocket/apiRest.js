@@ -426,7 +426,7 @@ class apiRest {
                     event: "sendMessage",
                     enabled: true,
                     username: "rocket.cat",
-                    urls: _url,
+                    urls: [_url],
                     scriptEnabled: false,
                     channel: '#' + _name
                 }

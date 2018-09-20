@@ -240,7 +240,6 @@ app.post("/webhook_zalo", (req, res) => {
     zaloSend.forwardZalo(body);
     res.end();
 });
-
 // ZALO END
 
 app.get("/livechat", (req, res) => {
@@ -311,3 +310,12 @@ app.post("/webhook_azure", (req, res) => {
     reciveSkype.handleMessage(req.body);
     res.end();
 })
+
+// TEST
+app.get("/test_webhook", async (res, resp) => {
+    let temp = await api.createOutGoingWebhookRocket(config.url_webhook.URL_WEBHOOK_CALLBACK_ZALO, "Thắng đẹp trai")
+        .then(data => data)
+        .catch(data => data)
+    console.log("thang đẹp trai", temp);
+    resp.end();
+});

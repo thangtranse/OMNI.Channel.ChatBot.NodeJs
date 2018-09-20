@@ -23,7 +23,7 @@ const handleMessage = async (sender_psid, received_message) => {
     // tin nhắn không chứa nội dung
     if (!received_message.text) return;
 
-    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": sender_psid}).then(data => data);
+    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": sender_psid}).then(data => data).catch(data => data);
 
     var idRoomRocket = null;
     var inforUser = null;

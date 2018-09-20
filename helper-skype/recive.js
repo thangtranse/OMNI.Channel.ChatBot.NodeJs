@@ -10,22 +10,26 @@ const handleMessage = async (_data) => {
      * Chưa xử lý trường hợp seen, delivery
      */
     if (_data.type != 'message') return;
-    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.from.id}).then(data => data);
+    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.from.id}).then(data => data).catch(data => data);
     var idRoomRocket = null;
+    console.log("thang 111", checkDataUser);
     if (checkDataUser) {
         idRoomRocket = checkDataUser.idRoomRocket;
     } else { // chưa có nè
         let nameSender = _data.from.name.toLowerCase().trim().replace(/(\s)/g, ".");
         nameSender = ProcessStr.clearUnikey(nameSender);
-        let nameRoomRocket = `Skype.${nameSender}.v1`;
+        let nameRoomRocket = `Skype.${nameSender}`;
         let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
         if (infoRoomRocket.success) {
             idRoomRocket = infoRoomRocket.channel._id;
         } else {
             let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
             // Phương thức không đồng bộ
+            console.log("thanggG: ");
             let createWebhookRocket = await apiRocket.createOutGoingWebhookRocket(config.url_webhook.URL_WEBHOOK_CALLBACK_SKYPE, nameRoomRocket).then(data => data).catch(data => data);
-            console.log("thang created webhook", createWebhookRocket);
+
+            console.log("thang created webhook:", createWebhookRocket);
+
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
         }
 
