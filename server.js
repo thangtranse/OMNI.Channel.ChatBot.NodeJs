@@ -297,7 +297,7 @@ const send = require("./helper-skype/send");
 // Rocket gửi request về
 
 app.post("/webhook_skype", (req, res) => {
-    send.forwardSkype(res.data);
+    send.forwardSkype(req.body);
     res.end();
 })
 
