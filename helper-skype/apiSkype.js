@@ -15,6 +15,7 @@ const sendMsg = (_url, _conversationId, _activityId, _dataMsg) => {
             if (!error && response.statusCode === 200) {
                 resolve(body);
             } else {
+                console.log("thang:: ", error);
                 reject(error);
             }
         })
