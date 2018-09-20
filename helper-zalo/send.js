@@ -11,7 +11,7 @@ const forwardZalo = async (_data) => {
     var getDataUser = await mongodb.findOne(config.mongodb.collection, {"idRoomRocket": _data.channel_id}).then(data => data);
 
     if (getDataUser && _data.user_name.trim() != config.rocket.username) {
-        let uidZalo = getDataUser.userId;
+        let uidZalo = getDataUser.uid;
         apiOpen.sending(uidZalo, _data.text);
     }
 }
