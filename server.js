@@ -29,12 +29,6 @@ app.get("/thang", (res, resp) => {
     resp.render("thang");
 })
 
-// Zalo
-const apiZalo = require('./helper-zalo/apiOpen');
-const zaloRecive = require('./helper-zalo/recive');
-const zaloSend = require('./helper-zalo/send');
-// END Zalo
-
 const api = require('./helper-rocket/apiRest');
 const MessengerRecive = require('./helper-messenger/recive');
 const MessengerSend = require('./helper-messenger/send');
@@ -99,24 +93,6 @@ app.get("/", (req, resp) => {
         resp.end();
     }
 });
-
-const reciveViber = require("./helper-viber/recive");
-const sendViber = require("./helper-viber/send");
-
-app.post("/viber", (res, resp) => {
-    console.log("POST viber: ", res.body);
-    reciveViber.handleMessage(res.body);
-    resp.end();
-})
-
-app.post("/webhook_viber", (res, resp) => {
-    sendViber.forwardViber(res.body);
-    resp.end();
-})
-
-app.get("/viber", (res, resp) => {
-    resp.end();
-})
 
 /**
  * Creates the endpoint for our webhook
@@ -222,25 +198,10 @@ app.post('/ten-lua', async (req, res) => {
  * }
  */
 app.post('/webhook_facebook', async (req, res) => {
-    let body = req.body;
-    writeLog("webhook_facebook: ", JSON.stringify(body));
+    writeLog("webhook_facebook: ", JSON.stringify(req.body));
     MessengerSend.forwardFacebook(body);
     res.end();
 });
-
-
-// ZALO
-app.get("/zalowebhook", async (req, res) => {
-    zaloRecive.handleMessage(req.query);
-    res.end();
-});
-
-app.post("/webhook_zalo", (req, res) => {
-    let body = req.body;
-    zaloSend.forwardZalo(body);
-    res.end();
-});
-// ZALO END
 
 app.get("/livechat", (req, res) => {
     fs.readFile('./public/livechat.html', (err, data) => {
@@ -292,25 +253,16 @@ app.get("/mongoose_find", async (req, res) => {
     thangg.then(data => res.end(JSON.stringify(data)))
 });
 
-const reciveSkype = require("./helper-skype/recive");
-const send = require("./helper-skype/send");
-// Rocket gửi request về
-
-app.post("/webhook_skype", (req, res) => {
-    send.forwardSkype(req.body);
-    res.end();
-})
-
-app.get("/webhook_azure", (req, res) => {
-    writeLog("GET webhook_azure", JSON.stringify(req.body));
-    res.end();
-})
-
-app.post("/webhook_azure", (req, res) => {
-    writeLog("POST webhook_azure", JSON.stringify(req.body));
-    reciveSkype.handleMessage(req.body);
-    res.end();
-})
+// ROUTER
+const routerBot = require('./router/routerBot')
+const routerSkype = require('./router/routerSkype')
+const routerZalo = require('./router/routerZalo')
+const routerViber = require('./router/routerViber')
+routerBot(app)
+routerSkype(app)
+routerZalo(app)
+routerViber(app)
+// ROUTER END
 
 // TEST
 const apiSk = require("./helper-skype/apiSkype");
