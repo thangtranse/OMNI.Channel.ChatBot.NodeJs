@@ -13,6 +13,7 @@ module.exports = function (app) {
         })
     app.route('./webhook_azure')
         .post((req, resp) => {
+            console.log("nó ra dây");
             writeLog("POST webhook_azure", JSON.stringify(req.body));
             reciveSkype.handleMessage(req.body);
             resp.end();
