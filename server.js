@@ -204,20 +204,6 @@ app.get("/livechat", (req, res) => {
     })
 });
 
-app.get("/logs", async (req, res) => {
-    fs.readFile('./historyLogs.log', (err, data) => {
-        res.header("Content-Type", "application/json; charset=utf-8");
-        res.end(data);
-    })
-});
-
-app.get("/logs_reset", async (req, res) => {
-    fs.writeFile('./historyLogs.log', "", (err, data) => {
-        res.header("Content-Type", "application/json; charset=utf-8");
-        res.end(data);
-    })
-});
-
 var m = require("./libs/models/msgRocket");
 app.get("/mongoose_create", async (req, res) => {
     m.create({localSent: "123", idRoomRocket: "456", nameRoomRocket: "789", uid: "111"}, (err, result) => {
@@ -249,6 +235,27 @@ routerSkype(app)
 routerZalo(app)
 routerViber(app)
 // ROUTER END
+
+// LOG
+app.get("/debug.log", async (req, res) => {
+    fs.readFile('./libs/systemLogs/debug.log', (err, data) => {
+        res.header("Content-Type", "application/json; charset=utf-8");
+        res.end(data);
+    })
+});
+app.get("/info.log", async (req, res) => {
+    fs.readFile('./libs/systemLogs/info.log', (err, data) => {
+        res.header("Content-Type", "application/json; charset=utf-8");
+        res.end(data);
+    })
+});
+app.get("/error.log", async (req, res) => {
+    fs.readFile('./libs/systemLogs/error.log', (err, data) => {
+        res.header("Content-Type", "application/json; charset=utf-8");
+        res.end(data);
+    })
+});
+// LOG END
 
 // TEST
 const apiSk = require("./helper-skype/apiSkype");
