@@ -11,7 +11,7 @@ module.exports = function (app) {
             send.forwardSkype(req.body);
             resp.end();
         })
-    app.route('./webhook_azure')
+    app.route('/webhook_azure')
         .post((req, resp) => {
             console.log("nó ra dây");
             writeLog("POST webhook_azure", JSON.stringify(req.body));
