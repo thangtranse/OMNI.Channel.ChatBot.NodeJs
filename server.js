@@ -20,6 +20,7 @@ const passport = require('passport');
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({secret: 'SCC-Thangtm13'}));
 app.use("/logs", express.static('public'));
+app.use("/app", express.static('libs'));
 // Session END
 
 const api = require('./helper-rocket/apiRest');
