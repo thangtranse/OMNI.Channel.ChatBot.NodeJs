@@ -6,9 +6,9 @@ var Logger = exports.Logger = {};
 // var debugStream = fs.createWriteStream(__dirname + '/systemLogs/debug.log');
 // var errorStream = fs.createWriteStream(__dirname + '/systemLogs/error.log');
 
-var debug = resolve("." + __dirname, 'systemLogs/debug.log')
-var info = resolve("." +__dirname, 'systemLogs/info.log')
-var error = resolve("." +__dirname, 'systemLogs/error.log')
+var debug = resolve('systemLogs/debug.log')
+var info = resolve('systemLogs/info.log')
+var error = resolve('systemLogs/error.log')
 
 var infoStream = fs.createWriteStream(info);
 var debugStream = fs.createWriteStream(debug);
