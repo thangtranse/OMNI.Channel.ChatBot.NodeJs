@@ -22,13 +22,6 @@ app.use(session({secret: 'SCC-Thangtm13'}));
 // app.use(express.static('debug.log'));
 // Session END
 
-app.set('view engine', 'ejs')
-app.set('views', './views');
-
-app.get("/thang", (res, resp) => {
-    resp.render("thang");
-})
-
 const api = require('./helper-rocket/apiRest');
 const MessengerRecive = require('./helper-messenger/recive');
 const MessengerSend = require('./helper-messenger/send');
