@@ -1,10 +1,11 @@
 const reciveSkype = require("../helper-skype/recive");
 const send = require("../helper-skype/send");
+const logs = require("../libs/writeLogs").Logger;
 
 module.exports = function (app) {
     app.route('/webhook_skype')
         .get((req, resp) => {
-            writeLog("GET webhook_azure", JSON.stringify(req.body));
+            logs.debug("GET webhook_azure", JSON.stringify(req.body));
             resp.end();
         })
         .post((req, resp) => {
@@ -13,8 +14,7 @@ module.exports = function (app) {
         })
     app.route('/webhook_azure')
         .post((req, resp) => {
-            console.log("nó ra dây");
-            writeLog("POST webhook_azure", JSON.stringify(req.body));
+            logs.debug("POST webhook_azure", JSON.stringify(req.body));
             reciveSkype.handleMessage(req.body);
             resp.end();
         })

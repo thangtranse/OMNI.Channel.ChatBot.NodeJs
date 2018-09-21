@@ -112,17 +112,13 @@ app.post('/webhook', (req, res) => {
                 let sender_psid = messagingEvent.sender.id;
                 if (messagingEvent.message) {
                     console.log("if 1", messagingEvent);
-                    writeLog("Nhập request từ Facebook - messagingEvent.message", JSON.stringify(body));
                     MessengerRecive.handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
-                    writeLog("Nhập request từ Facebook - !messagingEvent.message", JSON.stringify(body));
                     console.log("else 1");
                 } else if (messagingEvent.postback) {
-                    writeLog("Nhập request từ Facebook - messagingEvent.postback", JSON.stringify(body));
                     console.log("if 2 postback", messagingEvent.postback);
                     MessengerRecive.handlePostback(sender_psid, messagingEvent.postback);
                 } else {
-                    writeLog("Nhập request từ Facebook - !messagingEvent.postback", JSON.stringify(body));
                     console.log("else 2", messagingEvent.postback);
                     // console.error('Webhook received unknown messagingEvent: ', messagingEvent);
                 }
@@ -198,7 +194,6 @@ app.post('/ten-lua', async (req, res) => {
  * }
  */
 app.post('/webhook_facebook', async (req, res) => {
-    writeLog("webhook_facebook: ", JSON.stringify(req.body));
     MessengerSend.forwardFacebook(body);
     res.end();
 });
@@ -222,15 +217,6 @@ app.get("/logs_reset", async (req, res) => {
         res.end(data);
     })
 });
-
-const writeLog = (_header, _data) => {
-    let date = new Date();
-    _data = '\n' + date.getDay() + "\\" + date.getMonth() + " " + date.getHours() + ":" + date.getMinutes() + "=>" + _header + ':\n-----------------\n' + _data + '\n-----------------\n';
-    fs.appendFile('./historyLogs.log', _data, function (err) {
-        if (err) return console.error(err);
-        console.log("Thành công");
-    });
-}
 
 var m = require("./libs/models/msgRocket");
 app.get("/mongoose_create", async (req, res) => {

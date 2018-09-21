@@ -1,3 +1,8 @@
+/**
+ * Xóa Các Ký tự UNIKEY
+ * @param _data
+ * @returns {*}
+ */
 const clearUnikey = _data => {
     _data = _data.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
     _data = _data.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -18,6 +23,7 @@ const clearUnikey = _data => {
 
 /**
  * Thực hiện tách chuổi lấy id
+ * Lấy Tất cả các giá trị phía sau dấu chấm cuối cùng và trả về giá trị đó
  * @param _str
  */
 const getIdFormRocket = (_str) => {

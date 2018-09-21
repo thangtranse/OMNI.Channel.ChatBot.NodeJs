@@ -1,11 +1,13 @@
+const log = require("../libs/writeLogs").Logger
+
 module.exports = function (app) {
     app.route('/rocket_bot')
         .get((req, resp) => {
-            console.log("Thắng get: ", req.body);
+            log.debug("[get] url: /rocket_bot", JSON.stringify(req.body))
             resp.end();
         })
         .post((req, resp) => {
-            console.log("Thắng post: ", req.body);
+            log.debug("[post] url: /rocket_bot", JSON.stringify(req.body))
             resp.end();
         })
 }
