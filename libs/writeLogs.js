@@ -2,17 +2,13 @@ var fs = require('fs'),
     {resolve} = require('path')
 
 var Logger = exports.Logger = {};
-// var infoStream = fs.createWriteStream(__dirname + '/systemLogs/info.log');
-// var debugStream = fs.createWriteStream(__dirname + '/systemLogs/debug.log');
-// var errorStream = fs.createWriteStream(__dirname + '/systemLogs/error.log');
+var infoStream = fs.createWriteStream('systemLogs/info.log');
+var debugStream = fs.createWriteStream('systemLogs/debug.log');
+var errorStream = fs.createWriteStream('systemLogs/error.log');
 
-var debug = resolve('systemLogs/debug.log')
-var info = resolve('systemLogs/info.log')
-var error = resolve('systemLogs/error.log')
-
-var infoStream = fs.createWriteStream(info);
-var debugStream = fs.createWriteStream(debug);
-var errorStream = fs.createWriteStream(error);
+var infoStream = fs.createWriteStream(infoStream);
+var debugStream = fs.createWriteStream(debugStream);
+var errorStream = fs.createWriteStream(errorStream);
 
 infoStream.on('error', (err) => {
     console.log("infoStream error: ", err)
