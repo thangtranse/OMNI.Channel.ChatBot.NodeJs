@@ -1,9 +1,10 @@
 var fs = require('fs'),
     path = require('path');
+
 var Logger = exports.Logger = {};
-var infoStream = fs.createWriteStream(path.join(__dirname + '/systemLogs/info.log'));
-var debugStream = fs.createWriteStream(path.join(__dirname + '/systemLogs/debug.log'));
-var errorStream = fs.createWriteStream(path.join(__dirname + '/systemLogs/error.log'));
+var infoStream = fs.createWriteStream(__dirname + '/systemLogs/info.log', {flags: 'w', encoding: 'utf-8',mode: 0666});
+var debugStream = fs.createWriteStream(__dirname + '/systemLogs/debug.log', {flags: 'w', encoding: 'utf-8',mode: 0666});
+var errorStream = fs.createWriteStream(__dirname + '/systemLogs/error.log', {flags: 'w', encoding: 'utf-8',mode: 0666});
 //
 // var infoStream = fs.createWriteStream(infoStream);
 // var debugStream = fs.createWriteStream(debugStream);
