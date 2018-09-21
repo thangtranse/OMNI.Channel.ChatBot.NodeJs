@@ -19,8 +19,8 @@ const passport = require('passport');
 // Session
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({secret: 'SCC-Thangtm13'}));
-app.use("/logs", express.static('public'));
-app.use("/app", express.static('libs'));
+// app.use("/logs", express.static('public'));
+// app.use("/app", express.static('libs'));
 // Session END
 
 const api = require('./helper-rocket/apiRest');
@@ -231,20 +231,20 @@ routerViber(app)
 // ROUTER END
 
 // LOG
-app.get("/debug.log", async (req, res) => {
-    fs.readFile('./libs/systemLogs/debug.log', (err, data) => {
+app.get("/debug.config", async (req, res) => {
+    fs.readFile('./libs/systemLogs/debug.config', (err, data) => {
         res.header("Content-Type", "application/json; charset=utf-8");
         res.end(data);
     })
 });
-app.get("/info.log", async (req, res) => {
-    fs.readFile('./libs/systemLogs/info.log', (err, data) => {
+app.get("/info.config", async (req, res) => {
+    fs.readFile('./libs/systemLogs/info.config', (err, data) => {
         res.header("Content-Type", "application/json; charset=utf-8");
         res.end(data);
     })
 });
-app.get("/error.log", async (req, res) => {
-    fs.readFile('./libs/systemLogs/error.log', (err, data) => {
+app.get("/error.config", async (req, res) => {
+    fs.readFile('./libs/systemLogs/error.config', (err, data) => {
         res.header("Content-Type", "application/json; charset=utf-8");
         res.end(data);
     })

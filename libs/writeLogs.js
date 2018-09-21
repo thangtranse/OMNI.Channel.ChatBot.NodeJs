@@ -2,9 +2,9 @@ var fs = require('fs'),
     path = require('path');
 
 var Logger = exports.Logger = {};
-var infoStream = fs.createWriteStream(__dirname + '/systemLogs/info.log', {flags: 'w', encoding: 'utf-8',mode: 0666});
-var debugStream = fs.createWriteStream(__dirname + '/systemLogs/debug.log', {flags: 'w', encoding: 'utf-8',mode: 0666});
-var errorStream = fs.createWriteStream(__dirname + '/systemLogs/error.log', {flags: 'w', encoding: 'utf-8',mode: 0666});
+var infoStream = fs.createWriteStream(__dirname + '/systemLogs/info.config', {flags: 'w', encoding: 'utf-8',mode: 0666});
+var debugStream = fs.createWriteStream(__dirname + '/systemLogs/debug.config', {flags: 'w', encoding: 'utf-8',mode: 0666});
+var errorStream = fs.createWriteStream(__dirname + '/systemLogs/error.config', {flags: 'w', encoding: 'utf-8',mode: 0666});
 //
 // var infoStream = fs.createWriteStream(infoStream);
 // var debugStream = fs.createWriteStream(debugStream);
