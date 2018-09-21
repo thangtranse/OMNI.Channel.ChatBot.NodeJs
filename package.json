@@ -5,9 +5,7 @@
   "description": "Test API",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack -p",
-    "watch": "webpack --watch"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Thangtm",
   "license": "ISC",
