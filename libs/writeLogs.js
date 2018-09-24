@@ -34,18 +34,17 @@ errorStream.on('error', (err) => {
 
 Logger.info = function (key, msg) {
     msg = typeof msg == 'object' ? JSON.parse(msg) : msg;
-    var message = new Date().toISOString() + " - " + key + " : " + msg + "\n";
-    infoStream.write(message);
+    infoStream.write(new Date().toISOString() + " - " + key + " : " + msg + "\n");
 };
 
 Logger.debug = function (key, msg) {
-    var message = new Date().toISOString() + " - " + key + " : " + msg + "\n";
-    debugStream.write(message);
+    msg = typeof msg == 'object' ? JSON.parse(msg) : msg;
+    debugStream.write(new Date().toISOString() + " - " + key + " : " + msg + "\n");
 };
 
 Logger.error = function (key, msg) {
-    var message = new Date().toISOString() + " - " + key + " : " + msg + "\n";
-    errorStream.write(message);
+    msg = typeof msg == 'object' ? JSON.parse(msg) : msg;
+    errorStream.write(new Date().toISOString() + " - " + key + " : " + msg + "\n");
 };
 
 /**
