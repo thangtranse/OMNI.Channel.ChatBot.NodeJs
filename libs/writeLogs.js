@@ -33,17 +33,17 @@ errorStream.on('error', (err) => {
 })
 
 Logger.info = function (key, msg) {
-    msg = typeof msg == 'object' ? JSON.parse(msg) : msg;
+    msg = typeof msg == 'object' ? JSON.stringify(msg) : msg;
     infoStream.write(new Date().toISOString() + " - " + key + " : " + msg + "\n");
 };
 
 Logger.debug = function (key, msg) {
-    msg = typeof msg == 'object' ? JSON.parse(msg) : msg;
+    msg = typeof msg == 'object' ? JSON.stringify(msg) : msg;
     debugStream.write(new Date().toISOString() + " - " + key + " : " + msg + "\n");
 };
 
 Logger.error = function (key, msg) {
-    msg = typeof msg == 'object' ? JSON.parse(msg) : msg;
+    msg = typeof msg == 'object' ? JSON.stringify(msg) : msg;
     errorStream.write(new Date().toISOString() + " - " + key + " : " + msg + "\n");
 };
 
