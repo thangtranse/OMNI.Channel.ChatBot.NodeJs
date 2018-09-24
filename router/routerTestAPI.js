@@ -18,7 +18,7 @@ module.exports = function (app) {
             }
         })
         .post((req, resp) => {
-            log.debug("[POST] /osource-facebook-webhook", req)
+            log.debug("[POST] /osource-facebook-webhook", req.body)
             resp.end()
         })
 }
