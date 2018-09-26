@@ -224,10 +224,13 @@ const routerBot = require('./router/routerBot')
 const routerSkype = require('./router/routerSkype')
 const routerZalo = require('./router/routerZalo')
 const routerViber = require('./router/routerViber')
+const routerTestApi = require('./router/routerTestAPI')
+
 routerBot(app)
 routerSkype(app)
 routerZalo(app)
 routerViber(app)
+routerTestApi(app)
 // ROUTER END
 
 // LOG

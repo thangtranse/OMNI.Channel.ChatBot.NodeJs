@@ -2,9 +2,21 @@ var fs = require('fs'),
     path = require('path');
 
 var Logger = exports.Logger = {};
-var infoStream = fs.createWriteStream(__dirname + '/systemLogs/info.config', {flags: 'w', encoding: 'utf-8',mode: 0666});
-var debugStream = fs.createWriteStream(__dirname + '/systemLogs/debug.config', {flags: 'w', encoding: 'utf-8',mode: 0666});
-var errorStream = fs.createWriteStream(__dirname + '/systemLogs/error.config', {flags: 'w', encoding: 'utf-8',mode: 0666});
+var infoStream = fs.createWriteStream(__dirname + '/systemLogs/info.config', {
+    flags: 'w',
+    encoding: 'utf-8',
+    mode: 0666
+});
+var debugStream = fs.createWriteStream(__dirname + '/systemLogs/debug.config', {
+    flags: 'w',
+    encoding: 'utf-8',
+    mode: 0666
+});
+var errorStream = fs.createWriteStream(__dirname + '/systemLogs/error.config', {
+    flags: 'w',
+    encoding: 'utf-8',
+    mode: 0666
+});
 //
 // var infoStream = fs.createWriteStream(infoStream);
 // var debugStream = fs.createWriteStream(debugStream);
@@ -21,18 +33,18 @@ errorStream.on('error', (err) => {
 })
 
 Logger.info = function (key, msg) {
-    var message = new Date().toISOString() + " - " + key + " : " + msg + "\n";
-    infoStream.write(message);
+    msg = typeof msg == 'object' ? JSON.stringify(msg) : msg;
+    infoStream.write(new Date().toISOString() + " - " + key + " : " + msg + "\n");
 };
 
 Logger.debug = function (key, msg) {
-    var message = new Date().toISOString() + " - " + key + " : " + msg + "\n";
-    debugStream.write(message);
+    msg = typeof msg == 'object' ? JSON.stringify(msg) : msg;
+    debugStream.write(new Date().toISOString() + " - " + key + " : " + msg + "\n");
 };
 
 Logger.error = function (key, msg) {
-    var message = new Date().toISOString() + " - " + key + " : " + msg + "\n";
-    errorStream.write(message);
+    msg = typeof msg == 'object' ? JSON.stringify(msg) : msg;
+    errorStream.write(new Date().toISOString() + " - " + key + " : " + msg + "\n");
 };
 
 /**
