@@ -50,4 +50,11 @@ Include arguments:
     URL_WEBHOOK_SKYPE = [URL WEBHOOK you had register with platform chat SKYPE]
     URL_WEBHOOK_FACEBOOK = [URL WEBHOOK you had register with platform chat FACEBOOK]
     URL_WEBHOOK_ZALO = [URL WEBHOOK you had register with platform chat ZALO]
-    
+   
+* RUN PROJECT: 
+  # NODEJS
+      1. Setup .env
+      2. npm install
+      3. npm start
+  # DOCKER (version old. I will update early)
+      1. docker-compose up
