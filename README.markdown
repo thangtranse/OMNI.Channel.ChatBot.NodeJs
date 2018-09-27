@@ -1,9 +1,9 @@
 # OMNI CHANNEL
-[x] Facebook
-[x] Viber
-[x] Skype
-[x] Zalo
-[x] Telegram
+- [x] Facebook
+- [x] Viber
+- [x] Skype
+- [x] Zalo
+- [ ] Telegram
 
 #1. SETUP FILE .ENV
 
