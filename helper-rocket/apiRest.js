@@ -175,6 +175,7 @@ class apiRest {
                 })
                 .catch(err => {
                     console.log("error sendMsgRock: ", err.response.data);
+                    console.log(process.env.ROCKET_URL_API_ROCKET)
                     reject(err.response.data);
                 });
         })
