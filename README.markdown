@@ -1,5 +1,6 @@
 # OMNI CHANNEL BOT
 
+# About:
 BOT's will help you connect 'omni channel' with platform Rocket.Chat
 - [x] Facebook
 - [x] Viber
