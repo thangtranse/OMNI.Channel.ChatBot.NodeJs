@@ -7,8 +7,7 @@ BOT's will help you connect 'omni channel' with platform Rocket.Chat
 - [x] Zalo
 - [ ] Telegram
 
-* Setup .ENV : 
-
+# Setup .ENV : 
 You must register "Webhook" and get parameter config of the platforms Facebook Messenger, viber, zalo, ... and fill in this file .env
 
 Include arguments:
@@ -51,10 +50,11 @@ Include arguments:
     URL_WEBHOOK_FACEBOOK = [URL WEBHOOK you had register with platform chat FACEBOOK]
     URL_WEBHOOK_ZALO = [URL WEBHOOK you had register with platform chat ZALO]
    
-* RUN PROJECT: 
-  # NODEJS
+# RUN PROJECT: 
+
+  NODEJS
       1. Setup .env
       2. npm install
       3. npm start
-  # DOCKER (version old. I will update early)
+  DOCKER (version old. I will update early)
       1. docker-compose up
