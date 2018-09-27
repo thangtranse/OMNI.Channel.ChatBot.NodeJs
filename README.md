@@ -6,3 +6,4 @@ OMNI CHANNEL
 - telegram (Processing)
 
 #1. SETUP FILE .ENV
+##2. 
