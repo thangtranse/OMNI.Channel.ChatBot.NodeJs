@@ -5,4 +5,4 @@ OMNI CHANNEL
 - Zalo (running)
 - telegram (Processing)
 
-#1. SETUP FILE .ENV
+*1. SETUP FILE .ENV
