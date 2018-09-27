@@ -188,7 +188,7 @@ app.post('/ten-lua', async (req, res) => {
  * }
  */
 app.post('/webhook_facebook', async (req, res) => {
-    MessengerSend.forwardFacebook(body);
+    MessengerSend.forwardFacebook(req.body);
     res.end();
 });
 
