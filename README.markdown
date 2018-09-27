@@ -1,9 +1,9 @@
-OMNI CHANNEL
-- Facebook (running)
-- Viber (running)
-- Skype (running)
-- Zalo (running)
-- telegram (Processing)
+# OMNI CHANNEL
+[x] Facebook
+[x] Viber
+[x] Skype
+[x] Zalo
+[x] Telegram
 
 #1. SETUP FILE .ENV
 
