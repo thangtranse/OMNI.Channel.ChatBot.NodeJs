@@ -1,11 +1,11 @@
 const graph = require('./graph');
 const mongodb = require("../database/mongodb");
-const PAGE_ACCESS_TOKEN = require('../config').PAGE_ACCESS_TOKEN;
-const config = require("../config");
+const PAGE_ACCESS_TOKEN = process.env.FACEBOOK_PAGE_ACCESS_TOKEN
+
 
 const forwardFacebook = async (_data) => {
-    var getDataUser = await mongodb.findOne(config.mongodb.collection, {"idRoomRocket": _data.channel_id}).then(data => data);
-    if (getDataUser && _data.user_name.trim() != config.rocket.username) {
+    var getDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "idRoomRocket": _data.channel_id }).then(data => data);
+    if (getDataUser && _data.user_name.trim() != process.env.ROCKET_USERNAME) {
         callSendAPI(getDataUser.uid, _data.text);
     }
 }
@@ -19,7 +19,7 @@ const forwardFacebook = async (_data) => {
  * }
  */
 const callSendAPI = (sender_psid, response) => {
-// Construct the message body
+    // Construct the message body
     console.log("sender_psid", sender_psid);
     console.log("response", response);
     graph.parameterSentGraph("messages", sender_psid, response);
@@ -52,10 +52,10 @@ const sendMessengerTemplateList = (sender_psid, list) => {
         })
         // });
     } else {
-        test = {"text": "Không tìm thấy"}
+        test = { "text": "Không tìm thấy" }
     }
     graph.parameterSentGraph("messages?access_token=" + PAGE_ACCESS_TOKEN, sender_psid, test);
     graph.parameterSentGraph("messages", sender_psid, test);
 }
 
-module.exports = {callSendAPI, sendMessengerTemplateList, forwardFacebook}
+module.exports = { callSendAPI, sendMessengerTemplateList, forwardFacebook }

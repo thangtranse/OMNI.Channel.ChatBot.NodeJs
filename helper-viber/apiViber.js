@@ -1,5 +1,4 @@
 const request = require('request');
-const config = require('../config');
 
 const sendMsg = (_userId, _dataMsg) => {
     return new Promise((resolve, reject) => {
@@ -7,7 +6,7 @@ const sendMsg = (_userId, _dataMsg) => {
             url: "https://chatapi.viber.com/pa/send_message",
             method: "POST",
             headers: {
-                "X-Viber-Auth-Token": config.viber.token,
+                "X-Viber-Auth-Token": process.env.VIBER_TOKEN,
                 "Content-Type": "application/json"
             },
             json: {

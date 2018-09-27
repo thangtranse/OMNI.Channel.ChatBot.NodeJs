@@ -1,9 +1,8 @@
-const apiRocket = require('../helper-rocket/apiRest');
-const graph = require('./graph');
-const ProcessStr = require('../libs/processStr');
-const MessengerSend = require('./send');
-const mongodb = require("../database/mongodb");
-const config = require("../config");
+const apiRocket = require('../helper-rocket/apiRest'),
+    graph = require('./graph'),
+    ProcessStr = require('../libs/processStr'),
+    MessengerSend = require('./send'),
+    mongodb = require("../database/mongodb")
 
 /**
  * Handles messages events
@@ -23,7 +22,7 @@ const handleMessage = async (sender_psid, received_message) => {
     // tin nhắn không chứa nội dung
     if (!received_message.text) return;
 
-    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": sender_psid}).then(data => data).catch(data => data);
+    var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": sender_psid }).then(data => data).catch(data => data);
 
     var idRoomRocket = null;
     var inforUser = null;
@@ -49,7 +48,7 @@ const handleMessage = async (sender_psid, received_message) => {
             let createRoomRocket = await apiRocket.createChannelRocket(nameSender).then(data => data).catch(data => data);
             console.log("createRoomRocket: ", createRoomRocket);
             // Phương thức không đồng bộ
-            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket(config.url_webhook.URL_WEBHOOK_CALLBACK_FACEBOOK, nameSender).then(data => data);
+            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_FACEBOOK, nameSender).then(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
             console.log("idRoomRocket: ", idRoomRocket);
         }
@@ -59,7 +58,7 @@ const handleMessage = async (sender_psid, received_message) => {
         inforUser.idRoomRocket = idRoomRocket;
         inforUser.uid = sender_psid;
         console.log("inforUser: ", inforUser);
-        var insertDataUser = await mongodb.insert(config.mongodb.collection, inforUser).then(data => data);
+        var insertDataUser = await mongodb.insert(process.env.MONGODB_COLLECTION, inforUser).then(data => data);
 
     }
     forwardRocket(idRoomRocket, received_message.text, inforUser);
@@ -162,7 +161,7 @@ const loginRocketWithFacebook = (sender_psid) => {
  */
 const logoutRocketWithAccountFacebook = (sender_psid) => {
     db.deleteUser(sender_psid);
-    MessengerSend.callSendAPI(sender_psid, {text: "Bạn đã đăng xuất thành công"});
+    MessengerSend.callSendAPI(sender_psid, { text: "Bạn đã đăng xuất thành công" });
 }
 
 /**
@@ -191,12 +190,12 @@ const codeExecute = (user, data) => {
     switch (key) {
         case '--searchuser':
             apiRocket.searchUser(keyword, user.token_rocket.stringValue, user.id_rocket.stringValue, data => {
-                MessengerSend.callSendAPI(user.id_fb.stringValue, {"text": "thành công"});
+                MessengerSend.callSendAPI(user.id_fb.stringValue, { "text": "thành công" });
                 MessengerSend.sendMessengerTemplateList(user.id_fb.stringValue, data);
             });
             break;
         case '--help':
-            let temp = {text: "--searchuser keyword -> Tìm user với keyword"}
+            let temp = { text: "--searchuser keyword -> Tìm user với keyword" }
             MessengerSend.callSendAPI(user.id_fb.stringValue, temp);
             break;
     }

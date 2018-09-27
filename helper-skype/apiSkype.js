@@ -1,5 +1,4 @@
 const request = require('request');
-const config = require('../config');
 
 const sendMsg = async (_url, _conversationId, _activityId, _dataMsg) => {
     let valueToken = await getToken();
@@ -31,10 +30,10 @@ const getToken = () => {
             url: "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token",
             method: "POST",
             form: {
-                "grant_type": config.azure.grant_type,
-                "client_id": config.azure.client_id,
-                "client_secret": config.azure.client_secret,
-                "scope": config.azure.scope
+                "grant_type": process.env.SKYPE_GRANT_TYPE,
+                "client_id": process.env.SKYPE_CLIENT_ID,
+                "client_secret": process.env.SKYPE_CLIENT_SECRET,
+                "scope": process.env.SKYPE_SCOPE
             }
         }, (error, response, body) => {
             if (!error && response.statusCode === 200) {
@@ -46,4 +45,4 @@ const getToken = () => {
     })
 }
 
-module.exports = {sendMsg}
+module.exports = { sendMsg }

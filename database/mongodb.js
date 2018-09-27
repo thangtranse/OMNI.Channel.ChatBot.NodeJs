@@ -1,12 +1,12 @@
 const MongoClient = require('mongodb').MongoClient;
-const config = require('../config');
+
 
 const connectdb = (_collection) => {
     return new Promise((resolve, reject) => {
-        MongoClient.connect(config.mongodb.url, {useNewUrlParser: true}, (err, db) => {
+        MongoClient.connect(process.env.MONGODB_URL, { useNewUrlParser: true }, (err, db) => {
             if (!err) {
                 console.log("We are connected");
-                let dbo = db.db(config.mongodb.dbname);
+                let dbo = db.db(process.env.MONGODB_DB_NAME);
                 var dbCollection = dbo.collection(_collection);
                 resolve(dbCollection);
             } else {
@@ -41,4 +41,4 @@ const insert = async (_collection, _arrayData) => {
     })
 }
 
-module.exports = {findOne, insert};
+module.exports = { findOne, insert };

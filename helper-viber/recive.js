@@ -1,9 +1,8 @@
-const apiRocket = require("../helper-rocket/apiRest");
-const ProcessStr = require("../libs/processStr");
-const mongodb = require("../database/mongodb");
-const msgRocketModel = require("../libs/models/msgRocket")
-const forwardRocket = require("../libs/forwardRocket")
-const config = require("../config");
+const apiRocket = require("../helper-rocket/apiRest"),
+    mongodb = require("../database/mongodb"),
+    msgRocketModel = require("../libs/models/msgRocket"),
+    forwardRocket = require("../libs/forwardRocket"),
+    ProcessStr = require("../libs/processStr")
 
 const handleMessage = async (_data) => {
     /**
@@ -14,7 +13,7 @@ const handleMessage = async (_data) => {
      * Chưa xử lý trường hợp seen, delivery
      */
     if (_data.event != 'message') return;
-    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.sender.id}).then(data => data).catch(data => data);
+    var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": _data.sender.id }).then(data => data).catch(data => data);
     var idRoomRocket = null;
     if (checkDataUser) {
         idRoomRocket = checkDataUser.idRoomRocket;
@@ -28,16 +27,16 @@ const handleMessage = async (_data) => {
         } else {
             let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
             // Phương thức không đồng bộ
-            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket(config.url_webhook.URL_WEBHOOK_CALLBACK_VIBER, nameRoomRocket).then(data => data).catch(data => data);
+            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_VIBER, nameRoomRocket).then(data => data).catch(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
         }
 
         let msgRocket = new msgRocketModel.msgRocket("Viber", idRoomRocket, nameRoomRocket, _data.sender.id, _data.sender);
-        mongodb.insert(config.mongodb.collection, msgRocket.toJson()).then(data => data);
+        mongodb.insert(process.env.MONGODB_COLLECTION, msgRocket.toJson()).then(data => data);
     }
     // kiểm tra giá trị
     if (typeof idRoomRocket == "undefined") return;
     forwardRocket.forwardRocket(idRoomRocket, _data.message.text, _data.sender.name, _data.sender.avatar)
 }
 
-module.exports = {handleMessage}
+module.exports = { handleMessage }

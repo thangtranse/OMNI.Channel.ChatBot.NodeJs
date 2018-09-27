@@ -1,17 +1,16 @@
-const ProcessStr = require("../libs/processStr");
-const apiRocket = require("../helper-rocket/apiRest");
-const mongodb = require("../database/mongodb");
-const apiOpen = require("./apiOpen");
-const forwardRocket = require("../libs/forwardRocket")
-const msgRocketModel = require("../libs/models/msgRocket")
-const config = require("../config");
+const ProcessStr = require("../libs/processStr"),
+    apiRocket = require("../helper-rocket/apiRest"),
+    mongodb = require("../database/mongodb"),
+    apiOpen = require("./apiOpen"),
+    forwardRocket = require("../libs/forwardRocket"),
+    msgRocketModel = require("../libs/models/msgRocket")
 
 const handleMessage = async (_data) => {
     /**
      * _data: { fromoid, phone, appid, msgid, event, pageid, message, oaid, mac, timestamp }
      */
 
-    var checkDataUser = await mongodb.findOne(config.mongodb.collection, {"uid": _data.fromuid}).then(data => data).catch(data => data);
+    var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": _data.fromuid }).then(data => data).catch(data => data);
 
     let inforUser = null;
     let idRoomRocket;
@@ -36,7 +35,7 @@ const handleMessage = async (_data) => {
         } else {
             let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
             // Phương thức không đồng bộ
-            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket(config.url_webhook.URL_WEBHOOK_CALLBACK_ZALO, nameRoomRocket).then(data => data).catch(data => data);
+            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_ZALO, nameRoomRocket).then(data => data).catch(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
         }
         // kiểm tra giá trị
@@ -44,7 +43,7 @@ const handleMessage = async (_data) => {
 
         let msgRocket = new msgRocketModel.msgRocket("Zalo", idRoomRocket, nameRoomRocket, inforUser.userId, inforUser)
 
-        mongodb.insert(config.mongodb.collection, msgRocket.toJson()).then(data => data);
+        mongodb.insert(process.env.MONGODB_COLLECTION, msgRocket.toJson()).then(data => data);
     }
 
     switch (_data.event) {
@@ -73,4 +72,4 @@ const handleMessage = async (_data) => {
     forwardRocket.forwardRocket(idRoomRocket, _data.message, inforUser.displayName, inforUser.avatars)
 }
 
-module.exports = {handleMessage}
+module.exports = { handleMessage }

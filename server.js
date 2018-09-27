@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const config = require('./config');
 const util = require('util');
 const app = express().use(bodyParser.json());
 const session = require('express-session');
 const passport = require('passport');
+
+require('dotenv').config()
 
 // var mongoose = require('mongoose');
 // mongoose.connect(config.mongodb.url);
@@ -18,7 +19,7 @@ const passport = require('passport');
 
 // Session
 app.set('trust proxy', 1) // trust first proxy
-app.use(session({secret: 'SCC-Thangtm13'}));
+app.use(session({ secret: 'SCC-Thangtm13' }));
 app.use("/logs", express.static('./libs/systemLogs'));
 // app.use("/app", express.static(''));
 // Session END
@@ -34,7 +35,7 @@ app.listen(app.get('port'), () => console.log('webhook is listening in port: ', 
 
 // Passport FB
 const FacebookStrategy = require('passport-facebook').Strategy;
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 // xác định đăng nhập từ FB
@@ -49,7 +50,13 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-passport.use(new FacebookStrategy(config.facebookAuth, function (accessToken, refreshToken, profile, done) {
+var facebookAuth = {
+    clientID: process.env.FACEBOOK_CLIENT_ID,
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    callbackURL: process.env.FACEBOOK_CALLBACK_URL
+}
+
+passport.use(new FacebookStrategy(facebookAuth, function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
         // Lấy được token khi User thực hiện đăng nhập
         done(null, accessToken);
@@ -71,12 +78,12 @@ app.get("/", (req, resp) => {
                 console.log("info: ", data.data);
                 db.writeUserData(id, data.data.me.name, data.data.authToken, req.session.passport.user, data.data.userId);
                 console.log("id nhận tin nhắn đây nè: ", id);
-                MessengerSend.callSendAPI(id, {"text": `Xin chào "${data.data.me.name}"`});
-                MessengerSend.callSendAPI(id, {"text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#GENERAL" Hãy bắt đầu trò chuyện!`});
-                MessengerSend.callSendAPI(id, {"text": `BOT: Để biết các câu lệnh đơn giản bạn hãy gõ --help`});
+                MessengerSend.callSendAPI(id, { "text": `Xin chào "${data.data.me.name}"` });
+                MessengerSend.callSendAPI(id, { "text": `BOT: Tin nhắn bạn gửi sẽ được chuyển vào group "#GENERAL" Hãy bắt đầu trò chuyện!` });
+                MessengerSend.callSendAPI(id, { "text": `BOT: Để biết các câu lệnh đơn giản bạn hãy gõ --help` });
                 if (typeof data.data.me.username == "undefined") {
                     console.log("undefine");
-                    api.updateProfile(data.data.authToken, data.data.userId, {"username": data.data.me.name});
+                    api.updateProfile(data.data.authToken, data.data.userId, { "username": data.data.me.name });
                 }
                 fs.readFile('./public/index.html', (err, data) => {
                     resp.end(data);
@@ -176,7 +183,7 @@ app.post('/ten-lua', async (req, res) => {
     let temp = await db.getListUserConnect().then(data => data);
     temp.map(x => {
         if (x.idRocket != body.user_id)
-            MessengerSend.callSendAPI(x.idMess, {"text": body.text});
+            MessengerSend.callSendAPI(x.idMess, { "text": body.text });
     });
     res.end();
 });
@@ -200,7 +207,7 @@ app.get("/livechat", (req, res) => {
 
 var m = require("./libs/models/msgRocket");
 app.get("/mongoose_create", async (req, res) => {
-    m.create({localSent: "123", idRoomRocket: "456", nameRoomRocket: "789", uid: "111"}, (err, result) => {
+    m.create({ localSent: "123", idRoomRocket: "456", nameRoomRocket: "789", uid: "111" }, (err, result) => {
         if (!err) console.log("thanh công", result)
         else
             console.log("erorr", err)
@@ -208,7 +215,7 @@ app.get("/mongoose_create", async (req, res) => {
     });
 });
 app.get("/mongoose_find", async (req, res) => {
-    let thangg = m.find({localSent: "1234"}, (err, result) => {
+    let thangg = m.find({ localSent: "1234" }, (err, result) => {
         return new Promise((resolve, reject) => {
             if (!err) resolve(result)
             else
@@ -253,10 +260,3 @@ app.get("/error.config", async (req, res) => {
     })
 });
 // LOG END
-
-// TEST
-const apiSk = require("./helper-skype/apiSkype");
-app.get("/ahihi", async (res, resp) => {
-    let temp = await apiSk.getToken().then(data => data).catch(data => data);
-    resp.end();
-});

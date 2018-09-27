@@ -1,17 +1,13 @@
-// const ZaloSocial = require('zalo-sdk').ZaloSocial;
-// const zsConfig = config.zalo;
-// const ZSClient = new ZaloSocial(zsConfig);
-const config = require('../config');
-const ZaloOA = require('zalo-sdk').ZaloOA;
-const zaConfig = {
-    oaid: config.zalo.appId,
-    secretkey: config.zalo.secretkey
-}
-const ZOAClient = new ZaloOA(zaConfig);
+const ZaloOA = require('zalo-sdk').ZaloOA,
+    zaConfig = {
+        oaid: process.env.ZALO_APP_ID,
+        secretkey: process.env.ZALO_SECRETKEY
+    },
+    ZOAClient = new ZaloOA(zaConfig);
 
 const sending = (_userId, _message) => {
     return new Promise((resolve, reject) => {
-        ZOAClient.api('sendmessage/text', 'POST', {uid: _userId, message: _message}, (response) => {
+        ZOAClient.api('sendmessage/text', 'POST', { uid: _userId, message: _message }, (response) => {
             resolve(response);
         });
     })
@@ -24,14 +20,14 @@ const sending = (_userId, _message) => {
  */
 const getInforUser = (_userId) => {
     return new Promise((resolve, reject) => {
-        ZOAClient.api('getprofile', {uid: _userId}, response => {
+        ZOAClient.api('getprofile', { uid: _userId }, response => {
             if (response.errorCode == 1) {
                 resolve(response.data);
-            }else{
+            } else {
                 console.log("error API ZALO: ", response);
             }
         })
     })
 }
 
-module.exports = {sending, getInforUser}
+module.exports = { sending, getInforUser }

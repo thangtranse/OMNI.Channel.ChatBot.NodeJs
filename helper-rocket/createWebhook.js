@@ -1,8 +1,6 @@
 "use strict"
 
-const URL_API_ROCKET = 'http://ten-lua.herokuapp.com/api/v1/';
 const request = require('request');
-const TOKEN = '';
 
 class createWebhook {
 
@@ -15,7 +13,7 @@ class createWebhook {
      */
     create_income() {
         request({
-            "uri": URL_API_ROCKET + 'integrations.create',
+            "uri": process.env.ROCKET_URL_API_ROCKET + 'integrations.create',
             "qs": {"access_token": 'G9HvcSvqrkBcAmgz9/HXp6YNwzcD273PuCBk7PhnXgn3b33gFBjoS77rWztTyp7kPb'},
             "method": "POST",
             "json": request_body

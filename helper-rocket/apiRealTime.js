@@ -1,6 +1,15 @@
-var DDPClient = require("ddp-client");
-var configs = require("../config.json");
-var ddpclient;
+var DDPClient = require("ddp-client"),
+    ddpclient, confS = {
+        "host": process.env.URL_ROCKET_CHAT,
+        "port": process.env.URL_ROCKET_PORT,
+        "ssl": true,
+        "autoReconnect": true,
+        "autoReconnectTimer": 500,
+        "maintainCollections": true,
+        "ddpVersion": "1",
+        "useSockJs": true,
+        "url": process.env.URL_ROCKET_URL
+    }
 
 class apiRealTime {
 
@@ -8,7 +17,7 @@ class apiRealTime {
      * Khởi tạo kết nối với Server Rocket.Chat
      */
     constructor() {
-        ddpclient = new DDPClient(configs.server);
+        ddpclient = new DDPClient(confS);
         ddpclient.connect((error, wasReconnect) => {
             if (error) {
                 console.log('DDP connection error!');
@@ -26,7 +35,7 @@ class apiRealTime {
      * @param {*} _authToken : Token khi Login
      */
     login(_authToken, callback) {
-        ddpclient.call('login', [{"resume": _authToken}], (err, result) => callback(err, result));
+        ddpclient.call('login', [{ "resume": _authToken }], (err, result) => callback(err, result));
     }
 
     /**
@@ -91,7 +100,7 @@ class apiRealTime {
      * * @param {*} _id id kênh lắng nghe
      */
     unSubscriptions(_id) {
-        ddpclient.subscribe("stream-room-messages", {"msg": "unsub", "id": _id});
+        ddpclient.subscribe("stream-room-messages", { "msg": "unsub", "id": _id });
     }
 
     /**
@@ -125,7 +134,7 @@ class apiRealTime {
                     "size": _filesize,
                     "type": _filetype
                 },
-                {"rid": _roomID}
+                { "rid": _roomID }
             ],
             (err, result) => {
                 if (err) {
@@ -139,7 +148,7 @@ class apiRealTime {
                                 "size": _filesize,
                                 "type": _filetype
                             },
-                            {"rid": _roomID}
+                            { "rid": _roomID }
                         ], function (err, result) {
                             console.log(err);
                         });

@@ -1,12 +1,12 @@
 const request = require('request');
-const URL_API_ROCKET = 'https://ten-lua.herokuapp.com/api/v1/';
+
+const URL_API_ROCKET = process.env.ROCKET_URL_API_ROCKET;
 const URL_WEBHOOK_CALLBACK = 'http://ten-lua-webhook.herokuapp.com/customerprivate';
-const URL_WEBHOOK_CALLBACK_ZALO = 'http://ten-lua-webhook.herokuapp.com/webhook_zalo';
-const URL_WEBHOOK_CALLBACK_VIBER = 'http://ten-lua-webhook.herokuapp.com/webhook_viber';
-const URL_WEBHOOK_CALLBACK_FACEBOOK = 'http://ten-lua-webhook.herokuapp.com/webhook_facebook';
+const URL_WEBHOOK_CALLBACK_ZALO = process.env.URL_WEBHOOK_ZALO;
+const URL_WEBHOOK_CALLBACK_VIBER = process.env.URL_WEBHOOK_VIBER;
+const URL_WEBHOOK_CALLBACK_FACEBOOK = process.env.URL_WEBHOOK_FACEBOOK;
 
 var axios = require('axios');
-var configs = require("../config.json");
 
 var axiosInstance = axios.create({
     baseURL: URL_API_ROCKET,
@@ -73,11 +73,11 @@ class apiRest {
         axiosInstance({
             method: 'POST',
             url: 'login',
-            headers: {'Content-type': 'application/json'},
+            headers: { 'Content-type': 'application/json' },
             data: {
                 "serviceName": "facebook",
                 "accessToken": _token,
-                "secret": configs.facebookAuth.clientSecret,
+                "secret": process.env.FACEBOOK_CLIENT_SECRET,
                 "expiresIn": 500
             }
         })
@@ -157,8 +157,8 @@ class apiRest {
                 method: 'POST',
                 url: 'chat.sendMessage',
                 headers: {
-                    'X-Auth-Token': configs.rocket.token,
-                    'X-User-Id': configs.rocket.userid
+                    'X-Auth-Token': process.env.ROCKET_TOKEN,
+                    'X-User-Id': process.env.ROCKET_USERID
                 },
                 data: {
                     message: {
@@ -243,8 +243,8 @@ class apiRest {
                 method: 'POST',
                 url: 'channels.create',
                 headers: {
-                    'X-Auth-Token': configs.rocket.token,
-                    'X-User-Id': configs.rocket.userid
+                    'X-Auth-Token': process.env.ROCKET_TOKEN,
+                    'X-User-Id': process.env.ROCKET_USERID
                 },
                 data: {
                     name: _channelName,
@@ -290,8 +290,8 @@ class apiRest {
                 method: 'GET',
                 url: 'channels.info?roomName=' + channelName,
                 headers: {
-                    'X-Auth-Token': configs.rocket.token,
-                    'X-User-Id': configs.rocket.userid
+                    'X-Auth-Token': process.env.ROCKET_TOKEN,
+                    'X-User-Id': process.env.ROCKET_USERID
                 }
             }).then(response => {
                 resolve(response.data);
@@ -333,8 +333,8 @@ class apiRest {
                 method: 'POST',
                 url: 'integrations.create',
                 headers: {
-                    'X-Auth-Token': configs.rocket.token,
-                    'X-User-Id': configs.rocket.userid
+                    'X-Auth-Token': process.env.ROCKET_TOKEN,
+                    'X-User-Id': process.env.ROCKET_USERID
                 },
                 data: {
                     type: "webhook-outgoing",
@@ -361,8 +361,8 @@ class apiRest {
                 method: 'POST',
                 url: 'integrations.create',
                 headers: {
-                    'X-Auth-Token': configs.rocket.token,
-                    'X-User-Id': configs.rocket.userid
+                    'X-Auth-Token': process.env.ROCKET_TOKEN,
+                    'X-User-Id': process.env.ROCKET_USERID
                 },
                 data: {
                     type: "webhook-outgoing",
@@ -389,8 +389,8 @@ class apiRest {
                 method: 'POST',
                 url: 'integrations.create',
                 headers: {
-                    'X-Auth-Token': configs.rocket.token,
-                    'X-User-Id': configs.rocket.userid
+                    'X-Auth-Token': process.env.ROCKET_TOKEN,
+                    'X-User-Id': process.env.ROCKET_USERID
                 },
                 data: {
                     type: "webhook-outgoing",
@@ -417,8 +417,8 @@ class apiRest {
                 method: 'POST',
                 url: 'integrations.create',
                 headers: {
-                    'X-Auth-Token': configs.rocket.token,
-                    'X-User-Id': configs.rocket.userid
+                    'X-Auth-Token': process.env.ROCKET_TOKEN,
+                    'X-User-Id': process.env.ROCKET_USERID
                 },
                 data: {
                     type: "webhook-outgoing",

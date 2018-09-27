@@ -1,6 +1,5 @@
 const request = require('request');
-const config = require('../config');
-const PAGE_ACCESS_TOKEN = config.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.envFACEBOOK_PAGE_ACCESS_TOKEN
 
 const parameterSentGraph = (endpoint, sender_psid, response) => {
     let request_body = {
@@ -15,7 +14,7 @@ const parameterSentGraph = (endpoint, sender_psid, response) => {
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v2.6/me/" + endpoint,
-        "qs": {"access_token": PAGE_ACCESS_TOKEN},
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
     }, (error, response, body) => {
@@ -36,10 +35,10 @@ const parameterSentGraph = (endpoint, sender_psid, response) => {
     });
 }
 
-const getInforCustomerChatWithPage = (_Userid,) => {
+const getInforCustomerChatWithPage = (_Userid, ) => {
     return new Promise((resolve, reject) => {
         request({
-            "uri": `https://graph.facebook.com/${_Userid}?fields=first_name,last_name,profile_pic&access_token=${config.PAGE_ACCESS_TOKEN}`,
+            "uri": `https://graph.facebook.com/${_Userid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`,
             "method": "GET",
         }, (error, response, body) => {
             if (!error && response.statusCode === 200) {
