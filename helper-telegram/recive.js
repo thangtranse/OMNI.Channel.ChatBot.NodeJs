@@ -5,7 +5,7 @@ const apiRocket = require("../helper-rocket/apiRest"),
     forwardRocket = require("../libs/forwardRocket")
 
 const handleMessage = async (_data) => {
- 
+    console.log("handleMessage", _data)
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": _data.message.chat.id }).then(data => data).catch(data => data);
     var idRoomRocket = null;
     if (checkDataUser) {
@@ -24,7 +24,7 @@ const handleMessage = async (_data) => {
             await apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_TELEGRAM, nameRoomRocket).then(data => data).catch(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
         }
-        let msgRocket = new msgRocketModel.msgRocket("Skype", idRoomRocket, nameRoomRocket, _data.message.chat.id, _data);
+        let msgRocket = new msgRocketModel.msgRocket("Telegram", idRoomRocket, nameRoomRocket, _data.message.chat.id, _data);
         mongodb.insert(process.env.MONGODB_COLLECTION, msgRocket.toJson()).then(data => data);
     }
     // kiểm tra giá trị
