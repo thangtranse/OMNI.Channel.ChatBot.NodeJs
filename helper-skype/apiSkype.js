@@ -19,9 +19,12 @@ const sendMsg = async (_url, _conversationId, _activityId, _dataMsg) => {
             console.log("error:: ", error);
             if (!error && response.statusCode === 200) {
                 resolve(body);
-            } else {
-                reject(error);
             }
+
+            log.error("file:apiSkype, function:sendMsg, Status Code", response.statusCode)
+            log.error("file:apiSkype, function:sendMsg, body", body)
+            reject(error);
+
         })
     })
 }
@@ -43,6 +46,8 @@ const getToken = () => {
                 let temp = JSON.parse(body);
                 resolve(temp.access_token);
             }
+            log.error("file:apiSkype, function:getToken, Status Code", response.statusCode)
+            log.error("file:apiSkype, function:getToken, body", body)
             reject(body);
         })
     })

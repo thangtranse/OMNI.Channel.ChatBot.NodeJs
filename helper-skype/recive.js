@@ -22,16 +22,11 @@ const handleMessage = async (_data) => {
         if (infoRoomRocket.success) {
             idRoomRocket = infoRoomRocket.channel._id;
         } else {
-            let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
+            let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);            
             // Phương thức không đồng bộ
-            console.log("thanggG: ");
-            let createWebhookRocket = await apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_SKYPE, nameRoomRocket).then(data => data).catch(data => data);
-
-            console.log("thang created webhook:", createWebhookRocket);
-
+            await apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_SKYPE, nameRoomRocket).then(data => data).catch(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
         }
-
         let msgRocket = new msgRocketModel.msgRocket("Skype", idRoomRocket, nameRoomRocket, _data.from.id, _data);
         mongodb.insert(process.env.MONGODB_COLLECTION, msgRocket.toJson()).then(data => data);
     }
