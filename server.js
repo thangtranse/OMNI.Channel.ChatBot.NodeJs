@@ -1,10 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const fs = require('fs');
-const util = require('util');
-const app = express().use(bodyParser.json());
-const session = require('express-session');
-const passport = require('passport');
+const express = require('express'),
+    bodyParser = require('body-parser'),
+    fs = require('fs'),
+    app = express().use(bodyParser.json()),
+    session = require('express-session'),
+    passport = require('passport');
 
 require('dotenv').config()
 

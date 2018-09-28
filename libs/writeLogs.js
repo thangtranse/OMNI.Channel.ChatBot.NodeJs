@@ -1,5 +1,4 @@
-var fs = require('fs'),
-    path = require('path');
+var fs = require('fs')
 
 var Logger = exports.Logger = {};
 var infoStream = fs.createWriteStream(__dirname + '/systemLogs/info.config', {

@@ -2,7 +2,6 @@ const graph = require('./graph');
 const mongodb = require("../database/mongodb");
 const PAGE_ACCESS_TOKEN = process.env.FACEBOOK_PAGE_ACCESS_TOKEN
 
-
 const forwardFacebook = async (_data) => {
     var getDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "idRoomRocket": _data.channel_id }).then(data => data);
     if (getDataUser && _data.user_name.trim() != process.env.ROCKET_USERNAME) {

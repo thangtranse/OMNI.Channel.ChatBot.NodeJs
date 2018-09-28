@@ -1,7 +1,9 @@
-const request = require('request');
+const request = require('request'),
+    log = require('../libs/writeLogs').Logger;
 
 const sendMsg = async (_url, _conversationId, _activityId, _dataMsg) => {
     let valueToken = await getToken();
+    log.debug("apiSkype sendMsg: ", valueToken);
     return new Promise((resolve, reject) => {
         request({
             url: `${_url}v3/conversations/${_conversationId}/activities/${_activityId}`,
@@ -36,6 +38,7 @@ const getToken = () => {
                 "scope": process.env.SKYPE_SCOPE
             }
         }, (error, response, body) => {
+            log.debug("apiSkype getToken: ", body)
             if (!error && response.statusCode === 200) {
                 let temp = JSON.parse(body);
                 resolve(temp.access_token);
