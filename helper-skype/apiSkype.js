@@ -4,6 +4,7 @@ const request = require('request'),
 const sendMsg = async (_url, _conversationId, _activityId, _dataMsg) => {
     let valueToken = await getToken();
     log.debug("apiSkype sendMsg: ", valueToken);
+    log.debug("apiSkype Tenlua: ", `${_url}v3/conversations/${_conversationId}/activities/${_activityId}`);
     return new Promise((resolve, reject) => {
         request({
             url: `${_url}v3/conversations/${_conversationId}/activities/${_activityId}`,
@@ -14,9 +15,6 @@ const sendMsg = async (_url, _conversationId, _activityId, _dataMsg) => {
             },
             json: _dataMsg
         }, (error, response, body) => {
-            console.log("thang:: ", response.statusCode);
-            console.log("body:: ", body);
-            console.log("error:: ", error);
             if (!error && response.statusCode === 200) {
                 resolve(body);
             } else {
