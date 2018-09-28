@@ -27,6 +27,11 @@ Include arguments:
       SKYPE_CLIENT_SECRET = [Microsoft azure Application Password - You must goto setting of app chosen Setting, find "Microsoft App ID" and click at "Manage"]
       SKYPE_SCOPE = [This url to call API AZURE]
       
+  Telegram
+  
+    TELEGRAM_TOKEN_BOT = [Token of the Bot your register with Telegram]
+    
+
   ZALO:
   
       ZALO_APP_ID = []
@@ -50,14 +55,15 @@ Include arguments:
     MONGODB_URL = [You can use DB other and fill parameter connect to db at this]
     MONGODB_DB_NAME = [Your DB name]
     MONGODB_COLLECTION = [Your collection of DN]  
-      
-  URL_WEBHOOK _
-  
-    URL_WEBHOOK_VIBER = [URL WEBHOOK you had register with platform chat viber]
-    URL_WEBHOOK_SKYPE = [URL WEBHOOK you had register with platform chat SKYPE]
-    URL_WEBHOOK_FACEBOOK = [URL WEBHOOK you had register with platform chat FACEBOOK]
-    URL_WEBHOOK_ZALO = [URL WEBHOOK you had register with platform chat ZALO]
     
+    
+  URL_WEBHOOK
+  
+    URL_WEBHOOK_VIBER = [URL WEBHOOK you wanna register with platform Rocket]
+    URL_WEBHOOK_SKYPE = [URL WEBHOOK you wanna register with platform Rocket]
+    URL_WEBHOOK_FACEBOOK = [URL WEBHOOK you wanna register with platform Rocket]
+    URL_WEBHOOK_ZALO = [URL WEBHOOK you wanna register with platform Rocket]
+    URL_WEBHOOK_TELEGRAM = [URL WEBHOOK you wanna register with platform Rocket]
    
 # RUN PROJECT: 
 
