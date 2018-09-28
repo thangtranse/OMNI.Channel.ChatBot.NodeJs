@@ -22,9 +22,9 @@ Include arguments:
       
   SKYPE:
   
-      SKYPE_GRANT_TYPE = []
-      SKYPE_CLIENT_ID = []
-      SKYPE_CLIENT_SECRET = []
+      SKYPE_GRANT_TYPE = [Client Credentials]
+      SKYPE_CLIENT_ID = [Microsoft azure Application ID]
+      SKYPE_CLIENT_SECRET = [Microsoft azure Application Password]
       SKYPE_SCOPE = [This url to call API AZURE]
       
   ZALO:
