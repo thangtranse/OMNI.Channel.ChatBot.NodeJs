@@ -3,8 +3,6 @@ const request = require('request'),
 
 const sendMsg = async (_url, _conversationId, _activityId, _dataMsg) => {
     let valueToken = await getToken();
-    log.debug("apiSkype sendMsg: ", valueToken);
-    log.debug("apiSkype Tenlua: ", `${_url}v3/conversations/${_conversationId}/activities/${_activityId}`);
     return new Promise((resolve, reject) => {
         request({
             url: `${_url}v3/conversations/${_conversationId}/activities/${_activityId}`,
@@ -27,6 +25,29 @@ const sendMsg = async (_url, _conversationId, _activityId, _dataMsg) => {
     })
 }
 
+const getMediaFormMgs = (_url, _filename) => {
+    let valueToken = await getToken();
+    return new Promise((resolve, reject) => {
+        request({
+            url: `${_url}/${_filename}`,
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + valueToken
+            }
+        }, (error, response, body) => {
+            if (!error && response.statusCode === 200) {
+                resolve(body);
+            } else {
+                log.error("file:apiSkype, function:sendMsg, Status Code", response.statusCode)
+                log.error("file:apiSkype, function:sendMsg, body", body)
+                log.error("file:apiSkype, function:sendMsg, error", error)
+                reject(error);
+            }
+        })
+    })
+}
+
+// Lấy token
 const getToken = () => {
     return new Promise((resolve, reject) => {
         request({
@@ -53,4 +74,4 @@ const getToken = () => {
     })
 }
 
-module.exports = { sendMsg }
+module.exports = { sendMsg, getMediaFormMgs }

@@ -2,7 +2,8 @@ const apiRocket = require("../helper-rocket/apiRest"),
     ProcessStr = require("../libs/processStr"),
     mongodb = require("../database/mongodb"),
     msgRocketModel = require("../libs/models/msgRocket"),
-    forwardRocket = require("../libs/forwardRocket")
+    forwardRocket = require("../libs/forwardRocket"),
+    apiSkype = require('./apiSkype');
 
 const handleMessage = async (_data) => {
     /**
@@ -21,7 +22,7 @@ const handleMessage = async (_data) => {
         if (infoRoomRocket.success) {
             idRoomRocket = infoRoomRocket.channel._id;
         } else {
-            let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);            
+            let createRoomRocket = await apiRocket.createChannelRocket(nameRoomRocket).then(data => data).catch(data => data);
             // Phương thức không đồng bộ
             await apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_SKYPE, nameRoomRocket).then(data => data).catch(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
@@ -31,7 +32,24 @@ const handleMessage = async (_data) => {
     }
     // kiểm tra giá trị
     if (typeof idRoomRocket == "undefined") return;
-    forwardRocket.forwardRocket(idRoomRocket, _data.text, _data.from.name, "");
+
+    // Xử lý đa phương tiện
+    if (typeof _data.text == "undefined")
+        MessengerObject(_data)
+    else // Tin nhắn văn bản thông thường
+        forwardRocket.forwardRocket(idRoomRocket, _data.text, _data.from.name, "");
 }
+
+
+MessengerObject = (_data) => {
+    _data.attachments.map((object, index, array) => {
+        switch (object.contentType) {
+            case 'image':
+                
+                break;
+        }
+    });
+}
+
 
 module.exports = { handleMessage }
