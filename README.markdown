@@ -6,7 +6,7 @@ BOT's will help you connect 'omni channel' with platform Rocket.Chat
 - [x] Viber
 - [x] Skype
 - [x] Zalo
-- [ ] Telegram
+- [x] Telegram
 
 # Setup .ENV : 
 You must register "Webhook" and get parameter config of the platforms Facebook Messenger, viber, zalo, ... and fill in this file .env
