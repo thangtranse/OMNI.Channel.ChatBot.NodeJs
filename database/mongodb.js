@@ -5,7 +5,7 @@ const connectdb = (_collection) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(process.env.MONGODB_URL, { useNewUrlParser: true }, (err, db) => {
             if (!err) {
-                console.log("We are connected");
+                console.log("We are connected", dbCollection);
                 let dbo = db.db(process.env.MONGODB_DB_NAME);
                 var dbCollection = dbo.collection(_collection);
                 resolve(dbCollection);
