@@ -1,6 +1,6 @@
-const reciveSkype = require("../helper-skype/recive");
-const send = require("../helper-skype/send");
-const logs = require("../libs/writeLogs").Logger;
+const reciveSkype = require("../helper-skype/recive"),
+    send = require("../helper-skype/send"),
+    logs = require("../libs/writeLogs").Logger;
 
 module.exports = function (app) {
     app.route('/webhook_skype')
