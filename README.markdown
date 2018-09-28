@@ -22,9 +22,9 @@ Include arguments:
       
   SKYPE:
   
-      SKYPE_GRANT_TYPE = [Client Credentials]
+      SKYPE_GRANT_TYPE = <client_credentials>
       SKYPE_CLIENT_ID = [Microsoft azure Application ID]
-      SKYPE_CLIENT_SECRET = [Microsoft azure Application Password]
+      SKYPE_CLIENT_SECRET = [Microsoft azure Application Password - You must goto setting of app chosen Setting, find "Microsoft App ID" and click at "Manage"]
       SKYPE_SCOPE = [This url to call API AZURE]
       
   ZALO:
