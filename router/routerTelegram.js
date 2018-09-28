@@ -21,7 +21,7 @@ module.exports = function (app) {
         })
         .post((req, resp) => {
             log.debug("[POST] /rocket_telegram", req.body)
-            send.handleMessage(req.body);
+            send.forwardSkype(req.body);
             resp.end()
         })
 }
