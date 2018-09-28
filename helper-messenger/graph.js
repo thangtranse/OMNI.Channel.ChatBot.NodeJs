@@ -1,5 +1,5 @@
 const request = require('request');
-const PAGE_ACCESS_TOKEN = process.envFACEBOOK_PAGE_ACCESS_TOKEN
+const PAGE_ACCESS_TOKEN = process.env.FACEBOOK_PAGE_ACCESS_TOKEN
 
 const parameterSentGraph = (endpoint, sender_psid, response) => {
     let request_body = {
