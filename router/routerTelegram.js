@@ -3,7 +3,7 @@ const log = require("../libs/writeLogs").Logger,
     send = require("../helper-telegram/send");
 
 module.exports = function (app) {
-    // Telegram
+    // Telegram response the msg
     app.route('/telegram-webhook')
         .get((req, resp) => {
             log.debug("[GET] /telegram-webhook", req.query)
