@@ -1,0 +1,55 @@
+version: '2'
+
+services:
+  rocketchat:
+    image: thangse/tenlua:latest
+    restart: unless-stopped
+    environment:
+      - MONGODB_COLLECTION=user_collections
+      - MONGODB_URL=mongodb://rocketchat:rocketchat%40123@mongo:27018/rocketchat
+      - MONGODB_DB_NAME=rocketchat
+      - ZALO_TOKEN=<<your ZALO_TOKEN>>
+      - ZALO_SECRETKEY=<<your ZALO_SECRETKEY>>
+      - ZALO_REDIRECT_URI=<<your ZALO_REDIRECT_URI>>
+      - ZALO_APP_ID=<<your ZALO_APP_ID>>
+      - VIBER_TOKEN=<<your VIBER_TOKEN>>
+      - URL_WEBHOOK_ZALO=<<your URL_WEBHOOK_ZALO>>
+      - URL_WEBHOOK_VIBER=<<your URL_WEBHOOK_VIBER>>
+      - URL_WEBHOOK_TELEGRAM=<<your URL_WEBHOOK_TELEGRAM>>
+      - URL_WEBHOOK_SKYPE=<<your URL_WEBHOOK_SKYPE>>
+      - URL_WEBHOOK_FACEBOOK=<<your URL_WEBHOOK_FACEBOOK>>
+      - URL_ROCKET_URL=<<your URL_ROCKET_URL>>
+      - URL_ROCKET_PORT=<<your URL_ROCKET_PORT>>
+      - URL_ROCKET_CHAT=h<<your URL_ROCKET_CHAT>>
+      - TELEGRAM_TOKEN_BOT=<<your TELEGRAM_TOKEN_BOT>>
+      - SKYPE_SCOPE=<<your SKYPE_SCOPE>>
+      - SKYPE_GRANT_TYPE=<<your SKYPE_GRANT_TYPE>>
+      - SKYPE_CLIENT_SECRET=<<your SKYPE_CLIENT_SECRET>>
+      - SKYPE_CLIENT_ID=<<your SKYPE_CLIENT_ID>>
+      - ROCKET_USERNAME=<<your ROCKET_USERNAME>>
+      - ROCKET_USERID=<<your ROCKET_USERID>>
+      - ROCKET_URL_API_ROCKET=<<your ROCKET_URL_API_ROCKET>>
+      - ROCKET_TOKEN=<<your ROCKET_TOKEN>>
+      - FACEBOOK_PAGE_ACCESS_TOKEN=<<your FACEBOOK_PAGE_ACCESS_TOKEN>>
+      - FACEBOOK_CLIENT_SECRET=<<your FACEBOOK_CLIENT_SECRET>>
+      - FACEBOOK_CLIENT_ID=<<your FACEBOOK_CLIENT_ID>>
+      - FACEBOOK_CALLBACK_URL=<<your FACEBOOK_CALLBACK_URL>>
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+      - mongoClientTemp
+    labels:
+      - "traefik.backend=tenlua"
+  mongo:
+    image: mongo:3.2
+    restart: unless-stopped
+    ports:
+      - 27018:27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+  mongoClientTemp:
+    image: mongo:3.2
+    container_name: mongoClientTemp
+    command: mongo --host mongo --eval  "db.getSiblingDB('rocketchat').createUser({user:'rocketchat', pwd:'rocketchat@123', roles:[{role:'readWrite',db:'rocketchat'}]});"
+    depends_on:
+      - mongo 
