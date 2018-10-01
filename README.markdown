@@ -75,6 +75,7 @@ Include arguments:
       
       3. npm start
       
-  DOCKER (version old. I will update early)
+  DOCKER
   
-      1. docker-compose up
+      1. You must update environment in docker-compose.yml
+      2. docker-compose up
