@@ -13,8 +13,6 @@ var axiosInstance = axios.create({
     timeout: 5000
 });
 
-var token, id;
-
 /**
  * Thực hiện:
  * - login
@@ -438,6 +436,29 @@ class apiRest {
             })
         });
     }
+
+    roomUpload(_idRoom, _pathFile) {
+        return new Promise((resolve, reject) => {
+            axiosInstance({
+                method: 'POST',
+                url: `rooms.upload/${_idRoom}`,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Auth-Token': process.env.ROCKET_TOKEN,
+                    'X-User-Id': process.env.ROCKET_USERID
+                },
+                data: {
+                    file: _pathFile
+                }
+            }).then(response => {
+                resolve(response.data);
+            }).catch(function (message) {
+                reject(message.response.data);
+            })
+        });
+    }
+
+    // END CLASS
 }
 
 /**
@@ -448,15 +469,14 @@ class apiRest {
  * @param _email
  * @returns {string}
  */
-const
-    randomUsername = _email => (`${_email.replace(/(\s)/g, ".")}.${Math.floor((Math.random() * 100))}`).toLowerCase();
+const randomUsername = _email => (`${_email.replace(/(\s)/g, ".")}.${Math.floor((Math.random() * 100))}`).toLowerCase();
+
 /**
  * Hiển thị lỗi
  * @param err
  */
-const
-    error = err => {
-        console.log("API REST ERR: ", err.response);
-    }
+const error = err => {
+    console.log("API REST ERR: ", err.response);
+}
 
 module.exports = new apiRest();

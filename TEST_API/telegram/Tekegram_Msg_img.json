@@ -1,0 +1,48 @@
+{
+    "update_id": 953062352,
+    "message": {
+        "message_id": 50,
+        "from": {
+            "id": 501509267,
+            "is_bot": false,
+            "first_name": "Thang",
+            "last_name": "Tran",
+            "username": "thangtranse",
+            "language_code": "vi-VN"
+        },
+        "chat": {
+            "id": 501509267,
+            "first_name": "Thang",
+            "last_name": "Tran",
+            "username": "thangtranse",
+            "type": "private"
+        },
+        "date": 1538204267,
+        "photo": [
+            {
+                "file_id": "AgADBQADPqgxGzIQeVVizQqMaAhz5wEs1TIABHdrvcwfljysmB0EAAEC",
+                "file_size": 1123,
+                "width": 67,
+                "height": 90
+            },
+            {
+                "file_id": "AgADBQADPqgxGzIQeVVizQqMaAhz5wEs1TIABBNsAAE8ctMI9JodBAABAg",
+                "file_size": 13434,
+                "width": 240,
+                "height": 320
+            },
+            {
+                "file_id": "AgADBQADPqgxGzIQeVVizQqMaAhz5wEs1TIABF0ngPx4jNnFmx0EAAEC",
+                "file_size": 62488,
+                "width": 600,
+                "height": 800
+            },
+            {
+                "file_id": "AgADBQADPqgxGzIQeVVizQqMaAhz5wEs1TIABBJzmGLz7CTXmR0EAAEC",
+                "file_size": 110277,
+                "width": 960,
+                "height": 1280
+            }
+        ]
+    }
+}

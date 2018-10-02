@@ -14,8 +14,10 @@ const handleMessage = async (_data) => {
         let nameSender = _data.message.chat.first_name + "." + _data.message.chat.last_name;
         nameSender = nameSender.toLowerCase().trim().replace(/(\s)/g, ".");
         nameSender = ProcessStr.clearUnikey(nameSender);
+        
         let nameRoomRocket = `Telegram.${nameSender}`;
         let infoRoomRocket = await apiRocket.infoChannel(nameRoomRocket).then(data => data).catch(data => data);
+
         if (infoRoomRocket.success) {
             idRoomRocket = infoRoomRocket.channel._id;
         } else {

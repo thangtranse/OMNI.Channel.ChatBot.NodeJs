@@ -61,6 +61,7 @@ passport.use(new FacebookStrategy(facebookAuth, function (accessToken, refreshTo
         done(null, accessToken);
     });
 }));
+
 passport.serializeUser((user, done) => {
     done(null, user);
 });
