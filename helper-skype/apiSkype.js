@@ -25,7 +25,7 @@ const sendMsg = async (_url, _conversationId, _activityId, _dataMsg) => {
     })
 }
 
-const getMediaFormMgs = (_url, _filename) => {
+const getMediaFormMgs = async (_url, _filename) => {
     let valueToken = await getToken();
     return new Promise((resolve, reject) => {
         request({

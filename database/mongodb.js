@@ -7,7 +7,13 @@ const connectdb = (_collection) => {
             if (!err) {
                 console.log("We are connected", dbCollection);
                 let dbo = db.db(process.env.MONGODB_DB_NAME);
+
+                dbo.createCollection(process.env.MONGODB_COLLECTION, (err, result) => {
+                    if(err) reject(err);;
+                })
+
                 var dbCollection = dbo.collection(_collection);
+
                 resolve(dbCollection);
             } else {
                 console.log("Lỗi rồi");

@@ -2,6 +2,7 @@ const log = require("../libs/writeLogs").Logger
 const apiTelegram = require("../helper-telegram/apiTelegram")
 const download = require("download")
 const apiRocket = require('../helper-rocket/apiRest')
+const db = require('../database/mongodb')
 const fs = require('fs')
 const path = require('path')
 
@@ -63,4 +64,11 @@ module.exports = function (app) {
             })
         resp.end()
     })
+
+    app.route("/testdb")
+        .get((res, resp) => {
+            console.log("oke chuwa");
+            db.findOne(process.env.MONGODB_COLLECTION, "thang")
+            resp.end()
+        })
 }
