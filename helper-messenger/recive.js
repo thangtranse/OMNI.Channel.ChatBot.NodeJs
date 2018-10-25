@@ -2,7 +2,9 @@ const apiRocket = require('../helper-rocket/apiRest'),
     graph = require('./graph'),
     ProcessStr = require('../libs/processStr'),
     MessengerSend = require('./send'),
-    mongodb = require("../database/mongodb")
+    mongodb = require("../database/mongodb"),
+    log = require("../libs/writeLogs").Logger
+
 
 /**
  * Handles messages events
@@ -18,6 +20,7 @@ const handleMessage = async (sender_psid, received_message) => {
     let pattern = /^(-){2}([a-zA-Z])\w+/g;
 
     console.log("handleMessage", received_message.text);
+    log.debug("handleMessage: ", JSON.stringify(received_message))
 
     // tin nhắn không chứa nội dung
     if (!received_message.text) return;
@@ -26,6 +29,7 @@ const handleMessage = async (sender_psid, received_message) => {
 
     var idRoomRocket = null;
     var inforUser = null;
+
     if (checkDataUser) { // tồn tại thông tin
         idRoomRocket = checkDataUser.idRoomRocket;
         inforUser = checkDataUser;
@@ -59,8 +63,8 @@ const handleMessage = async (sender_psid, received_message) => {
         inforUser.uid = sender_psid;
         console.log("inforUser: ", inforUser);
         var insertDataUser = await mongodb.insert(process.env.MONGODB_COLLECTION, inforUser).then(data => data);
-
     }
+
     forwardRocket(idRoomRocket, received_message.text, inforUser);
     // // kiểm tra id đối tượng gửi tin nhắn đã đăng nhập hay chưa
     // db.getDataUser(sender_psid, (data) => {
