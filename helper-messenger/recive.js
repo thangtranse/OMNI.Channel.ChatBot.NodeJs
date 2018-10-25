@@ -3,8 +3,8 @@ const apiRocket = require('../helper-rocket/apiRest'),
     ProcessStr = require('../libs/processStr'),
     MessengerSend = require('./send'),
     mongodb = require("../database/mongodb"),
-    log = require("../libs/writeLogs").Logger
-
+    log = require("../libs/writeLogs").Logger,
+    graph = require('./graph');
 
 /**
  * Handles messages events
@@ -35,6 +35,7 @@ const handleMessage = async (sender_psid, received_message) => {
         idRoomRocket = checkDataUser.idRoomRocket;
         inforUser = checkDataUser;
     } else { // chưa có thông tin User
+        graph.parameterSentGraph("messages", sender_psid, "Xin chào bạn, chúng tôi có thể giúp gì cho bạn?");
         // Lấy thông tin USER FACEBOOK
         inforUser = await graph.getInforCustomerChatWithPage(sender_psid).then(data => data);
         inforUser = JSON.parse(inforUser);
