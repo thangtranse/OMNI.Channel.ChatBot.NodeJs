@@ -106,6 +106,7 @@ app.post('/webhook', (req, res) => {
     /**
      * body: {object, entry : [{id, time, messaging: {} }]}
      */
+    log.debug("/webhook req", req.body)
     if (body.object === 'page') {
         body.entry.forEach((entry) => {
             if (!entry.messaging) return;
