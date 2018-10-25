@@ -95,6 +95,7 @@ app.get("/", (req, resp) => {
     }
 });
 
+const log = require("./libs/writeLogs").Logger
 /**
  * Creates the endpoint for our webhook
  * Nhận Request từ FB gửi về
@@ -113,6 +114,7 @@ app.post('/webhook', (req, res) => {
                 let sender_psid = messagingEvent.sender.id;
                 if (messagingEvent.message) {
                     console.log("if 1", messagingEvent);
+                    log.debug("/webhook", messagingEvent)
                     MessengerRecive.handleMessage(sender_psid, messagingEvent.message);
                 } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
                     console.log("else 1");

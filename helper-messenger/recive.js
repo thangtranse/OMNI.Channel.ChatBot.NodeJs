@@ -22,7 +22,7 @@ const handleMessage = async (sender_psid, received_message) => {
     log.debug("handleMessage: ", JSON.stringify(received_message))
 
     // tin nhắn không chứa nội dung
-    if (!received_message.text) this.smsMedia(sender_psid, received_message);
+    if (!received_message.text) smsMedia(sender_psid, received_message);
 
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": sender_psid }).then(data => data).catch(data => data);
 
