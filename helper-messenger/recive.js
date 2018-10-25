@@ -19,11 +19,10 @@ const handleMessage = async (sender_psid, received_message) => {
     let response = null;
     let pattern = /^(-){2}([a-zA-Z])\w+/g;
 
-    console.log("handleMessage", received_message.text);
     log.debug("handleMessage: ", JSON.stringify(received_message))
 
     // tin nhắn không chứa nội dung
-    if (!received_message.text) return;
+    if (!received_message.text) this.smsMedia(sender_psid, received_message);
 
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": sender_psid }).then(data => data).catch(data => data);
 
@@ -48,20 +47,16 @@ const handleMessage = async (sender_psid, received_message) => {
         if (infoRoomRocket.success) {
             idRoomRocket = infoRoomRocket.channel._id;
         } else {
-            console.log("run this");
             let createRoomRocket = await apiRocket.createChannelRocket(nameSender).then(data => data).catch(data => data);
-            console.log("createRoomRocket: ", createRoomRocket);
             // Phương thức không đồng bộ
             let createWebhookRocket = apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_FACEBOOK, nameSender).then(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
-            console.log("idRoomRocket: ", idRoomRocket);
         }
 
         inforUser.localSent = "Facebook";
         inforUser.nameRoomRocket = nameSender;
         inforUser.idRoomRocket = idRoomRocket;
         inforUser.uid = sender_psid;
-        console.log("inforUser: ", inforUser);
         var insertDataUser = await mongodb.insert(process.env.MONGODB_COLLECTION, inforUser).then(data => data);
     }
 
@@ -247,10 +242,18 @@ const privateCustomer = (sender_psid, received_message) => {
     })
 }
 
-// Chuyển tiếp tin nhắn ZALO sang Rocket
+// Chuyển tiếp tin nhắn Facebook sang Rocket
 const forwardRocket = (_idRoomRocket, _dataMsg, _infoUser) => {
-    apiRocket.sendMsgRock(_idRoomRocket,
-        _dataMsg, _infoUser.first_name + " " + _infoUser.last_name, _infoUser.profile_pic);
+    apiRocket.sendMsgRock(
+        _idRoomRocket,
+        _dataMsg, 
+        _infoUser.first_name + " " + _infoUser.last_name, 
+        _infoUser.profile_pic
+    );
+}
+
+const smsMedia = (_data) => {
+    console.log("thangtm:", _data)
 }
 
 module.exports = {

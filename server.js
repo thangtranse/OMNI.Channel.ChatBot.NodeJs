@@ -180,11 +180,11 @@ app.post('/ten-lua', async (req, res) => {
     console.log("session", req.session);
     console.log(body);
 
-    let temp = await db.getListUserConnect().then(data => data);
-    temp.map(x => {
-        if (x.idRocket != body.user_id)
-            MessengerSend.callSendAPI(x.idMess, { "text": body.text });
-    });
+    // let temp = await db.getListUserConnect().then(data => data);
+    // temp.map(x => {
+    //     if (x.idRocket != body.user_id)
+    //         MessengerSend.callSendAPI(x.idMess, { "text": body.text });
+    // });
     res.end();
 });
 
