@@ -22,7 +22,9 @@ const handleMessage = async (sender_psid, received_message) => {
     log.debug("handleMessage: ", JSON.stringify(received_message))
 
     // tin nhắn không chứa nội dung
-    if (!received_message.text) smsMedia(received_message);
+    if (!received_message.text){
+        received_message.text = "thang"
+    }
 
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": sender_psid }).then(data => data).catch(data => data);
 
@@ -230,7 +232,7 @@ const privateCustomer = (sender_psid, received_message) => {
                 });
             }
             else {
-                console.log("sai nè");
+                console.log("privateCustomer sai nè");
             }
         } else {
             apiRocket.sendMess(data.idChannel.stringValue, received_message.text, userAdmin.authToken, userAdmin.userId,
@@ -244,6 +246,7 @@ const privateCustomer = (sender_psid, received_message) => {
 
 // Chuyển tiếp tin nhắn Facebook sang Rocket
 const forwardRocket = (_idRoomRocket, _dataMsg, _infoUser) => {
+    console.log("thanggg", _dataMsg)
     apiRocket.sendMsgRock(
         _idRoomRocket,
         _dataMsg, 
@@ -253,7 +256,15 @@ const forwardRocket = (_idRoomRocket, _dataMsg, _infoUser) => {
 }
 
 const smsMedia = (_data) => {
-    console.log("thangtm:", _data)
+    _data.attachments.map(data => {
+        console.log("th payload 1",  data.payload.url)
+        switch(data.type){
+            case 'image':
+                console.log("th payload",  data.payload.url)
+                return data.payload.url;
+        }
+    })
+    return ''
 }
 
 module.exports = {
