@@ -42,6 +42,7 @@ const handleMessage = async (_data) => {
     }
 
     console.log("zalo msg: ", _data)
+    let mesTemp = '';
     switch (_data.event) {
         case 'sendgifmsg': // tin nhắn dạng gif
             break;
@@ -54,24 +55,27 @@ const handleMessage = async (_data) => {
         case 'sendvoicemsg': // tin nhắn dạng âm thanh
             break;
         case 'sendimagemsg': // tin nhắn dạng hình
+            mesTemp = _data.href;
             console.log("zalo sms pic")
             break;
         case 'sendmsg': // tin nhắn dạng text
             console.log("zalo sms pic")
+            mesTemp = _data.message;
             break;
     }
     if (typeof inforUser == "undefined") return;
 
-    let avatar = ''
+    let avatarTemp = ''
     if (typeof inforUser.avatars != 'undefined' || inforUser.avatars) {
-        avatar = Object.values(inforUser.avatars)[1];
+        avatarTemp = Object.values(inforUser.avatars)[1];
     } else {
-        avatar = typeof inforUser.userDetail.avatar != 'undefined' ? inforUser.userDetail.avatar : '';
+        avatarTemp = typeof inforUser.userDetail.avatar != 'undefined' ? inforUser.userDetail.avatar : '';
     }
     console.log("zalo data infor: ", inforUser)
 
     let nametemp = typeof inforUser.displayName != 'undefined' ? inforUser.displayName : typeof inforUser.userDetail.displayName != 'undefined' ? inforUser.userDetail.displayName : '';
-    forwardRocket.forwardRocket(idRoomRocket, _data.message, nametemp, avatar)
+    forwardRocket.forwardRocket(idRoomRocket, mesTemp, nametemp, avatarTemp
+        )
 }
 
 module.exports = { handleMessage }
