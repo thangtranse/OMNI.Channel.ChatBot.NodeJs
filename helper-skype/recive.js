@@ -32,6 +32,7 @@ const handleMessage = async (_data) => {
         let msgRocket = new msgRocketModel.msgRocket("Skype", idRoomRocket, nameRoomRocket, _data.from.id, _data);
         mongodb.insert(process.env.MONGODB_COLLECTION, msgRocket.toJson()).then(data => data);
     }
+    console.log("thangtm", idRoomRocket)
     // kiểm tra giá trị
     if (typeof idRoomRocket == "undefined") return;
 
