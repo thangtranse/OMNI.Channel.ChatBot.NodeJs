@@ -48,7 +48,6 @@ const handleMessage = async (_data) => {
 
 
 MessengerObject = (_data) => {
-    console.log("skype more media")
     _data.attachments.map((object, index, array) => {
         switch (object.contentType) {
             case 'image':
