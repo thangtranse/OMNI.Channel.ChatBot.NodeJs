@@ -65,7 +65,9 @@ const handleMessage = async (_data) => {
         inforUser.avatars = "";
     }
     console.log("zalo data infor: ", inforUser)
-    forwardRocket.forwardRocket(idRoomRocket, _data.message, inforUser.displayName, inforUser.avatars)
+    let nametemp = typeof inforUser.displayName != 'undefined' ? inforUser.displayName : typeof inforUser.userDetail.displayName != 'undefined' ? inforUser.userDetail.displayName : '';
+    let avatartemp = typeof inforUser.avatars != 'undefined' ? inforUser.avatars : typeof inforUser.userDetail.avatars != 'undefined' ? inforUser.userDetail.avatars : '';
+    forwardRocket.forwardRocket(idRoomRocket, _data.message, nametemp, avatartemp)
 }
 
 module.exports = { handleMessage }
