@@ -2,16 +2,18 @@ const apiRocket = require("../helper-rocket/apiRest"),
     ProcessStr = require("../libs/processStr"),
     mongodb = require("../database/mongodb"),
     msgRocketModel = require("../libs/models/msgRocket"),
-    forwardRocket = require("../libs/forwardRocket"),
-    apiSkype = require('./apiSkype');
+    forwardRocket = require("../libs/forwardRocket");
 
 const handleMessage = async (_data) => {
     /**
      * Chưa xử lý trường hợp seen, delivery
      */
     if (_data.type != 'message') return;
+
+    console.log("skype show msg: ", _data)
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": _data.from.id }).then(data => data).catch(data => data);
     var idRoomRocket = null;
+
     if (checkDataUser) {
         idRoomRocket = checkDataUser.idRoomRocket;
     } else { // chưa có nè
@@ -42,6 +44,7 @@ const handleMessage = async (_data) => {
 
 
 MessengerObject = (_data) => {
+    console.log("skype more media")
     _data.attachments.map((object, index, array) => {
         switch (object.contentType) {
             case 'image':
