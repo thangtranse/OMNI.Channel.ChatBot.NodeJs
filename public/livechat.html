@@ -8,18 +8,13 @@
 <body>
 <!-- Start of Rocket.Chat Livechat Script -->
 <script type="text/javascript">
-    (function (w, d, s, u) {
-        w.RocketChat = function (c) {
-            w.RocketChat._.push(c)
-        };
-        w.RocketChat._ = [];
-        w.RocketChat.url = u;
+    (function(w, d, s, u) {
+        w.RocketChat = function(c) { w.RocketChat._.push(c) }; w.RocketChat._ = []; w.RocketChat.url = u;
         var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
-        j.async = true;
-        j.src = 'https://ten-lua.herokuapp.com/packages/rocketchat_livechat/assets/rocketchat-livechat.min.js?_=201702160944';
+        j.async = true; j.src = 'https://sccd.rocket.chat/packages/rocketchat_livechat/assets/rocketchat-livechat.min.js?_=201702160944';
         h.parentNode.insertBefore(j, h);
-    })(window, document, 'script', 'https://ten-lua.herokuapp.com/livechat');
-</script>
-<!-- End of Rocket.Chat Livechat Script -->
+    })(window, document, 'script', 'https://sccd.rocket.chat/livechat');
+    </script>
+    <!-- End of Rocket.Chat Livechat Script -->
 </body>
 </html>
