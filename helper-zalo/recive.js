@@ -59,14 +59,9 @@ const handleMessage = async (_data) => {
     }
     if (typeof inforUser == "undefined") return;
 
-    if (inforUser.avatars) {
-        inforUser.avatars = Object.values(inforUser.avatars)[1];
-    } else {
-        inforUser.avatars = "";
-    }
     console.log("zalo data infor: ", inforUser)
     let nametemp = typeof inforUser.displayName != 'undefined' ? inforUser.displayName : typeof inforUser.userDetail.displayName != 'undefined' ? inforUser.userDetail.displayName : '';
-    let avatartemp = typeof inforUser.avatars != 'undefined' ? inforUser.avatars : typeof inforUser.userDetail.avatars != 'undefined' ? inforUser.userDetail.avatars : '';
+    let avatartemp = typeof inforUser.avatars != 'undefined' ? Object.values(inforUser.avatars)[1] : typeof inforUser.userDetail.avatar != 'undefined' ? inforUser.userDetail.avatar : '';
     forwardRocket.forwardRocket(idRoomRocket, _data.message, nametemp, avatartemp)
 }
 
