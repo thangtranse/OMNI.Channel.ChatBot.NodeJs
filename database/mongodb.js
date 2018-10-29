@@ -10,7 +10,7 @@ const connectdb = (_collection) => {
                     if(err) reject(err);;
                 })
                 var dbCollection = dbo.collection(_collection);
-                console.log("We are connected", dbCollection);
+                console.log("We are connected");
                 resolve(dbCollection);
             } else {
                 console.log("Lỗi rồi");
