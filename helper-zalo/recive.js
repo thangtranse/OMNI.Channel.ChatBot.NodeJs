@@ -59,10 +59,14 @@ const handleMessage = async (_data) => {
     }
     if (typeof inforUser == "undefined") return;
 
+    if (typeof inforUser.avatars != 'undefined' || inforUser.avatars) {
+        inforUser.avatars = Object.values(inforUser.avatars)[1];
+    } else {
+        inforUser.avatars = typeof inforUser.userDetail.avatar != 'undefined' ? inforUser.userDetail.avatar : '';
+    }
     console.log("zalo data infor: ", inforUser)
     let nametemp = typeof inforUser.displayName != 'undefined' ? inforUser.displayName : typeof inforUser.userDetail.displayName != 'undefined' ? inforUser.userDetail.displayName : '';
-    let avatartemp = typeof inforUser.avatars != 'undefined' ? Object.values(inforUser.avatars)[1] : typeof inforUser.userDetail.avatar != 'undefined' ? inforUser.userDetail.avatar : '';
-    forwardRocket.forwardRocket(idRoomRocket, _data.message, nametemp, avatartemp)
+    forwardRocket.forwardRocket(idRoomRocket, _data.message, nametemp, inforUser.avatars)
 }
 
 module.exports = { handleMessage }
