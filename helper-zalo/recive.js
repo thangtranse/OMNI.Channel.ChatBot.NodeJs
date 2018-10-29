@@ -56,10 +56,8 @@ const handleMessage = async (_data) => {
             break;
         case 'sendimagemsg': // tin nhắn dạng hình
             mesTemp = _data.href;
-            console.log("zalo sms pic")
             break;
         case 'sendmsg': // tin nhắn dạng text
-            console.log("zalo sms pic")
             mesTemp = _data.message;
             break;
     }
