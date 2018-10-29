@@ -3,8 +3,7 @@ const apiRocket = require('../helper-rocket/apiRest'),
     ProcessStr = require('../libs/processStr'),
     MessengerSend = require('./send'),
     mongodb = require("../database/mongodb"),
-    log = require("../libs/writeLogs").Logger,
-    graph = require('./graph');
+    log = require("../libs/writeLogs").Logger
 
 /**
  * Handles messages events

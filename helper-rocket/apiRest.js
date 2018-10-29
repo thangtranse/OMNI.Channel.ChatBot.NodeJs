@@ -1,7 +1,7 @@
 const request = require('request');
 
 const URL_API_ROCKET = process.env.ROCKET_URL_API_ROCKET;
-const URL_WEBHOOK_CALLBACK = 'http://ten-lua-webhook.herokuapp.com/customerprivate';
+// const URL_WEBHOOK_CALLBACK = 'http://ten-lua-webhook.herokuapp.com/customerprivate';
 const URL_WEBHOOK_CALLBACK_ZALO = process.env.URL_WEBHOOK_ZALO;
 const URL_WEBHOOK_CALLBACK_VIBER = process.env.URL_WEBHOOK_VIBER;
 const URL_WEBHOOK_CALLBACK_FACEBOOK = process.env.URL_WEBHOOK_FACEBOOK;
@@ -300,30 +300,30 @@ class apiRest {
         })
     }
 
-    createOutGoingWebhook(_name, _useridAdmin, _authAdmin, callback) {
-        axiosInstance({
-            method: 'POST',
-            url: 'integrations.create',
-            headers: {
-                'X-Auth-Token': _authAdmin,
-                'X-User-Id': _useridAdmin
-            },
-            data: {
-                type: "webhook-outgoing",
-                name: _name,
-                event: "sendMessage",
-                enabled: true,
-                username: "rocket.cat",
-                urls: [URL_WEBHOOK_CALLBACK],
-                scriptEnabled: false,
-                channel: '#' + _name
-            }
-        }).then(response => {
-            return callback(response)
-        }).catch(function (message) {
-            console.log("webhook lỗi: ", message);
-        })
-    }
+    // createOutGoingWebhook(_name, _useridAdmin, _authAdmin, callback) {
+    //     axiosInstance({
+    //         method: 'POST',
+    //         url: 'integrations.create',
+    //         headers: {
+    //             'X-Auth-Token': _authAdmin,
+    //             'X-User-Id': _useridAdmin
+    //         },
+    //         data: {
+    //             type: "webhook-outgoing",
+    //             name: _name,
+    //             event: "sendMessage",
+    //             enabled: true,
+    //             username: "rocket.cat",
+    //             urls: [URL_WEBHOOK_CALLBACK],
+    //             scriptEnabled: false,
+    //             channel: '#' + _name
+    //         }
+    //     }).then(response => {
+    //         return callback(response)
+    //     }).catch(function (message) {
+    //         console.log("webhook lỗi: ", message);
+    //     })
+    // }
 
     // Tương tự thằng trên nhưng dùng Promise
     createOutGoingWebhookRocket_ZALO(_name) {
