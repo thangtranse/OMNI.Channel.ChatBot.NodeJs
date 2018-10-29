@@ -295,7 +295,8 @@ class apiRest {
             }).then(response => {
                 resolve(response.data);
             }).catch(message => {
-                reject(message.response.data);
+                console.log("apiRest rocketChat [infoChannel]", message.response)
+                reject(false);
             })
         })
     }
