@@ -202,7 +202,7 @@ class apiRest {
     /**
      * Thực hiện tạo Channel:
      *
-     * Mặc định sẽ Add thêm USER "admin" vào
+     * Mặc định sẽ Add thêm USER "bot" vào
      *
      * @param channelName: Tên channel
      * @param _useridAdmin: ID ADMIN dùng để tạo channel
@@ -226,7 +226,7 @@ class apiRest {
             },
             data: {
                 name: channelName,
-                members: ["admin"]
+                members: ["bot"]
             }
         }).then(response => {
             return callback(response)
@@ -247,7 +247,7 @@ class apiRest {
                 },
                 data: {
                     name: _channelName,
-                    members: ["admin"]
+                    members: ["bot"]
                 }
             }).then(response => {
                 console.log("createChannelRocket: ", response.data);

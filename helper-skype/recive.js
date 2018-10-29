@@ -45,7 +45,7 @@ MessengerObject = (_data) => {
     _data.attachments.map((object, index, array) => {
         switch (object.contentType) {
             case 'image':
-                
+
                 break;
         }
     });
