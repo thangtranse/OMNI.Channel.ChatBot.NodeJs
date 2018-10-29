@@ -3,13 +3,12 @@ const ProcessStr = require("../libs/processStr"),
     mongodb = require("../database/mongodb"),
     apiOpen = require("./apiOpen"),
     forwardRocket = require("../libs/forwardRocket"),
-    msgRocketModel = require("../libs/models/msgRocket")
+    msgRocketModel = require("../libs/models/msgRocket");
 
 const handleMessage = async (_data) => {
     /**
      * _data: { fromoid, phone, appid, msgid, event, pageid, message, oaid, mac, timestamp }
      */
-
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": _data.fromuid }).then(data => data).catch(data => data);
 
     let inforUser = null;
@@ -20,11 +19,9 @@ const handleMessage = async (_data) => {
         idRoomRocket = checkDataUser.idRoomRocket;
     } else {
         inforUser = await apiOpen.getInforUser(_data.fromuid).then(data => data);
-
         /**
          * inforUser { userGender:, userId:, userIdByApp:, avatar:, avatars: 120/240, displayName:, birthDate:, sharedInfo:, tagsAndNotesInfo:}
          */
-
         let displayName = inforUser.displayName.toLowerCase().trim().replace(/(\s)/g, ".");
         displayName = ProcessStr.clearUnikey(displayName);
         let nameRoomRocket = `Zalo.${displayName}`;
@@ -40,9 +37,7 @@ const handleMessage = async (_data) => {
         }
         // kiểm tra giá trị
         if (typeof idRoomRocket == "undefined") return;
-
         let msgRocket = new msgRocketModel.msgRocket("Zalo", idRoomRocket, nameRoomRocket, inforUser.userId, inforUser)
-
         mongodb.insert(process.env.MONGODB_COLLECTION, msgRocket.toJson()).then(data => data);
     }
 
@@ -69,6 +64,7 @@ const handleMessage = async (_data) => {
     } else {
         inforUser.avatars = "";
     }
+    console.log("zalo data infor: ", inforUser)
     forwardRocket.forwardRocket(idRoomRocket, _data.message, inforUser.displayName, inforUser.avatars)
 }
 
