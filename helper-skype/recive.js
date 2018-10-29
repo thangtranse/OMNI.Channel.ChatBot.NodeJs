@@ -36,10 +36,13 @@ const handleMessage = async (_data) => {
     if (typeof idRoomRocket == "undefined") return;
 
     // Xử lý đa phương tiện
-    if (typeof _data.text == "undefined")
+    if (typeof _data.attachments != "undefined") {
+        console.log("skype media normal")
         MessengerObject(_data)
-    else // Tin nhắn văn bản thông thường
+    } else if(typeof _data.text != "undefined") { // Tin nhắn văn bản thông thường
+        console.log("skype sms normal")
         forwardRocket.forwardRocket(idRoomRocket, _data.text, _data.from.name, "");
+    }
 }
 
 
