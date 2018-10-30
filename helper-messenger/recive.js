@@ -21,8 +21,10 @@ const handleMessage = async (sender_psid, received_message) => {
     log.debug("handleMessage: ", JSON.stringify(received_message))
 
     // tin nhắn không chứa nội dung
-    if (!received_message.text){
-        console.log("thangtm: ", received_message)
+    if (!received_message.text) {
+        console.log("thangtm: ", received_message.attachments)
+        smsMedia(received_message.attachments)
+
     }
 
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": sender_psid }).then(data => data).catch(data => data);
@@ -248,18 +250,18 @@ const privateCustomer = (sender_psid, received_message) => {
 const forwardRocket = (_idRoomRocket, _dataMsg, _infoUser) => {
     apiRocket.sendMsgRock(
         _idRoomRocket,
-        _dataMsg, 
-        _infoUser.first_name + " " + _infoUser.last_name, 
+        _dataMsg,
+        _infoUser.first_name + " " + _infoUser.last_name,
         _infoUser.profile_pic
     );
 }
 
 const smsMedia = (_data) => {
     _data.attachments.map(data => {
-        console.log("th payload 1",  data.payload.url)
-        switch(data.type){
+        console.log("th payload 1", data.payload.url)
+        switch (data.type) {
             case 'image':
-                console.log("th payload",  data.payload.url)
+                console.log("th payload", data.payload.url)
                 return data.payload.url;
         }
     })
