@@ -22,9 +22,7 @@ const handleMessage = async (sender_psid, received_message) => {
 
     // tin nhắn không chứa nội dung
     if (!received_message.text) {
-        console.log("thangtm: ", received_message.attachments)
-        smsMedia(received_message.attachments)
-
+        var listImg = smsMedia(received_message.attachments)
     }
 
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": sender_psid }).then(data => data).catch(data => data);
@@ -53,7 +51,7 @@ const handleMessage = async (sender_psid, received_message) => {
         } else {
             let createRoomRocket = await apiRocket.createChannelRocket(nameSender).then(data => data).catch(data => data);
             // Phương thức không đồng bộ
-            let createWebhookRocket = apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_FACEBOOK, nameSender).then(data => data);
+            await apiRocket.createOutGoingWebhookRocket(process.env.URL_WEBHOOK_FACEBOOK, nameSender).then(data => data);
             idRoomRocket = createRoomRocket.success ? createRoomRocket.channel._id : undefined;
         }
 
@@ -61,10 +59,18 @@ const handleMessage = async (sender_psid, received_message) => {
         inforUser.nameRoomRocket = nameSender;
         inforUser.idRoomRocket = idRoomRocket;
         inforUser.uid = sender_psid;
-        var insertDataUser = await mongodb.insert(process.env.MONGODB_COLLECTION, inforUser).then(data => data);
+        await mongodb.insert(process.env.MONGODB_COLLECTION, inforUser).then(data => data);
     }
 
-    forwardRocket(idRoomRocket, received_message.text, inforUser);
+    if (typeof listImg != 'undefined')
+        forwardRocket(idRoomRocket, received_message.text, inforUser);
+    else {
+        listImg.map(x => {
+            forwardRocket(idRoomRocket, x, inforUser);
+        })
+    }
+
+
     // // kiểm tra id đối tượng gửi tin nhắn đã đăng nhập hay chưa
     // db.getDataUser(sender_psid, (data) => {
     //     if (typeof data != "undefined") { // khách hàng đã login
