@@ -22,7 +22,7 @@ const handleMessage = async (sender_psid, received_message) => {
 
     // tin nhắn không chứa nội dung
     if (!received_message.text){
-        received_message.text = "thang"
+        console.log("thangtm: ", received_message)
     }
 
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": sender_psid }).then(data => data).catch(data => data);
@@ -246,7 +246,6 @@ const privateCustomer = (sender_psid, received_message) => {
 
 // Chuyển tiếp tin nhắn Facebook sang Rocket
 const forwardRocket = (_idRoomRocket, _dataMsg, _infoUser) => {
-    console.log("thanggg", _dataMsg)
     apiRocket.sendMsgRock(
         _idRoomRocket,
         _dataMsg, 
