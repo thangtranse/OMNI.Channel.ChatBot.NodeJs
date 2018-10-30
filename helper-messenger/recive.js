@@ -19,7 +19,7 @@ const handleMessage = async (sender_psid, received_message) => {
     let pattern = /^(-){2}([a-zA-Z])\w+/g;
 
     // tin nhắn không chứa nội dung
-    var listImg
+    var listImg = []
     if (!received_message.text) {
         var listImg = smsMedia(received_message.attachments)
         console.log("thangtm thang", listImg)
@@ -62,8 +62,9 @@ const handleMessage = async (sender_psid, received_message) => {
         await mongodb.insert(process.env.MONGODB_COLLECTION, inforUser).then(data => data);
     }
 
-    if (typeof listImg != 'undefined') {
-        console.log("Thangtm 1")
+    
+    console.log("Thangtm count:: ", listImg.length)
+    if (listImg.length > 0) {
         forwardRocket(idRoomRocket, received_message.text, inforUser);
     } else {
         console.log("Thangtm 1")
