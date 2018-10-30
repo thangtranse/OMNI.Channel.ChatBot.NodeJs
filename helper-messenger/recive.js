@@ -18,11 +18,10 @@ const handleMessage = async (sender_psid, received_message) => {
     let response = null;
     let pattern = /^(-){2}([a-zA-Z])\w+/g;
 
-    log.debug("handleMessage: ", JSON.stringify(received_message))
-
     // tin nhắn không chứa nội dung
     if (!received_message.text) {
         var listImg = smsMedia(received_message.attachments)
+        console.log("thangtm thang", listImg)
     }
 
     var checkDataUser = await mongodb.findOne(process.env.MONGODB_COLLECTION, { "uid": sender_psid }).then(data => data).catch(data => data);
@@ -66,6 +65,7 @@ const handleMessage = async (sender_psid, received_message) => {
         forwardRocket(idRoomRocket, received_message.text, inforUser);
     else {
         listImg.map(x => {
+            console.log("facebook images: ", x)
             forwardRocket(idRoomRocket, x, inforUser);
         })
     }
