@@ -64,7 +64,7 @@ const handleMessage = async (sender_psid, received_message) => {
 
     
     console.log("Thangtm count:: ", listImg.length)
-    if (listImg.length > 0) {
+    if (listImg.length == 0) {
         forwardRocket(idRoomRocket, received_message.text, inforUser);
     } else {
         console.log("Thangtm 1")
