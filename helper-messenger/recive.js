@@ -256,16 +256,19 @@ const forwardRocket = (_idRoomRocket, _dataMsg, _infoUser) => {
     );
 }
 
+/**
+ * Trả về danh sách URL hình ảnh
+ * @param {*} _data 
+ */
 const smsMedia = (_data) => {
-    _data.attachments.map(data => {
-        console.log("th payload 1", data.payload.url)
+    var imgList = []
+    _data.map(data => {
         switch (data.type) {
             case 'image':
-                console.log("th payload", data.payload.url)
-                return data.payload.url;
+                imgList.push(data.payload.url)
         }
     })
-    return ''
+    return imgList
 }
 
 module.exports = {
