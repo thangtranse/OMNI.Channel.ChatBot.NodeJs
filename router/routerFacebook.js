@@ -21,7 +21,7 @@ module.exports = function (app) {
     * Nhận Request từ FB gửi về
     *
     */
-    app.route('')
+    app.route('/webhook')
         .post((req, res) => {
             let body = req.body;
             /**
