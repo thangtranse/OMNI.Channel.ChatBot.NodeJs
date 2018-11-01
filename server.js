@@ -24,7 +24,6 @@ app.use("/logs", express.static('./libs/systemLogs'));
 // Session END
 
 const api = require('./helper-rocket/apiRest');
-const MessengerRecive = require('./helper-messenger/recive');
 const MessengerSend = require('./helper-messenger/send');
 //
 // Start Server
@@ -95,45 +94,6 @@ app.get("/", (req, resp) => {
     }
 });
 
-const log = require("./libs/writeLogs").Logger
-/**
- * Creates the endpoint for our webhook
- * Nhận Request từ FB gửi về
- *
- */
-app.post('/webhook', (req, res) => {
-    let body = req.body;
-    /**
-     * body: {object, entry : [{id, time, messaging: {} }]}
-     */
-    log.debug("/webhook req", req.body)
-    if (body.object === 'page') {
-        body.entry.forEach((entry) => {
-            if (!entry.messaging) return;
-            let pageEntry = entry.messaging;
-            pageEntry.forEach((messagingEvent) => {
-                let sender_psid = messagingEvent.sender.id;
-                if (messagingEvent.message) {
-                    console.log("if 1", messagingEvent);
-                    log.debug("/webhook", messagingEvent)
-                    MessengerRecive.handleMessage(sender_psid, messagingEvent.message);
-                } else if (messagingEvent.account_linking) { // eslint-disable-line camelcase, max-len
-                    console.log("else 1");
-                } else if (messagingEvent.postback) {
-                    console.log("if 2 postback", messagingEvent.postback);
-                    MessengerRecive.handlePostback(sender_psid, messagingEvent.postback);
-                } else {
-                    console.log("else 2", messagingEvent.postback);
-                    // console.error('Webhook received unknown messagingEvent: ', messagingEvent);
-                }
-            });
-        });
-        res.status(200).send('EVENT_RECEIVED');
-    } else {
-        res.sendStatus(404);
-    }
-});
-
 /**
  * Dùng để xác thực với Facebook
  */
@@ -191,17 +151,6 @@ app.post('/ten-lua', async (req, res) => {
     res.end();
 });
 
-// Creates the endpoint for our webhook
-/**
- * {
- *     bot, channel_id, channel_name, message_id, timestamp, user_id, user_name, text
- * }
- */
-app.post('/webhook_facebook', async (req, res) => {
-    MessengerSend.forwardFacebook(req.body);
-    res.end();
-});
-
 app.get("/livechat", (req, res) => {
     fs.readFile('./public/livechat.html', (err, data) => {
         res.end(data);
@@ -236,6 +185,7 @@ const routerZalo = require('./router/routerZalo')
 const routerViber = require('./router/routerViber')
 const routerTestApi = require('./router/routerTestAPI')
 const routerTelegram = require('./router/routerTelegram')
+const routerFacebook = require('./router/routerFacebook')
 
 routerBot(app)
 routerSkype(app)
@@ -243,6 +193,7 @@ routerZalo(app)
 routerViber(app)
 routerTestApi(app)
 routerTelegram(app)
+routerFacebook(app)
 // ROUTER END
 
 // LOG

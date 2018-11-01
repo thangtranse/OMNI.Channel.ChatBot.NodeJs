@@ -1,10 +1,11 @@
-const log = require("../libs/writeLogs").Logger
-const apiTelegram = require("../helper-telegram/apiTelegram")
-const download = require("download")
-const apiRocket = require('../helper-rocket/apiRest')
-const db = require('../database/mongodb')
-const fs = require('fs')
-const path = require('path')
+const log = require("../libs/writeLogs").Logger,
+    apiTelegram = require("../helper-telegram/apiTelegram"),
+    download = require("download"),
+    apiRocket = require('../helper-rocket/apiRest'),
+    db = require('../database/mongodb'),
+    fs = require('fs'),
+    path = require('path'),
+    apiGraph = require('../helper-messenger/graph')
 
 
 module.exports = function (app) {
@@ -28,6 +29,25 @@ module.exports = function (app) {
             log.debug("[POST] /osource-facebook-webhook", req.body)
             resp.end()
         })
+    app.route('/postnewsfeed')
+        .get(async (req, resp) => {
+            var temp = await apiGraph.postNewsFeed("thang dep trai", "").then(data => data).catch(data => data)
+            console.log("thangtm ", temp)
+            resp.end()
+        })
+    app.route('/sendimage')
+        .get(async (req, resp) => {
+            var temp = await apiGraph.parameterSentGraphWithMedia("messages", 1661436757312768, "https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?201606271147");
+            console.log("thangtm ", temp)
+            resp.end()
+        })
+    app.route('/sendMsgRepliesQuick')
+        .get(async (req, resp) => {
+            var temp = await apiGraph.parameterSentGraphQuickReplies(1661436757312768, "https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?201606271147");
+            console.log("thangtm ", temp)
+            resp.end()
+        })
+    // END FACEBOOK    
     // Zalo
     app.route("/osource-zalo-webhook")
         .get((req, resp) => {
