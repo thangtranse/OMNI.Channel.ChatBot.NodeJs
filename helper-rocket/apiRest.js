@@ -5,6 +5,7 @@ const URL_API_ROCKET = process.env.ROCKET_URL_API_ROCKET;
 const URL_WEBHOOK_CALLBACK_ZALO = process.env.URL_WEBHOOK_ZALO;
 const URL_WEBHOOK_CALLBACK_VIBER = process.env.URL_WEBHOOK_VIBER;
 const URL_WEBHOOK_CALLBACK_FACEBOOK = process.env.URL_WEBHOOK_FACEBOOK;
+const Agent = ["bot", "thangtester", "toannc", "huongvg", "thoattk"];
 
 var axios = require('axios');
 
@@ -226,7 +227,7 @@ class apiRest {
             },
             data: {
                 name: channelName,
-                members: ["bot"]
+                members: Agent
             }
         }).then(response => {
             return callback(response)
@@ -247,7 +248,7 @@ class apiRest {
                 },
                 data: {
                     name: _channelName,
-                    members: ["bot"]
+                    members: Agent
                 }
             }).then(response => {
                 console.log("createChannelRocket: ", response.data);
